@@ -54,12 +54,13 @@ public class Chassis extends SubsystemBase {
   private static final double anglePIDVisionSetInputRange = 44.5;
   private static final double anglePidMApathSetInputRange = 180;
 
-  private  double distanceFromMeterPIDVison = 4.450; // the precent of pixel from the limelight 1m from the target
+  private  double distanceFromMeterPIDVison = 34.5142; // the precent of pixel from the limelight 1m from the target
   public static  double ticksPerMeter = 5350; // the number of ticks per meter
   public static  double RPM = 5676 * 4;
-  double angle;
-  double sign;
-  double modle = sign;
+  private double angle;
+  private double sign;
+  private double modle = sign;
+  private double TrapezeDistanceFromCircle = 72.7964;
   private static Chassis chassis;
   private  CANSparkMax leftFrontMotor;
   private  CANSparkMax leftMotor;
@@ -211,7 +212,7 @@ public class Chassis extends SubsystemBase {
     SmartDashboard.putNumber("angle", fixedAngle());
     SmartDashboard.putNumber("pathnum", MAPath.pathnum);
     SmartDashboard.putNumber("stage", MAPath.stage);
-
+    SmartDashboard.putNumber("PIDVisionAngel", PIDVisionAngel());
     SmartDashboard.putNumber("distacne",
         ((leftEncoder.getDistance() + rightEncoder.getDistance()) / 2) / ticksPerMeter);
     SmartDashboard.putNumber("angelSetPoint", anglePidMApath.getSetpoint());
@@ -307,8 +308,16 @@ public class Chassis extends SubsystemBase {
 
   // pid vison distance
   public double distance() {
-   double distance = Math.sqrt(distanceFromMeterPIDVison / Robot.area) * 100;
-    return 8e-7 * Math.pow(distance, 3) - 0.0012 * Math.pow(distance, 2) + 1.1934 * distance - 11.341;
+   //double distance = Math.sqrt(distanceFromMeterPIDVison / Robot.y) * 100;
+  return (1833.48 / (0.00222335 * Math.pow(Robot.y, 2) + 0.228073 * Robot.y + 2.50245)) + 55.9811;
+   
+  }
+
+  public double PIDVisionAngel(){
+    return Math.atan(
+        TrapezeDistanceFromCircle * Math.cos( Robot.x )
+        / (distance() * (TrapezeDistanceFromCircle * Math.sin(Robot.x) -1 ))
+      ); //credit to Ron Sanderovich
   }
 
   public boolean stopPid( double dis,  double angle) {
