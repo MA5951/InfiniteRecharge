@@ -36,7 +36,7 @@ public class MAPath extends CommandBase {
     chassis.rampRate(0.5);
     stage = 0;
     if (pathnum == 0) {
-      chassis.mainPath = chassis.leftRocketPath1; // chassis.adiTheQueenPath1;
+      chassis.mainPath = chassis.leftRocketPath1; 
     }
 
     chassis.setpoint(chassis.getPath()[0][0], chassis.getPath()[0][1], chassis.getPath()[0][4],

@@ -31,10 +31,10 @@ public class tankDrive extends CommandBase {
   public void execute() {
     if(RobotContainer.leftJoystick.getRawButton(1) || RobotContainer.rightJoystick.getRawButton(1) ){
       chassis.tankDrive(chassis.leftVelocityControlSetPoint(RobotContainer.leftJoystick.getY() *(chassis.RPM /4)),
-      chassis.rightVelocityControlSetPoint(RobotContainer.rightJoystick.getY() *(chassis.RPM / 4)));
+      chassis.rightVelocityControlSetPoint(RobotContainer.rightJoystick.getY() *(chassis.RPM / 4) ));
     }else{
       chassis.tankDrive(chassis.leftVelocityControlSetPoint(RobotContainer.leftJoystick.getY() * chassis.RPM),
-    chassis.rightVelocityControlSetPoint(RobotContainer.rightJoystick.getY() *chassis.RPM));
+    chassis.rightVelocityControlSetPoint(RobotContainer.rightJoystick.getY() *chassis.RPM) );
     }
     
   }
