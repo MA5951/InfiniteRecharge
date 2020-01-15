@@ -20,8 +20,8 @@ public final class Constants {
     public static final int LEFT_FRONT_MOTOR = 1;
     public static final int LEFT_MOTOR = 2;
 
-    public static final int RIGHT_FRONT_MOTOR = 3;
-    public static final int RIGHT_MOTOR = 4;
+    public static final int RIGHT_FRONT_MOTOR = 4;
+    public static final int RIGHT_MOTOR = 3;
 
     public static final int LEFT_CHASSIS_ENCODER_A = 0;
     public static final int LEFT_CHASSIS_ENCODER_B = 1;

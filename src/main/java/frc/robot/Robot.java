@@ -28,6 +28,7 @@ public class Robot extends TimedRobot {
   public static double v;
   public static double area;
   public static double y;
+  public static double tlong;
   public static int path;
    private Chassis chassis = Chassis.getinstance();
    private tankDrive tDrive = new tankDrive(chassis);
@@ -63,12 +64,17 @@ public class Robot extends TimedRobot {
     NetworkTableEntry tv = table.getEntry("tv");
     NetworkTableEntry ta = table.getEntry("ta");
     NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableEntry tlong1 = table.getEntry("tlong");
+    
+
 
     // read values periodically
     x = tx.getDouble(0.0);
     v = tv.getDouble(0.0);
     area = ta.getDouble(0.0);
     y = ty.getDouble(0.0);
+    tlong = tlong1.getDouble(0.0);
+
   }
 
   /**
