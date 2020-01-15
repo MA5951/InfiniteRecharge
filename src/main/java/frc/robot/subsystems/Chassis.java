@@ -32,7 +32,7 @@ public class Chassis extends SubsystemBase {
   private static final double KI_MApath_distance = 0;
   private static final double KD_MApath_distance = 1.1e-3 / PID_CONST;
 
-  private static final double KP_MApath_angle = 6.5e-3 / PID_CONST;
+  private static final double KP_MApath_angle = 8e-3 / PID_CONST;
   private static final double KI_MApath_angle = 0;
   private static final double KD_MApath_angle = 1e-3 / PID_CONST;
 
@@ -89,7 +89,10 @@ public class Chassis extends SubsystemBase {
   public static double[][] mainPath; // the array we us as the main Path in the MApath
  
   public static double[][] leftRocketPath1 = {
-      new double[] { 0, 90, 0, 1, 0 , 1 },
+      new double[] { 2 , 0, 0.1, 5, 0.3 , 0.7 },
+      new double[] { 2, 180, 0.1, 2, 0.3, 0.7 },
+      new double[] { 4, 180, 0.1, 5, 0.3, 0.7 },
+      new double[] { 4, 0, 0.05, 5, 0.3, 0.7 }
       //new double[] { 1.5, 90, 0.3, 5, 0.2, 0.6 },
      // new double[] { 2.5, 90, 0.3, 5, 0.2, 0.6 },
       //new double[] { 2.5, 180, 0.3, 5, 0.2, 0.6 },
