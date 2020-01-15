@@ -26,36 +26,38 @@ import frc.robot.commands.Chassis.MAPath;
  * An example subsystem. You can replace me with your own Subsystem.
  */
 public class Chassis extends SubsystemBase {
-  private static final double KP_MApath_distance = 3.2e-3 ;
+  private static final double PID_CONST = 1.06130841;
+
+  private static final double KP_MApath_distance = 3.2e-3 / PID_CONST;
   private static final double KI_MApath_distance = 0;
-  private static final double KD_MApath_distance = 1.1e-3 ;
+  private static final double KD_MApath_distance = 1.1e-3 / PID_CONST;
 
-  private static final double KP_MApath_angle = 5e-3;
+  private static final double KP_MApath_angle = 6.5e-3 / PID_CONST;
   private static final double KI_MApath_angle = 0;
-  private static final double KD_MApath_angle = 1.0e-4 ;
+  private static final double KD_MApath_angle = 1e-3 / PID_CONST;
 
-  private static final double KP_Vision_distance =2.8e-3;
-  private static final double KI_Vision_distance = 1e-10;
-  private static final double KD_Vision_distance = 1.9e-4;
+  private static final double KP_Vision_distance =2.8e-3 / PID_CONST;
+  private static final double KI_Vision_distance = 1e-10 / PID_CONST;
+  private static final double KD_Vision_distance = 1.9e-4 / PID_CONST;
 
 
-  private static final double KP_Vision_angle = 3e-3; 
-  private static final double KI_Vision_angle = 0.5e-6; 
-  private static final double KD_Vision_angle = 1e-5;
+  private static final double KP_Vision_angle = 3e-3 / PID_CONST; 
+  private static final double KI_Vision_angle = 0.5e-6 / PID_CONST; 
+  private static final double KD_Vision_angle = 1e-5 / PID_CONST;
 
-  private static final double KP_VELOCITY_LEFT = 0.00006;
+  private static final double KP_VELOCITY_LEFT = 0.00006 / PID_CONST;
   private static final double KI_VELOCITY_LEFT = 0;
-  private static final double KD_VELOCITY_LEFT = 0.000001;
+  private static final double KD_VELOCITY_LEFT = 0.000001 / PID_CONST;
 
-  private static final double KP_VELOCITY_RIGHT = 0.000058;
+  private static final double KP_VELOCITY_RIGHT = 0.000058 / PID_CONST;
   private static final double KI_VELOCITY_RIGHT = 0;
-  private static final double KD_VELOCITY_RIGHT = 0.000001;
+  private static final double KD_VELOCITY_RIGHT = 0.000001 / PID_CONST;
 
   private static final double anglePIDVisionSetInputRange = 44.5;
   private static final double anglePidMApathSetInputRange = 180;
 
   private  double distanceFromMeterPIDVison = 34.5142; // the precent of pixel from the limelight 1m from the target
-  public static  double ticksPerMeter = 5350; // the number of ticks per meter
+  public static  double ticksPerMeter = 5678.39567; // the number of ticks per meter
   public static  double RPM = 5676 * 4;
   private double angle;
   private double sign;
@@ -86,15 +88,12 @@ public class Chassis extends SubsystemBase {
 
   public static double[][] mainPath; // the array we us as the main Path in the MApath
  
-  public static double[][] leftRocketPath1 = { new double[] { 2.175, 0, 0.3, 5, 0.3, 1 },
-      new double[] { 3.35, 45, 0.3, 5, 0.2, 0.6 }, new double[] { 4.525, 90, 0.3, 5, 0.2, 0.6 },
-      new double[] { 5.7, 135, 0.3, 5, 0.2, 0.6 }, new double[] { 6.875, 180, 0.3, 5, 0.2, 0.6 },
-      new double[] { 9.25, 180, 0.3, 5, 0.20, 1 },
-
-      new double[] { 6.875, 180, 0.3, 5, 0.10, 0.55 }, new double[] { 5.7, 135, 0.3, 5, 0.10, 0.55 },
-      new double[] { 4.525, 90, 0.3, 5, 0.10, 0.55 }, new double[] { 3.35, 45, 0.3, 5, 0.10, 0.55 },
-      new double[] { 2.175, 0, 0.3, 5, 0.15, 0.50 }, new double[] { 0, 0, 0.05, 5, 0.25, 0.55 }
-
+  public static double[][] leftRocketPath1 = {
+      new double[] { 0, 90, 0, 1, 0 , 1 },
+      //new double[] { 1.5, 90, 0.3, 5, 0.2, 0.6 },
+     // new double[] { 2.5, 90, 0.3, 5, 0.2, 0.6 },
+      //new double[] { 2.5, 180, 0.3, 5, 0.2, 0.6 },
+      //new double[] { 3.5 , 180, 0.3, 5, 0.2, 0.6 },
   };
   public static double[][] leftRocketPath2 = new double[][] {
       // 1) distance
@@ -163,10 +162,11 @@ public class Chassis extends SubsystemBase {
 
     leftFrontMotor.setInverted(true);
     leftMotor.setInverted(true);
+ 
 
     navx = new AHRS(Port.kMXP);
 
-    leftEncoder = new Encoder(Constants.LEFT_CHASSIS_ENCODER_A, Constants.LEFT_CHASSIS_ENCODER_B, false,
+    leftEncoder = new Encoder(Constants.LEFT_CHASSIS_ENCODER_A, Constants.LEFT_CHASSIS_ENCODER_B, true,
         EncodingType.k4X);
     rightEncoder = new Encoder(Constants.RIGHT_CHASSIS_ENCODER_A, Constants.RIGHT_CHASSIS_ENCODER_B, false,
         EncodingType.k4X);
@@ -206,9 +206,10 @@ public class Chassis extends SubsystemBase {
     return canEncoderright.getVelocity();
   }
 
-  // updat the value in the smart dash bord
+  // update the value in the smart dash bord
   public void value() {
 
+    SmartDashboard.putNumber("average", average());
     SmartDashboard.putNumber("angle", fixedAngle());
     SmartDashboard.putNumber("pathnum", MAPath.pathnum);
     SmartDashboard.putNumber("stage", MAPath.stage);
