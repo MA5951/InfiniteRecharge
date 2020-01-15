@@ -55,13 +55,12 @@ public class Chassis extends SubsystemBase {
   private static final double anglePIDVisionSetInputRange = 44.5;
   private static final double anglePidMApathSetInputRange = 180;
   
-  private  double distanceFromMeterPIDVison = 34.5142; // the precent of pixel from the limelight 1m from the target
   public static  double ticksPerMeter = 5350; // the number of ticks per meter
   public static  double RPM = 5676 * 4;
   private double angle;
   private double sign;
   private double modle = sign;
-  private double TrapezeDistanceFromCircle = 72.7964;
+
   private static Chassis chassis;
   private  CANSparkMax leftFrontMotor;
   private  CANSparkMax leftMotor;
@@ -293,13 +292,10 @@ public class Chassis extends SubsystemBase {
     return mainPath;
   }
 
-  public double angle() {
-    return navx.getAngle();
-  }
-
+ 
   public double fixedAngle() {
     try {
-      angle = angle();
+      angle = navx.getAngle();
       sign = angle / Math.abs(angle);
       modle = sign * (Math.abs(angle) % 360);
       return -((180 - modle) % 360) + 180;
@@ -332,7 +328,6 @@ public class Chassis extends SubsystemBase {
   public void resetValue() {
   
     navx.reset();
- 
     leftEncoder.reset();
     rightEncoder.reset();
   }
@@ -365,19 +360,25 @@ public void changelimlight(){
     return distancePIDVision.calculate(distance(), setpoint);
   }
 
+  public void ArcadeDrive (double angel , double distacne  ){
+    double w = (100 - Math.abs(angel * 100)) * (distacne) + distacne * 100;
+    double v = (100 - Math.abs(distacne * 100)) * (angel) + angel * 100;
+   rightFrontMotor.set(-(v - w) / 100);
+   leftFrontMotor.set((v + w) / 100);
+  }
+
   // the PIDvison
-  public void PIDvision( double angleSetpoint,  double distanceSetpoint) {
+  public void PIDvision( double angleSetpoint,  double distanceSetpoint  ) {
      double angel = anglePIDVisionOutput(angleSetpoint);
      double distacne = distancePIDVisionOutput(distanceSetpoint);
     if (Robot.area == 0.0) {
       reset();
       return;
     }
-     double w = (100 - Math.abs(angel * 100)) * (distacne) + distacne * 100;
-     double v = (100 - Math.abs(distacne * 100)) * (angel) + angel * 100;
-    rightFrontMotor.set(-(v - w) / 100);
-    leftFrontMotor.set((v + w) / 100);
+    ArcadeDrive(angel , distacne);
   }
+
+
 
   // setpoint of the PID vison
   public void setSetpoint( double angle,  double destination) {
@@ -414,7 +415,9 @@ public void changelimlight(){
   public double distanceMApathPIDOutput() {
     return distancePidMApath.calculate(average());
   }
-public void proto(){
+
+  
+public void proto(double speed){
      leftFrontMotor1.set(speed);
      leftMotor1.set(speed);
   
@@ -423,20 +426,14 @@ public void proto(){
 }
   // MApath
   public void pathfinder() {
-     double angel = angleMApathPIDOutput();
-     double distance = distanceMApathPIDOutput();
-    try {
-       double w = (100 - Math.abs((angel * mainPath[MAPath.stage][5])) * 100)
-          * (distance * mainPath[MAPath.stage][4]) + (distance * mainPath[MAPath.stage][4]) * 100;
 
-       double v = (100 - Math.abs((distance * mainPath[MAPath.stage][4]) * 100))
-          * (angel * mainPath[MAPath.stage][5]) + (angel * mainPath[MAPath.stage][5]) * 100;
-
-      tankDrive((-(v + w) / 100), ((v - w) / 100));
-    } catch ( Exception e) {
-
+    if(MAPath.stage <= mainPath.length - 1 ){
+      double angel = angleMApathPIDOutput() * mainPath[MAPath.stage][5];
+      double distance = distanceMApathPIDOutput() * mainPath[MAPath.stage][4];
+      ArcadeDrive(angel, distance);
+    }else{
+      tankDrive(0, 0);
     }
-
   }
 
   public static Chassis getinstance() {
