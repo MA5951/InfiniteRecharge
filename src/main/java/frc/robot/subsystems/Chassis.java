@@ -395,7 +395,6 @@ public class Chassis extends SubsystemBase {
     return distancePidMApath.calculate(average());
   }
 
-
 public void proto(double speed){
      leftFrontMotor1.set(speed);
      leftMotor1.set(speed);
