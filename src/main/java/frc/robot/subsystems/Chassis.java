@@ -321,10 +321,6 @@ public class Chassis extends SubsystemBase {
   return (1833.48 / (0.00222335 * Math.pow(Robot.y, 2) + 0.228073 * Robot.y + 2.50245)) + 55.9811;
    
   }
-public void changelimlight(){
-
-}
-
 
   public boolean stopPid( double dis,  double angle) {
     return Math.abs(distancePIDVision.getPositionError()) < dis && Math.abs(anglePIDVision.getPositionError()) < angle;
