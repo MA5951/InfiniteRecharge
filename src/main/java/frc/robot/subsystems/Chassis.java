@@ -27,13 +27,13 @@ import frc.robot.commands.Chassis.PIDVisionAngel;
  * An example subsystem. You can replace me with your own Subsystem.
  */
 public class Chassis extends SubsystemBase {
-  private static final double KP_MApath_distance = 3.2e-3 / 1.6875 ;
+  private static final double KP_MApath_distance = 2.9e-3;
   private static final double KI_MApath_distance = 0;
-  private static final double KD_MApath_distance = 1.1e-3/ 1.6875  ;
+  private static final double KD_MApath_distance  = 3.05e-4;
 
-  private static final double KP_MApath_angle = 5e-3 / 1.6875;
+  private static final double KP_MApath_angle = 2.1e-2 ;
   private static final double KI_MApath_angle = 0;
-  private static final double KD_MApath_angle = 1.0e-4 / 1.6875 ;
+  private static final double KD_MApath_angle = 3e-3;
 
   private static final double KP_Vision_distance =2.8e-3 * 1.6875;
   private static final double KI_Vision_distance = 1e-10 *1.6875;
@@ -56,7 +56,7 @@ public class Chassis extends SubsystemBase {
   private static final double anglePidMApathSetInputRange = 180;
   
   public static  double ticksPerMeter = 5350; // the number of ticks per meter
-  public static  double RPM = 5676 * 4;
+  public static  double RPM = 5676 * 5;
   private double angle;
   private double sign;
   private double modle = sign;
@@ -93,27 +93,11 @@ public class Chassis extends SubsystemBase {
   public static double[][] mainPath; // the array we us as the main Path in the MApath
  
   public static double[][] leftRocketPath1 = { 
-  new double[]{0.8, -0.0, 0.3, 10,  0.4, 0.8},
-  new double[]{0.970, -0.0, 0.3, 10,  0.4, 0.8},
-  new double[]{1.130, -0.0, 0.3, 10,  0.4, 0.8},
-  new double[]{1.29, -0.0, 0.3, 10,  0.4, 0.8},
-  new double[]{1.44, -0.0, 0.3, 10,  0.4, 0.8},
-  new double[]{1.58, -0.0, 0.3, 10,  0.4, 0.8},
-  new double[]{1.73, -0.0, 0.3, 10,  0.4, 0.8},
-  new double[]{1.87, -0.0, 0.3, 10,  0.4, 0.8},
-  new double[]{2.010, -0.0, 0.3, 10,  0.4, 0.8},
-  new double[]{2.14, -57.29, 0.3, 10,  0.4, 0.8},
-  new double[]{2.27, -57.29, 0.3, 10,  0.4, 0.8},
-  new double[]{2.42, -57.29, 0.3, 10,  0.4, 0.8},
-  new double[]{2.58, -57.29, 0.3, 10,  0.4, 0.8},
-  new double[]{2.77, -57.29, 0.3, 10,  0.4, 0.8},
-  new double[]{2.98, -57.29, 0.3, 10,  0.4, 0.8},
-  new double[]{3.24, -57.29, 0.3, 10,  0.4, 0.8},
-  new double[]{5.84, -0.0, 0.3, 10,  0.4, 0.8},
-  new double[]{8.17, -0.0, 0.05, 10,  0.4, 0.8}
- 
-
-
+  new double[]{2, 0, 0.3,10, 1 , 1},
+  new double[]{2, 90, 0.3, 10,  0, 1},
+  new double[]{4, 90, 0.3, 10,  1, 1},
+  new double[]{4, 180, 0.3, 10,  0, 1},
+  new double[]{5.20, 180, 0.05, 5,  1, 1},
   };
   public static double[][] leftRocketPath2 = new double[][] {
       // 1) distance
@@ -363,8 +347,7 @@ public void changelimlight(){
   public void ArcadeDrive (double angel , double distacne  ){
     double w = (100 - Math.abs(angel * 100)) * (distacne) + distacne * 100;
     double v = (100 - Math.abs(distacne * 100)) * (angel) + angel * 100;
-   rightFrontMotor.set(-(v - w) / 100);
-   leftFrontMotor.set((v + w) / 100);
+ tankDrive(-(v+w)/ 100 , (v-w)/ 100);
   }
 
   // the PIDvison
@@ -416,7 +399,7 @@ public void changelimlight(){
     return distancePidMApath.calculate(average());
   }
 
-  
+
 public void proto(double speed){
      leftFrontMotor1.set(speed);
      leftMotor1.set(speed);
