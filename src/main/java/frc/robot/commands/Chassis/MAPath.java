@@ -33,7 +33,8 @@ public class MAPath extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    chassis.rampRate(0.5);
+    //chassis.rampRate(0.4);
+    chassis.setidilmodeCoset();
     stage = 0;
     if (pathnum == 0) {
       chassis.mainPath = chassis.leftRocketPath1; 

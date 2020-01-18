@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -27,15 +28,16 @@ import frc.robot.commands.Chassis.PIDVisionAngel;
  * An example subsystem. You can replace me with your own Subsystem.
  */
 public class Chassis extends SubsystemBase {
-  private static final double KP_MApath_distance = 2.7e-3;
+  private static final double PIDmultiplayr = 4.12;
+  private static final double KP_MApath_distance = 2.3e-3 / PIDmultiplayr;
   private static final double KI_MApath_distance = 0;
-  private static final double KD_MApath_distance  = 2.7e-4;
+  private static final double KD_MApath_distance  = 2.7e-4 / PIDmultiplayr;
 
-  private static final double KP_MApath_angle = 2.1e-2 ;
+  private static final double KP_MApath_angle = 2.7e-2 / PIDmultiplayr ;
   private static final double KI_MApath_angle = 0;
-  private static final double KD_MApath_angle = 2.65e-3;
+  private static final double KD_MApath_angle = 4e-3 / PIDmultiplayr;
 
-  private static final double KP_Vision_distance =2.8e-3 * 1.6875;
+  private static final double KP_Vision_distance =2.8e-3 / 1.6875;
   private static final double KI_Vision_distance = 1e-10 *1.6875;
   private static final double KD_Vision_distance = 1.9e-4 * 1.6875;
 
@@ -44,19 +46,19 @@ public class Chassis extends SubsystemBase {
   private static final double KI_Vision_angle = 0.5e-6 * 1.6875; 
   private static final double KD_Vision_angle = 1e-5 * 1.6875;
 
-  private static final double KP_VELOCITY_LEFT = 0.00006 / 1.6875;
+  private static final double KP_VELOCITY_LEFT = 0.000058 *6;
   private static final double KI_VELOCITY_LEFT = 0;
-  private static final double KD_VELOCITY_LEFT = 0.000001 / 1.6875;
+  private static final double KD_VELOCITY_LEFT = 0.000001 *6;
 
-  private static final double KP_VELOCITY_RIGHT = 0.000058 / 1.6875;
+  private static final double KP_VELOCITY_RIGHT = 0.000058 *6 ;
   private static final double KI_VELOCITY_RIGHT = 0;
-  private static final double KD_VELOCITY_RIGHT = 0.000001 / 1.6875;
+  private static final double KD_VELOCITY_RIGHT = 0.000001 *6;
 
   private static final double anglePIDVisionSetInputRange = 44.5;
   private static final double anglePidMApathSetInputRange = 180;
   
-  public static  double ticksPerMeter = 5350; // the number of ticks per meter
-  public static  double RPM = 5676 * 5;
+  public static  double ticksPerMeter = 22000; // the number of ticks per meter
+  public static  double RPM = 5240;
   private double angle;
   private double sign;
   private double modle = sign;
@@ -74,11 +76,12 @@ public class Chassis extends SubsystemBase {
   private  CANSparkMax rightFrontMotor1;
   private  CANSparkMax rightMotor1;
 
-  private  CANEncoder canEncoderright;
-  private  CANEncoder canEncoderleft;
- 
-  private  Encoder leftEncoder;
-  private  Encoder rightEncoder;
+  private CANEncoder canEncoderRightCIMcoder;
+  private CANEncoder canEncoderLeftCIMcoder;
+
+private CANEncoder canEncoderleft;
+private CANEncoder canEncoderRight;
+
  
   private  AHRS navx;
   private  PIDController distancePidMApath; // PID controler of the distance in the pathfinder
@@ -93,21 +96,19 @@ public class Chassis extends SubsystemBase {
   public static double[][] mainPath; // the array we us as the main Path in the MApath
  
   public static double[][] leftRocketPath1 = { 
-new double[]{0, 180, 0.3, 5, 0, 0.425},
-new double[]{0.83, 180, 0.3, 10, 0.2 , 0.65},
-new double[]{1.359, 145.65, 0.3, 10, 0.2 , 0.65},
-new double[]{1.859, 113, 0.3, 10, 0.2 , 0.65},
-new double[]{2.36, 102, 0.3, 10, 0.2 , 0.65},
-new double[]{2.78, 117, 0.3, 10, 0.2 , 0.65},
-new double[]{3, 117, 0.3, 10, 0.2 , 0.65},
-new double[]{3.539, 162, 0.3, 10, 0.2 , 0.65},
-new double[]{5, 170, 0.3, 10, 0.2 , 0.65},
-new double[]{7.05, 180, 0.05, 5, 0.2 , 1}
+//new double[]{0, 180, 0.3, 2, 0, 0.7},
+new double[]{0.87, 4.5, 0.3, 10, 0.35 , 1},
+new double[]{1.390, -32.28, 0.3, 10, 0.35 , 1},
+new double[]{1.900, -67.46, 0.3, 10, 0.35 , 1},
+new double[]{2.400, -77.49, 0.3, 10, 0.35 , 1},
+new double[]{2.820, -62.85, 0.3, 10, 0.35 , 1},
+new double[]{3.270, -11, 0.3, 10, 0.35 , 1},
+new double[]{3.6, 0, 0.3, 2, 0.3 , 1},
+new double[]{7, 0, 0.05, 3, 0.3, 1}
   };
 
   public static double[][] try_path = {
 new double[]{0.8 , -5, 0.3, 10, 0.2, 1},
-
 new double[]{1.35, -32.54,0.3, 10, 0.25 , 0.65 },
 new double[]{1.84, -68.24,0.3, 10,0.25 , 0.65 },
 new double[]{2.33, -78.06,0.3, 10,0.25 , 0.65 },
@@ -127,40 +128,8 @@ new double[]{-3, 0, 0.05, 2, 0.2, 0.4}
     
   };
   public static double[][] leftRocketPath2 = new double[][] {
-      // 1) distance
-      // 2) angle
-      // 3) distance Tolerance
-      // 4) angle Tolerance
-      // 5) Distance speed limit
-      // 6) Angle Speed ​​Limit
-
-      new double[] { 2.73, 0, 0.3, 10, 0.3, 0.9 }, new double[] { 4.73, 0, 0.3, 10, 0.3, 0.9 },
-      new double[] { 7.73, 0, 0.3, 10, 0.3, 0.9 }, new double[] { 7.73, 92.14, 0.3, 10, 0, 0.7 },
-      new double[] { 7.94, 98.09, 0.3, 10, 0.4, 0.7 }, new double[] { 8.040, 104.4, 0.3, 10, 0.4, 0.7 },
-      new double[] { 8.14, 110.94, 0.3, 10, 0.4, 0.7 }, new double[] { 8.24, 117.54, 0.3, 10, 0.4, 0.7 },
-      new double[] { 8.34, 124.04, 0.3, 10, 0.4, 0.7 }, new double[] { 8.44, 130.28, 0.3, 10, 0.4, 0.7 },
-      new double[] { 8.549, 136.14, 0.3, 10, 0.4, 0.7 }, new double[] { 8.659, 141.54, 0.3, 10, 0.4, 0.7 },
-      new double[] { 8.779, 146.44, 0.3, 10, 0.4, 0.7 }, new double[] { 8.909, 150.86, 0.3, 10, 0.4, 0.7 },
-      new double[] { 9.04, 154.81, 0.3, 10, 0.4, 0.7 }, new double[] { 9.18, 158.34, 0.3, 10, 0.4, 0.7 },
-      new double[] { 9.33, 161.48, 0.3, 10, 0.4, 0.7 }, new double[] { 9.49, 164.28, 0.3, 10, 0.4, 0.7 },
-      new double[] { 9.66, 166.78, 0.3, 10, 0.4, 0.7 }, new double[] { 9.84, 169.02, 0.3, 10, 0.4, 0.7 },
-      new double[] { 10.03, 171.03, 0.3, 10, 0.4, 0.7 }, new double[] { 10.22, 172.85, 0.3, 10, 0.4, 0.7 },
-      new double[] { 10.44, 174.48, 0.3, 10, 0.4, 0.7 }, new double[] { 10.66, 175.97, 0.3, 10, 0.4, 0.7 },
-      new double[] { 10.89, 177.32, 0.3, 10, 0.4, 0.7 }, new double[] { 11.13, 178.55, 0.3, 10, 0.4, 0.7 },
-      new double[] { 11.38, 179.68, 0.3, 10, 0.4, 0.7 }, new double[] { 11.38, 89.12, 0.3, 10, 0, 0.7 },
-      new double[] { 12.12, 0.64, 0.3, 10, 0.4, 0.7 }, new double[] { 12.35, 1.78, 0.3, 10, 0.4, 0.7 },
-      new double[] { 12.57, 3.03, 0.3, 10, 0.4, 0.7 }, new double[] { 12.78, 4.39, 0.3, 10, 0.4, 0.7 },
-      new double[] { 12.98, 5.89, 0.3, 10, 0.4, 0.7 }, new double[] { 13.17, 7.54, 0.3, 10, 0.4, 0.7 },
-      new double[] { 13.35, 9.36, 0.3, 10, 0.4, 0.7 }, new double[] { 13.53, 11.38, 0.3, 10, 0.4, 0.7 },
-      new double[] { 13.70, 13.62, 0.3, 10, 0.4, 0.7 }, new double[] { 13.86, 16.12, 0.3, 10, 0.4, 0.7 },
-      new double[] { 14.01, 18.91, 0.3, 10, 0.4, 0.7 }, new double[] { 14.15, 22.02, 0.3, 10, 0.4, 0.7 },
-      new double[] { 14.28, 25.51, 0.3, 10, 0.4, 0.7 }, new double[] { 14.41, 29.4, 0.3, 10, 0.4, 0.7 },
-      new double[] { 14.53, 33.74, 0.3, 10, 0.4, 0.7 }, new double[] { 14.64, 38.53, 0.3, 10, 0.4, 0.7 },
-      new double[] { 14.75, 43.79, 0.3, 10, 0.4, 0.7 }, new double[] { 14.86, 49.47, 0.3, 10, 0.4, 0.7 },
-      new double[] { 14.96, 55.52, 0.3, 10, 0.4, 0.7 }, new double[] { 15.06, 61.81, 0.3, 10, 0.4, 0.7 },
-      new double[] { 15.16, 68.22, 0.3, 10, 0.4, 0.7 }, new double[] { 15.26, 74.57, 0.3, 10, 0.4, 0.7 },
-      new double[] { 15.36, 80.73, 0.3, 10, 0.4, 0.7 }, new double[] { 15.46, 86.56, 0.3, 10, 0.4, 0.7 },
-      new double[] { 23.2, 179.92, 0.05, 5, 0, 0.7 } };
+new double[]{0 , 45 , 0.05 , 2 , 0 , 1},
+  };
   public static double[][] leftRocketPath3 = new double[][] {
       // 1) distance
       // 2) angle
@@ -168,7 +137,7 @@ new double[]{-3, 0, 0.05, 2, 0.2, 0.4}
       // 4) angle Tolerance
       // 5) Distance speed limit
       // 6) Angle Speed ​​Limit
-      new double[] { 3, 0, 0.05, 5, 1, 1 }, };
+      new double[] { 0, 90, 0, 2, 0, 1 }, };
 
   private Chassis() {
 
@@ -186,9 +155,15 @@ new double[]{-3, 0, 0.05, 2, 0.2, 0.4}
     rightFrontMotor1 = new CANSparkMax(9,com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushed);
         rightMotor1 = new CANSparkMax(8, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushed);
 
+    canEncoderLeftCIMcoder = leftMotor.getAlternateEncoder(AlternateEncoderType.kQuadrature, 1);
+    canEncoderRightCIMcoder = rightMotor.getAlternateEncoder(AlternateEncoderType.kQuadrature, 1);
+    canEncoderRightCIMcoder.setInverted(true);
 
+    canEncoderRight = rightFrontMotor.getEncoder();
     canEncoderleft = leftFrontMotor.getEncoder();
-    canEncoderright = rightFrontMotor.getEncoder();
+
+    canEncoderRightCIMcoder.setPositionConversionFactor(1);
+    canEncoderLeftCIMcoder.setPositionConversionFactor(1);
 
     leftMotor.follow(leftFrontMotor);
     rightMotor.follow(rightFrontMotor);
@@ -198,16 +173,8 @@ new double[]{-3, 0, 0.05, 2, 0.2, 0.4}
 
     navx = new AHRS(Port.kMXP);
   
-    leftEncoder = new Encoder(Constants.LEFT_CHASSIS_ENCODER_A, Constants.LEFT_CHASSIS_ENCODER_B, true,
-        EncodingType.k4X);
-    rightEncoder = new Encoder(Constants.RIGHT_CHASSIS_ENCODER_A, Constants.RIGHT_CHASSIS_ENCODER_B, false,
-        EncodingType.k4X);
 
-    leftEncoder.setDistancePerPulse(1);
-    rightEncoder.setDistancePerPulse(1);
-    canEncoderleft.setVelocityConversionFactor(1);
-    canEncoderright.setVelocityConversionFactor(1);
-    
+  
     // the distance PID vison
     distancePIDVision = new PIDController(KP_Vision_distance, KI_Vision_distance, KD_Vision_distance);
 
@@ -236,7 +203,7 @@ new double[]{-3, 0, 0.05, 2, 0.2, 0.4}
   }
 
   public double rightVelocityControlRPM() {
-    return canEncoderright.getVelocity();
+    return canEncoderRight.getVelocity();
   }
 
   // updat the value in the smart dash bord
@@ -248,24 +215,24 @@ new double[]{-3, 0, 0.05, 2, 0.2, 0.4}
     SmartDashboard.putNumber("stage", MAPath.stage);
     
     SmartDashboard.putNumber("distacne",
-        ((leftEncoder.getDistance() + rightEncoder.getDistance()) / 2) / ticksPerMeter);
+        average()/ ticksPerMeter);
     SmartDashboard.putNumber("angelSetPoint", anglePidMApath.getSetpoint());
     SmartDashboard.putNumber("angleEror", angleEror());
     SmartDashboard.putNumber("distanceEror", distanceEror());
     SmartDashboard.putNumber("DistanceSetPoint", distancePidMApath.getSetpoint() / ticksPerMeter);
-    
+ 
     SmartDashboard.putNumber("angelSetPointvison", anglePIDVision.getSetpoint());
     SmartDashboard.putNumber("DistanceSetPointvison", distancePIDVision.getSetpoint());
     SmartDashboard.putNumber("Distancevison", distance());
-
-    SmartDashboard.putNumber("leftEncoder", leftEncoder.getDistance());
-    SmartDashboard.putNumber("rightEncoder", rightEncoder.getDistance());
 
     SmartDashboard.putNumber("getCompassHeading",  navx.getCompassHeading());
   
     SmartDashboard.putNumber("/limelight/pipeline", PIDVisionAngel.camMode);
     SmartDashboard.putNumber("leftVelocityControlSetPoint", leftVelocityControl.getSetpoint());
     SmartDashboard.putNumber("rightVelocityControlSetPoint", rightVelocityControl.getSetpoint());
+
+    SmartDashboard.putNumber("canEncoderLeftCIMcoder", canEncoderLeftCIMcoder.getPosition());
+    SmartDashboard.putNumber("canEncoderRightCIMcoder", canEncoderRightCIMcoder.getPosition());
 
   }
 
@@ -277,7 +244,9 @@ new double[]{-3, 0, 0.05, 2, 0.2, 0.4}
   }
 
   public double leftVelocityControlSetPoint( double leftSetpoint) {
-    return leftVelocityControl.calculate(lefttVelocityControlRPM(), leftSetpoint);
+    double val = leftVelocityControl.calculate(lefttVelocityControlRPM(), leftSetpoint);
+    System.out.println(val + ", " + lefttVelocityControlRPM());
+    return val;
   }
 
   public double rightVelocityControlSetPoint( double rightSetpoint) {
@@ -292,7 +261,7 @@ new double[]{-3, 0, 0.05, 2, 0.2, 0.4}
 
   // the average of the encoders
   public double average() {
-    return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2;
+    return (canEncoderRightCIMcoder.getPosition() + canEncoderLeftCIMcoder.getPosition()) / 2;
   }
 
   // return the main path
@@ -334,10 +303,9 @@ new double[]{-3, 0, 0.05, 2, 0.2, 0.4}
 
   // resat the value of the encoder and the navx
   public void resetValue() {
-  
     navx.reset();
-    leftEncoder.reset();
-    rightEncoder.reset();
+    canEncoderLeftCIMcoder.setPosition(0);
+    canEncoderRightCIMcoder.setPosition(0);
   }
 
   // pid vison distance
@@ -365,8 +333,8 @@ new double[]{-3, 0, 0.05, 2, 0.2, 0.4}
   }
 
   public void ArcadeDrive (double angel , double distacne  ){
-    double w = (100 - Math.abs(angel * 100)) * (distacne) + distacne * 100;
-    double v = (100 - Math.abs(distacne * 100)) * (angel) + angel * 100;
+    double w = (100 - Math.abs(angel * 150) ) * (distacne) + distacne * 50;
+    double v = (100 - Math.abs(distacne * 50)) * (angel) + angel * 150;
  tankDrive(-(v+w)/ 100 , (v-w)/ 100);
   }
 
@@ -419,12 +387,12 @@ new double[]{-3, 0, 0.05, 2, 0.2, 0.4}
     return distancePidMApath.calculate(average());
   }
 
-public void proto(double speed){
-     leftFrontMotor1.set(speed);
-     leftMotor1.set(speed);
+public void proto(){
+     leftFrontMotor1.set(1);
+     leftMotor1.set(1);
   
-     rightFrontMotor1.set(speed);
-     rightMotor1.set(speed);
+     rightFrontMotor1.set(1);
+     rightMotor1.set(1);
 }
   // MApath
   public void pathfinder() {
