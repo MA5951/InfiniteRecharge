@@ -27,13 +27,13 @@ import frc.robot.commands.Chassis.PIDVisionAngel;
  * An example subsystem. You can replace me with your own Subsystem.
  */
 public class Chassis extends SubsystemBase {
-  private static final double KP_MApath_distance = 2.9e-3;
+  private static final double KP_MApath_distance = 2.7e-3;
   private static final double KI_MApath_distance = 0;
-  private static final double KD_MApath_distance  = 3.05e-4;
+  private static final double KD_MApath_distance  = 2.7e-4;
 
   private static final double KP_MApath_angle = 2.1e-2 ;
   private static final double KI_MApath_angle = 0;
-  private static final double KD_MApath_angle = 3e-3;
+  private static final double KD_MApath_angle = 2.65e-3;
 
   private static final double KP_Vision_distance =2.8e-3 * 1.6875;
   private static final double KI_Vision_distance = 1e-10 *1.6875;
@@ -93,11 +93,38 @@ public class Chassis extends SubsystemBase {
   public static double[][] mainPath; // the array we us as the main Path in the MApath
  
   public static double[][] leftRocketPath1 = { 
-  new double[]{2, 0, 0.3,10, 1 , 1},
-  new double[]{2, 90, 0.3, 10,  0, 1},
-  new double[]{4, 90, 0.3, 10,  1, 1},
-  new double[]{4, 180, 0.3, 10,  0, 1},
-  new double[]{5.20, 180, 0.05, 5,  1, 1},
+new double[]{0, 180, 0.3, 5, 0, 0.425},
+new double[]{0.83, 180, 0.3, 10, 0.2 , 0.65},
+new double[]{1.359, 145.65, 0.3, 10, 0.2 , 0.65},
+new double[]{1.859, 113, 0.3, 10, 0.2 , 0.65},
+new double[]{2.36, 102, 0.3, 10, 0.2 , 0.65},
+new double[]{2.78, 117, 0.3, 10, 0.2 , 0.65},
+new double[]{3, 117, 0.3, 10, 0.2 , 0.65},
+new double[]{3.539, 162, 0.3, 10, 0.2 , 0.65},
+new double[]{5, 170, 0.3, 10, 0.2 , 0.65},
+new double[]{7.05, 180, 0.05, 5, 0.2 , 1}
+  };
+
+  public static double[][] try_path = {
+new double[]{0.8 , -5, 0.3, 10, 0.2, 1},
+
+new double[]{1.35, -32.54,0.3, 10, 0.25 , 0.65 },
+new double[]{1.84, -68.24,0.3, 10,0.25 , 0.65 },
+new double[]{2.33, -78.06,0.3, 10,0.25 , 0.65 },
+new double[]{2.72, -62.32,0.3, 10,0.25 , 0.65 },
+new double[]{3.16, 0,0.1, 2 ,0.2 , 0.4 },
+new double[]{4.00, 0,0.3, 2 ,0.2 , 0.4 },
+new double[]{6.9, 0, 0.1, 2, 0.2, 0.45},
+new double[]{3.18, 0.0, 0.3, 5, 0.2, 0.4},
+new double[]{2.21, -4.2, 0.3, 5, 0.25 , 0.65},
+new double[]{1.58, -35.82, 0.3, 5, 0.25 , 0.65},
+new double[]{1.04, -65.12, 0.3, 5, 0.25 , 0.65},
+new double[]{0.570, -74.53, 0.3, 5, 0.25 , 0.65},
+new double[]{0.1, -52.27, 0.3, 2, 0.25 , 0.65},
+new double[]{-0.1, -25.27, 0.3, 2, 0.25 , 0.65},
+new double[]{-0.5, 0, 0.3, 2, 0.2, 0.4},
+new double[]{-3, 0, 0.05, 2, 0.2, 0.4}
+    
   };
   public static double[][] leftRocketPath2 = new double[][] {
       // 1) distance
@@ -141,10 +168,7 @@ public class Chassis extends SubsystemBase {
       // 4) angle Tolerance
       // 5) Distance speed limit
       // 6) Angle Speed ​​Limit
-      new double[] { 0, 0, 0.1, 5, 0.5, 0.7 }, new double[] { 2, 0, 0.1, 5, 0.4, 0.7 },
-      new double[] { 6.7, 45, 3.175, 10,  0.4, 0.8 }, new double[] { 6.7, 90, 4.35, 10, 0.3, 0.7 },
-      new double[] { 6.7, 135, 5.525, 10, 0.3, 0.7 }, new double[] { 6.7, 180, 0.05, 10, 0.3, 0.7 },
-      new double[] { 8.7, 180, 0.1, 5, 0.4, 0.7 } };
+      new double[] { 3, 0, 0.05, 5, 1, 1 }, };
 
   private Chassis() {
 
