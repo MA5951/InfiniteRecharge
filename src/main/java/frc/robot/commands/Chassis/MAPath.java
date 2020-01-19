@@ -9,6 +9,7 @@ package frc.robot.commands.Chassis;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Path.Path;
 import frc.robot.subsystems.Chassis;
 
 public class MAPath extends CommandBase {
@@ -33,15 +34,15 @@ public class MAPath extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //chassis.rampRate(0.4);
-    chassis.setidilmodeCoset();
+    chassis.rampRate(0.4);
+    //chassis.setidilmodeCoset();
     stage = 0;
     if (pathnum == 0) {
-      chassis.mainPath = chassis.leftRocketPath1; 
+      Path.mainPath = Path.roulettePath1; 
     }
 
-    chassis.setpoint(chassis.getPath()[0][0], chassis.getPath()[0][1], chassis.getPath()[0][4],
-    chassis.getPath()[0][5]);
+    chassis.setpoint(Path.mainPath[0][0], Path.mainPath[0][1], Path.mainPath[0][4],
+    Path.mainPath[0][5]);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -50,11 +51,11 @@ public class MAPath extends CommandBase {
     chassis.pathfinder();
 
     try {
-      if (Math.abs(chassis.distanceEror()) < chassis.mainPath[stage][2] * chassis.ticksPerMeter
-          && Math.abs(chassis.angleEror()) < chassis.mainPath[stage][3]) {
+      if (Math.abs(chassis.distanceEror()) < Path.mainPath[stage][2] * chassis.ticksPerMeter
+          && Math.abs(chassis.angleEror()) < Path.mainPath[stage][3]) {
         stage++;
-        chassis.setpoint(chassis.mainPath[stage][0], chassis.mainPath[stage][1], chassis.getPath()[stage][4],
-            chassis.getPath()[0][5]);
+        chassis.setpoint(Path.mainPath[stage][0], Path.mainPath[stage][1], Path.mainPath[stage][4],
+           Path.mainPath[0][5]);
       }
     } catch (Exception e) {
     }
@@ -76,13 +77,13 @@ public class MAPath extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (!(Math.abs(chassis.distanceEror()) < chassis.mainPath[chassis.mainPath.length - 1][2] * chassis.ticksPerMeter
-        && Math.abs(chassis.angleEror()) < chassis.mainPath[chassis.mainPath.length - 1][3]
-        && stage == chassis.mainPath.length)) {
+    if (!(Math.abs(chassis.distanceEror()) < Path.mainPath[Path.mainPath.length - 1][2] * chassis.ticksPerMeter
+        && Math.abs(chassis.angleEror()) < Path.mainPath[Path.mainPath.length - 1][3]
+        && stage == Path.mainPath.length)) {
       lastTimeOnTarget = Timer.getFPGATimestamp();
     }
-    return Math.abs(chassis.distanceEror()) < chassis.mainPath[chassis.mainPath.length - 1][2] * chassis.ticksPerMeter
-        && Math.abs(chassis.angleEror()) < chassis.mainPath[chassis.mainPath.length - 1][3]
-        && stage == chassis.mainPath.length && Timer.getFPGATimestamp() - lastTimeOnTarget > waitTime;
+    return Math.abs(chassis.distanceEror()) < Path.mainPath[Path.mainPath.length - 1][2] * chassis.ticksPerMeter
+        && Math.abs(chassis.angleEror()) < Path.mainPath[Path.mainPath.length - 1][3]
+        && stage == Path.mainPath.length && Timer.getFPGATimestamp() - lastTimeOnTarget > waitTime;
   }
 }
