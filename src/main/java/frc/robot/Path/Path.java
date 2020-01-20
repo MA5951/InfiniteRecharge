@@ -14,15 +14,18 @@ public class Path {
     public static double[][] mainPath; // the array we us as the main Path in the MApath
 
     public static double[][] roulettePath1 = { 
-        //new double[]{0, 180, 0.3, 3, 0.1, 0.73},
-        new double[]{0.87, 4.5, 0.3, 10, 0.35 , 1},
-        new double[]{1.390, -32.28, 0.3, 10, 0.35 , 1},
-        new double[]{1.900, -67.46, 0.3, 10, 0.35 , 1},
-        new double[]{2.400, -77.49, 0.3, 10, 0.35 , 1},
-        new double[]{2.820, -62.85, 0.3, 10, 0.35 , 1},
-        new double[]{3.270, -11, 0.3, 10, 0.35 , 1},
-        new double[]{3.6, 0, 0.3, 2, 0.3 , 1},
-        new double[]{7, 0, 0.05, 3, 0.3, 1}
+      new double[]{0.87, 4.5, 0.3, 15, 1 , 1},
+      new double[]{1.390, -32.28, 0.3, 15, 1 , 1},
+      new double[]{1.900, -67.46, 0.3, 15, 1 , 1},
+      new double[]{2.400, -77.49, 0.3, 15, 1 , 1},
+      new double[]{2.820, -62.85, 0.3, 15, 1 , 1},
+      new double[]{3.270, -11, 0.3, 15, 1 , 1},
+      new double[]{3.6, 0, 0.3, 2, 1 , 1},
+      new double[]{7, 0, 0.05, 3, 1, 1}
+      };
+
+      public static double[][] t = { 
+        new double[]{0, 45, 0.3, 5, 1, 1}
       };
 
           public static double[][] try_path = {
@@ -43,8 +46,10 @@ public class Path {
             new double[]{-0.1, -25.27, 0.3, 2, 0.25 , 0.65},
             new double[]{-0.5, 0, 0.3, 2, 0.2, 0.4},
             new double[]{-3, 0, 0.05, 2, 0.2, 0.4}
-                
+ 
               };
+
+            
               
 
 }

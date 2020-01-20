@@ -34,8 +34,8 @@ public class MAPath extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    chassis.rampRate(0.4);
-    //chassis.setidilmodeCoset();
+    chassis.rampRate(0.3);
+    chassis.setidilmodeCoset();
     stage = 0;
     if (pathnum == 0) {
       Path.mainPath = Path.roulettePath1; 

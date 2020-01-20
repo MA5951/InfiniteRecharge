@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.Path.Path;
@@ -29,14 +30,14 @@ import frc.robot.commands.Chassis.PIDVisionAngel;
  * An example subsystem. You can replace me with your own Subsystem.
  */
 public class Chassis extends SubsystemBase {
-  private static final double PIDmultiplayr = 4.12;
-  private static final double KP_MApath_distance = 2.3e-3 / PIDmultiplayr;
+  private static final double PIDmultiplayr = 2.6;
+  private static final double KP_MApath_distance = 2e-3 / PIDmultiplayr;
   private static final double KI_MApath_distance = 0;
-  private static final double KD_MApath_distance  = 2.7e-4 / PIDmultiplayr;
+  private static final double KD_MApath_distance  = 3.6e-4 / PIDmultiplayr;
 
-  private static final double KP_MApath_angle = 2.7e-2 / PIDmultiplayr ;
+  private static final double KP_MApath_angle = 7.2e-2 / PIDmultiplayr ;
   private static final double KI_MApath_angle = 0;
-  private static final double KD_MApath_angle = 4e-3 / PIDmultiplayr;
+  private static final double KD_MApath_angle = 2.1e-2 / PIDmultiplayr;
 
   private static final double KP_Vision_distance =2.8e-3 / 1.6875;
   private static final double KI_Vision_distance = 1e-10 *1.6875;
@@ -125,6 +126,8 @@ private CANEncoder canEncoderRight;
 
     leftMotor.setInverted(true);
     leftFrontMotor.setInverted(true);
+    rightMotor.setInverted(false);
+    rightFrontMotor.setInverted(false);
 
     navx = new AHRS(Port.kMXP);
   
@@ -199,9 +202,8 @@ private CANEncoder canEncoderRight;
   }
 
   public double leftVelocityControlSetPoint( double leftSetpoint) {
-    double val = leftVelocityControl.calculate(lefttVelocityControlRPM(), leftSetpoint);
-    System.out.println(val + ", " + lefttVelocityControlRPM());
-    return val;
+    
+    return leftVelocityControl.calculate(lefttVelocityControlRPM(), leftSetpoint);
   }
 
   public double rightVelocityControlSetPoint( double rightSetpoint) {
@@ -285,9 +287,11 @@ private CANEncoder canEncoderRight;
   }
 
   public void ArcadeDrive (double angel , double distacne  ){
-    double w = (100 - Math.abs(angel * 150) ) * (distacne) + distacne * 50;
-    double v = (100 - Math.abs(distacne * 50)) * (angel) + angel * 150;
- tankDrive(-(v+w)/ 100 , (v-w)/ 100);
+    double w = (100 - Math.abs(angel * 100) ) * (distacne) + distacne * 100;
+    double v = (100 - Math.abs(distacne * 100)) * (angel) + angel * 100;
+    tankDrive((-(v+w)/ 200), ((v-w)/ 200));
+    System.out.println((-(v+w)/ 200) + ", " + ((v-w)/ 200));
+
   }
 
   // the PIDvison
@@ -332,11 +336,11 @@ private CANEncoder canEncoderRight;
   }
 
   public double angleMApathPIDOutput() {
-    return anglePidMApath.calculate(fixedAngle());
+    return MathUtil.clamp(anglePidMApath.calculate(fixedAngle()), -1.0 , 1.0);
   }
 
   public double distanceMApathPIDOutput() {
-    return distancePidMApath.calculate(average());
+    return MathUtil.clamp(distancePidMApath.calculate(average()),-1.0 , 1.0);
   }
 
 public void proto(){
