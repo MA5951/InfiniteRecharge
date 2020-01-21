@@ -24,8 +24,16 @@ public class Path {
       new double[]{7, 0, 0.05, 3, 1, 1}
       };
 
-      public static double[][] t = { 
-        new double[]{0, 45, 0.3, 5, 1, 1}
+      public static double[][] toRondevousAndBack = { 
+        new double[]{-4, 0, 0.2, 10, 1, 1},
+        new double[]{-4, -22, 0.3, 5, 1, 1},
+        new double[]{-2.8, -22, 0.2, 10, 1, 1},
+        new double[]{-2.8, 16, 0.3, 5, 1, 1},
+        new double[]{-4, 16, 0.1, 10, 1, 1},
+        new double[]{-4, -42, 0.3, 5, 1, 1},
+         new double[]{-0.3, -42, 0.1, 10, 1, 1},
+
+
       };
 
           public static double[][] try_path = {

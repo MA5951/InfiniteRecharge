@@ -38,7 +38,7 @@ public class MAPath extends CommandBase {
     chassis.setidilmodeCoset();
     stage = 0;
     if (pathnum == 0) {
-      Path.mainPath = Path.roulettePath1; 
+      Path.mainPath = Path.toRondevousAndBack; 
     }
 
     chassis.setpoint(Path.mainPath[0][0], Path.mainPath[0][1], Path.mainPath[0][4],
