@@ -59,11 +59,11 @@ public class Chassis extends SubsystemBase {
   private static final double KI_VELOCITY_RIGHT = 0;
   private static final double KD_VELOCITY_RIGHT = 0.000001 *6;
 
-  private static final double KP_YUDAS = 0;
-  private static final double KI_YUDAS = 0;
-  private static final double KD_YUDAS = 0;
+  private static final double KP_LIMELIGHTANGLE = 0.005;
+  private static final double KI_LIMELIGHTANGLE = 0;
+  private static final double KD_LIMELIGHTANGLE = 0;
 
-
+  private static final double limelightAngleThreeDPIDSetInputRange = 180;
 
   private static final double anglePIDVisionSetInputRange = 44.5;
   private static final double anglePidMApathSetInputRange = 180;
@@ -107,6 +107,7 @@ private CANEncoder canEncoderRight;
   private  PIDController leftVelocityControl;
   private  PIDController rightVelocityControl;
 
+  private PIDController angleThreeDLimelightPID;
 
   private Chassis() {
 
@@ -145,7 +146,9 @@ private CANEncoder canEncoderRight;
     navx = new AHRS(Port.kMXP);
   
 
-  
+    //new experimental angle PID
+    angleThreeDLimelightPID = new PIDController(KP_LIMELIGHTANGLE, KI_LIMELIGHTANGLE, KD_LIMELIGHTANGLE);
+
     // the distance PID vison
     distancePIDVision = new PIDController(KP_Vision_distance, KI_Vision_distance, KD_Vision_distance);
 
@@ -165,6 +168,9 @@ private CANEncoder canEncoderRight;
     anglePIDVision.enableContinuousInput(-anglePIDVisionSetInputRange, anglePIDVisionSetInputRange);
 
     anglePidMApath.enableContinuousInput(-anglePidMApathSetInputRange, anglePidMApathSetInputRange);
+
+    angleThreeDLimelightPID.enableContinuousInput(-limelightAngleThreeDPIDSetInputRange, limelightAngleThreeDPIDSetInputRange);
+    angleThreeDLimelightPID.setTolerance(1);
     }
 
   public double lefttVelocityControlRPM() {
@@ -204,7 +210,7 @@ private CANEncoder canEncoderRight;
 
     SmartDashboard.putNumber("canEncoderLeftCIMcoder", canEncoderLeftCIMcoder.getPosition());
     SmartDashboard.putNumber("canEncoderRightCIMcoder", canEncoderRightCIMcoder.getPosition());
-SmartDashboard.putNumber("angelVison", limelightAngFinal());
+SmartDashboard.putNumber("angelVison", limelightAngleFinal());
   }
 
   public void rampRate( double rampRate) {
@@ -214,11 +220,11 @@ SmartDashboard.putNumber("angelVison", limelightAngFinal());
     leftMotor.setOpenLoopRampRate(rampRate);
   }
 
-  public double limelightAngFinal() {
-    if(Robot.threeDX == 0){
+  public double limelightAngleFinal() {
+    if(Robot.distanceFromTargetLimelightX == 0){
 return 0;
     }else{
-      return 90 - Robot.yaw1 - Math.toDegrees(Math.tanh(((Math.abs(Robot.threeDY * 2.54)) + kLimelight3D) / (Math.abs(Robot.threeDX * 2.54)))) ;
+      return 90 - Robot.yaw1 - Math.toDegrees(Math.atan(((Math.abs(Robot.distanceFromTargetLimelightY * 2.54)) + kLimelight3D) / (Math.abs(Robot.distanceFromTargetLimelightX * 2.54)))) ;
     }
     
    }
@@ -243,8 +249,7 @@ return 0;
     return (canEncoderRightCIMcoder.getPosition() + canEncoderLeftCIMcoder.getPosition()) / 2;
   }
 
-
- 
+  
   public double fixedAngle() {
     try {
       angle = navx.getAngle();
@@ -292,11 +297,13 @@ return 0;
   public boolean stopPid( double dis,  double angle) {
     return Math.abs(distancePIDVision.getPositionError()) < dis && Math.abs(anglePIDVision.getPositionError()) < angle;
   }
- 
+
+
   // pid vosin
   public void reset() {
     distancePIDVision.reset();
     anglePIDVision.reset();
+    
   }
 
   public double anglePIDVisionOutput( double setpoint) {
@@ -306,6 +313,11 @@ return 0;
   public double distancePIDVisionOutput( double setpoint) {
     return distancePIDVision.calculate(distance(), setpoint);
   }
+
+  public double angleThreeDLimelightPIDOutput( double setpoint) {
+    return MathUtil.clamp(angleThreeDLimelightPID.calculate(limelightAngleFinal(), setpoint),-1,1);
+  }
+
 
   public void ArcadeDrive (double angel , double distacne  ){
     double w = (100 - Math.abs(angel * 100) ) * (distacne) + distacne * 100;
@@ -326,8 +338,6 @@ return 0;
     }
     ArcadeDrive(angel , distacne);
   }
-
-
 
   // setpoint of the PID vison
   public void setSetpoint( double angle,  double destination) {
@@ -385,6 +395,10 @@ public void proto(){
     }
   }
 
+  public boolean isLimeLightOnTarget(){
+    return angleThreeDLimelightPID.atSetpoint();
+  }
+
   public static Chassis getinstance() {
     if (chassis == null) {
       chassis = new Chassis();
@@ -397,5 +411,6 @@ public void proto(){
     value();
 
   }
+
 
 }

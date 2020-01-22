@@ -30,8 +30,8 @@ public class Robot extends TimedRobot {
   public static double y;
   public static double tlong;
   public static double yaw1;
-  public static double threeDX;
-  public static double threeDY;
+  public static double distanceFromTargetLimelightX;
+  public static double distanceFromTargetLimelightY;
   public static double finalLimelightAng;
   public static int path;
    private Chassis chassis = Chassis.getinstance();
@@ -79,8 +79,8 @@ public class Robot extends TimedRobot {
     tlong = tlong1.getDouble(0.0);
     System.out.println(yaw.getDoubleArray(new double[] {0,0,0,0,0,0,0}));
     yaw1 = yaw.getDoubleArray(new double[] {0,0,0,0,0,0,0})[4];
-    threeDX = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[0];
-    threeDY = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[2];
+    distanceFromTargetLimelightX = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[0];
+    distanceFromTargetLimelightY = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[2];
   }
 
   /**
