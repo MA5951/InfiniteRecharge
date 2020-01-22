@@ -26,16 +26,30 @@ public class Path {
 
       public static double[][] toRondevousAndBack = { 
         new double[]{-4, 0, 0.2, 10, 1, 1},
-        new double[]{-4, -22, 0.3, 5, 1, 1},
-        new double[]{-2.8, -22, 0.2, 10, 1, 1},
-        new double[]{-2.8, 16, 0.3, 5, 1, 1},
-        new double[]{-4, 16, 0.1, 10, 1, 1},
-        new double[]{-4, -42, 0.3, 5, 1, 1},
-         new double[]{-0.3, -42, 0.1, 10, 1, 1},
+        new double[]{-4, -21, 0.3, 8, 1, 1},
+        new double[]{-2.8, -21, 0.15, 7, 1, 1},
+        new double[]{-2.8, 16, 0.3, 8, 1, 1},
+        new double[]{-4, 16, 0.1, 7, 1, 1},
+        new double[]{-4, -25, 0.3, 5, 1, 1},
+         new double[]{-0.5, -25, 0.05, 7, 1, 1},
 
 
       };
 
+      public static double[][] enemyRoultte = {
+        new double[]{2.5, 0, 0.1, 5, 1,1},
+        new double[]{1.789, 25, 0.3, 5,0.6,0.8},
+        new double[]{0.899, 32, 0.3, 10,0.6,0.8},
+        new double[]{0.099, 75, 0.3, 10,0.6,0.8},
+        new double[]{-4, 50, 0.1, 10,0.6,0.8},
+        new double[]{-4, 180, 0.05, 5,0.6,1},
+        new double[]{-4.8, 180, 0.1, 5, 0.6,0.6},
+        //new double[]{-4.25, -180.0, 0.05, 10, 1,1}
+      };
+
+      public static double[][] strightLine = {
+        new double[]{2, 0, 0.05, 10, 1, 1}
+      };
           public static double[][] try_path = {
             new double[]{0.8 , -5, 0.3, 10, 0.2, 1},
             new double[]{1.35, -32.54,0.3, 10, 0.25 , 0.65 },

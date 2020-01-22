@@ -29,6 +29,10 @@ public class Robot extends TimedRobot {
   public static double area;
   public static double y;
   public static double tlong;
+  public static double yaw1;
+  public static double threeDX;
+  public static double threeDY;
+  public static double finalLimelightAng;
   public static int path;
    private Chassis chassis = Chassis.getinstance();
    private tankDrive tDrive = new tankDrive(chassis);
@@ -65,8 +69,7 @@ public class Robot extends TimedRobot {
     NetworkTableEntry ta = table.getEntry("ta");
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry tlong1 = table.getEntry("tlong");
-    
-
+    NetworkTableEntry yaw = table.getEntry("camtran");
 
     // read values periodically
     x = tx.getDouble(0.0);
@@ -74,7 +77,10 @@ public class Robot extends TimedRobot {
     area = ta.getDouble(0.0);
     y = ty.getDouble(0.0);
     tlong = tlong1.getDouble(0.0);
-
+    System.out.println(yaw.getDoubleArray(new double[] {0,0,0,0,0,0,0}));
+    yaw1 = yaw.getDoubleArray(new double[] {0,0,0,0,0,0,0})[4];
+    threeDX = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[0];
+    threeDY = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[2];
   }
 
   /**

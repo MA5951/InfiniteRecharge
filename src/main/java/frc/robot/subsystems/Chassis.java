@@ -31,6 +31,8 @@ import frc.robot.commands.Chassis.PIDVisionAngel;
  */
 public class Chassis extends SubsystemBase {
   private static final double PIDmultiplayr = 2.6;
+
+  private static final double kLimelight3D = 25.625 * 2.54;
   
   private static final double KP_MApath_distance = 2e-3 / PIDmultiplayr;
   private static final double KI_MApath_distance = 0;
@@ -57,16 +59,24 @@ public class Chassis extends SubsystemBase {
   private static final double KI_VELOCITY_RIGHT = 0;
   private static final double KD_VELOCITY_RIGHT = 0.000001 *6;
 
+  private static final double KP_YUDAS = 0;
+  private static final double KI_YUDAS = 0;
+  private static final double KD_YUDAS = 0;
+
+
+
   private static final double anglePIDVisionSetInputRange = 44.5;
   private static final double anglePidMApathSetInputRange = 180;
-  
-  public static  double ticksPerMeter = 22000; // the number of ticks per meter
-  public static  double RPM = 5240;
+
+
+  public static double ticksPerMeter = 22000; // the number of ticks per meter
+  public static double RPM = 5240;
   private double angle;
   private double sign;
   private double modle = sign;
 
   private static Chassis chassis;
+
   private  CANSparkMax leftFrontMotor;
   private  CANSparkMax leftMotor;
   
@@ -87,6 +97,7 @@ private CANEncoder canEncoderRight;
 
  
   private  AHRS navx;
+
   private  PIDController distancePidMApath; // PID controler of the distance in the pathfinder
   private  PIDController anglePidMApath; // PID controler of the angel in the pathfinder
 
@@ -95,6 +106,7 @@ private CANEncoder canEncoderRight;
 
   private  PIDController leftVelocityControl;
   private  PIDController rightVelocityControl;
+
 
   private Chassis() {
 
@@ -153,8 +165,6 @@ private CANEncoder canEncoderRight;
     anglePIDVision.enableContinuousInput(-anglePIDVisionSetInputRange, anglePIDVisionSetInputRange);
 
     anglePidMApath.enableContinuousInput(-anglePidMApathSetInputRange, anglePidMApathSetInputRange);
-    
-   
     }
 
   public double lefttVelocityControlRPM() {
@@ -172,7 +182,9 @@ private CANEncoder canEncoderRight;
     SmartDashboard.putNumber("fixedAngle", fixedAngle());
     SmartDashboard.putNumber("pathnum", MAPath.pathnum);
     SmartDashboard.putNumber("stage", MAPath.stage);
-    
+    SmartDashboard.putNumber("yawAngle", Robot.yaw1);
+    //SmartDashboard.putNumber("3DX", Robot.threeDX);
+    //SmartDashboard.putNumber("3DY", Robot.threeDY * -1);
     SmartDashboard.putNumber("distacne",
         average()/ ticksPerMeter);
     SmartDashboard.putNumber("angelSetPoint", anglePidMApath.getSetpoint());
@@ -192,7 +204,7 @@ private CANEncoder canEncoderRight;
 
     SmartDashboard.putNumber("canEncoderLeftCIMcoder", canEncoderLeftCIMcoder.getPosition());
     SmartDashboard.putNumber("canEncoderRightCIMcoder", canEncoderRightCIMcoder.getPosition());
-
+SmartDashboard.putNumber("angelVison", limelightAngFinal());
   }
 
   public void rampRate( double rampRate) {
@@ -201,6 +213,15 @@ private CANEncoder canEncoderRight;
     leftFrontMotor.setOpenLoopRampRate(rampRate);
     leftMotor.setOpenLoopRampRate(rampRate);
   }
+
+  public double limelightAngFinal() {
+    if(Robot.threeDX == 0){
+return 0;
+    }else{
+      return 90 - Robot.yaw1 - Math.toDegrees(Math.tanh(((Math.abs(Robot.threeDY * 2.54)) + kLimelight3D) / (Math.abs(Robot.threeDX * 2.54)))) ;
+    }
+    
+   }
 
   public double leftVelocityControlSetPoint( double leftSetpoint) {
     
@@ -221,7 +242,6 @@ private CANEncoder canEncoderRight;
   public double average() {
     return (canEncoderRightCIMcoder.getPosition() + canEncoderLeftCIMcoder.getPosition()) / 2;
   }
-
 
 
  
@@ -295,6 +315,7 @@ private CANEncoder canEncoderRight;
 
   }
 
+
   // the PIDvison
   public void PIDvision( double angleSetpoint,  double distanceSetpoint  ) {
      double angel = anglePIDVisionOutput(angleSetpoint);
@@ -339,6 +360,7 @@ private CANEncoder canEncoderRight;
   public double angleMApathPIDOutput() {
     return MathUtil.clamp(anglePidMApath.calculate(fixedAngle()), -1.0 , 1.0);
   }
+
 
   public double distanceMApathPIDOutput() {
     return MathUtil.clamp(distancePidMApath.calculate(average()),-1.0 , 1.0);
