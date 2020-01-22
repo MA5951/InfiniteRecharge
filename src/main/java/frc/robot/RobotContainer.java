@@ -50,7 +50,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    PIDVision.whileHeld(new LimelightAngle3DToZeroPID(chassis, 0));
+    PIDVision.whileHeld(new LimelightAngle3DToZeroPID(chassis, 0 , 0.2));
      MApath.whenPressed(new leftRocketPath(chassis));
      pathWriter.whileHeld(new pathWriter(0.5 , chassis));
 

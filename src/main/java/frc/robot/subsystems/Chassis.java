@@ -59,9 +59,9 @@ public class Chassis extends SubsystemBase {
   private static final double KI_VELOCITY_RIGHT = 0;
   private static final double KD_VELOCITY_RIGHT = 0.000001 *6;
 
-  private static final double KP_LIMELIGHTANGLE = 0.005;
+  private static final double KP_LIMELIGHTANGLE = 0.01;
   private static final double KI_LIMELIGHTANGLE = 0;
-  private static final double KD_LIMELIGHTANGLE = 0;
+  private static final double KD_LIMELIGHTANGLE = 0.0025;
 
   private static final double limelightAngleThreeDPIDSetInputRange = 180;
 
@@ -314,8 +314,8 @@ return 0;
     return distancePIDVision.calculate(distance(), setpoint);
   }
 
-  public double angleThreeDLimelightPIDOutput( double setpoint) {
-    return MathUtil.clamp(angleThreeDLimelightPID.calculate(limelightAngleFinal(), setpoint),-1,1);
+  public double angleThreeDLimelightPIDOutput( double setPoint) {
+    return MathUtil.clamp(angleThreeDLimelightPID.calculate(fixedAngle(), fixedAngle()-limelightAngleFinal() - setPoint),-1,1);
   }
 
 

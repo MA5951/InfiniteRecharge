@@ -77,7 +77,6 @@ public class Robot extends TimedRobot {
     area = ta.getDouble(0.0);
     y = ty.getDouble(0.0);
     tlong = tlong1.getDouble(0.0);
-    System.out.println(yaw.getDoubleArray(new double[] {0,0,0,0,0,0,0}));
     yaw1 = yaw.getDoubleArray(new double[] {0,0,0,0,0,0,0})[4];
     distanceFromTargetLimelightX = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[0];
     distanceFromTargetLimelightY = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[2];

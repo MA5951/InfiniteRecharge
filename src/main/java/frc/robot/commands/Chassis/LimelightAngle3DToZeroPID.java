@@ -7,6 +7,7 @@
 
 package frc.robot.commands.Chassis;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.Chassis;
@@ -17,12 +18,17 @@ public class LimelightAngle3DToZeroPID extends CommandBase {
    */
   Chassis chassis;
   double setPoint;
+  double power;
+  double lastTimeOnTarget;
 
-  public LimelightAngle3DToZeroPID(Chassis ch , double setPoint) {
-    this.setPoint = setPoint;
+  double waitTime;
+
+  public LimelightAngle3DToZeroPID(Chassis ch , double setPoint , double waitTime) {
     // Use addRequirements() here to declare subsystem dependencies.
     chassis = ch;
     addRequirements(chassis);
+    this.setPoint =setPoint;
+    this.waitTime =waitTime;
   }
 
   // Called when the command is initially scheduled.
@@ -34,7 +40,8 @@ public class LimelightAngle3DToZeroPID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    chassis.tankDrive(-chassis.angleThreeDLimelightPIDOutput(setPoint), chassis.angleThreeDLimelightPIDOutput(setPoint));
+    power = chassis.angleThreeDLimelightPIDOutput(setPoint);
+    chassis.tankDrive(-power, power);
   }
 
   // Called once the command ends or is interrupted.
@@ -46,6 +53,13 @@ public class LimelightAngle3DToZeroPID extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return chassis.isLimeLightOnTarget();
-  }
+    if(!chassis.isLimeLightOnTarget()){
+      lastTimeOnTarget = Timer.getFPGATimestamp();
+    }
+      return chassis.isLimeLightOnTarget()&&(Timer.getFPGATimestamp() - lastTimeOnTarget > waitTime);
+    }
+  
+
+   
+  
 }
