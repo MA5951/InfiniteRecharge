@@ -5,57 +5,61 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Chassis;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Roulette;
 
-public class pathWriter extends CommandBase {
-  Chassis chassis;
-  double dist;
-  double angle;
-  double time;
-  double lastTime;
-  double waitTime;
-  double check = 0.25;
-  
-  public pathWriter(double check , Chassis ch) {
-    this.check = check;
-    chassis = ch;
-    addRequirements(chassis);
+public class roulettePID extends CommandBase {
+  /**
+   * roulettePID command.
+   */
+
+  private Roulette roulette;
+  private double setpoint;
+  private double speed;
+  private double lastTimeOnTarget;
+  private double waitTime;
+
+  public roulettePID(double setpoint, double waitTime, Roulette roulette) {
+    this.setpoint = setpoint;
+    this.waitTime = waitTime;
+    this.roulette = roulette;
+    addRequirements(roulette);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
-    chassis.resetValue();
+    roulette.resetTicks();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    dist = chassis.average() / chassis.ticksPerMeter;
-    angle = chassis.fixedAngle();
-    time = Timer.getFPGATimestamp();
-
-    if (time > waitTime) {
-      System.out.printf("new double[] { %.3f, %.3f, 0.3, 10, 0.35, 0.7  },\n", dist, angle);
-      waitTime += this.check;
-    } else {
-      lastTime = Timer.getFPGATimestamp();
-    }
+    speed = roulette.spinPidOutput(setpoint);
+    roulette.controlSpeed(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    if (interrupted) {
+      roulette.controlSpeed(0);
+      roulette.resetTicks();
+    } else {
+      roulette.controlSpeed(0);
+      roulette.controlSpeed(0);
+    }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (!roulette.isPIDOnTarget()) {
+      lastTimeOnTarget = Timer.getFPGATimestamp();
+    }
+    return roulette.isPIDOnTarget() && Timer.getFPGATimestamp() - lastTimeOnTarget > waitTime;
   }
 }

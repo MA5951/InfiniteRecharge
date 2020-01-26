@@ -10,13 +10,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.Chassis.LimelightAngle3DToZeroPID;
-import frc.robot.commands.Chassis.PIDVision;
-
-import frc.robot.commands.Chassis.leftRocketPath;
-import frc.robot.commands.Chassis.pathWriter;
-import frc.robot.subsystems.Chassis;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.roulettePID;
+import frc.robot.subsystems.Roulette;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -25,15 +21,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  private static Chassis chassis = Chassis.getinstance(); 
   public static XboxController OperatingJoystick = new XboxController(2);
   public static Joystick leftJoystick = new Joystick(0);
   public static Joystick rightJoystick = new Joystick(1);
+  private Roulette roulette =Roulette.getinstance();
 
-  private JoystickButton PIDVision = new JoystickButton(OperatingJoystick, 1);
-  private JoystickButton MApath = new JoystickButton(OperatingJoystick, 2);
-  private JoystickButton pathWriter = new JoystickButton(rightJoystick, 2);
-
+  JoystickButton roulettePID =  new JoystickButton(OperatingJoystick, 1);
 
 
   /**
@@ -50,11 +43,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    PIDVision.whileHeld(new LimelightAngle3DToZeroPID(chassis, 0 , 0.2));
-     MApath.whenPressed(new leftRocketPath(chassis));
-     pathWriter.whileHeld(new pathWriter(0.5 , chassis));
-
-
+    roulettePID.whenPressed(new roulettePID(roulette.spinPidOutput(roulette.roundThreeColorSetpoint), 0.1, roulette));
   }
 
 
