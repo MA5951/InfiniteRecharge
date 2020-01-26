@@ -5,52 +5,43 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Chassis;
+package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Shooter;
 
-public class pathWriter extends CommandBase {
-  Chassis chassis;
-  double dist;
-  double angle;
-  double time;
-  double lastTime;
-  double waitTime;
-  double check = 0.25;
-  
-  public pathWriter(double check , Chassis ch) {
-    this.check = check;
-    chassis = ch;
-    addRequirements(chassis);
+public class PIDFlyWheel extends CommandBase {
+  /**
+   * Creates a new PIDFlyWheel.
+   */
+private int flyWheelSpeed; 
+  private Shooter shooter;
+  public PIDFlyWheel(Shooter shooter) {
+    this.shooter = shooter;
+   addRequirements(this.shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
-    chassis.resetValue();
+    flyWheelSpeed = shooter.calculateSpeedToFlyWheel(1); // TODO;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    dist = chassis.average() / chassis.ticksPerMeter;
-    angle = chassis.fixedAngle();
-    time = Timer.getFPGATimestamp();
-
-    if (time > waitTime) {
-      System.out.printf("new double[] { %.3f, %.3f, 0.3, 10, 0.35, 0.7  },\n", dist, angle);
-      waitTime += this.check;
-    } else {
-      lastTime = Timer.getFPGATimestamp();
-    }
+    double power = shooter.flyWheelSpeedOutPut(flyWheelSpeed);
+    shooter.controlFlyWheelMotor(power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    if(interrupted){
+      shooter.controlFlyWheelMotor(0);
+    }else{
+      shooter.controlFlyWheelMotor(0);
+    }
   }
 
   // Returns true when the command should end.

@@ -23,9 +23,11 @@ public final class Constants {
     public static final int RIGHT_FRONT_MOTOR = 3;
     public static final int RIGHT_MOTOR = 4;
 
-    public static final int LEFT_CHASSIS_ENCODER_A = 0;
-    public static final int LEFT_CHASSIS_ENCODER_B = 1;
+    public static final int FLY_WHEELB = 5;
+    public static final int FLY_WHEELA = 6;
 
-    public static final int RIGHT_CHASSIS_ENCODER_A = 2;
-    public static final int RIGHT_CHASSIS_ENCODER_B = 3;
+    public static final int SQUISH_MOTOR = 7;
+    public static final int IR_BALL = 2;
+    public static final int ANGLE_CHANGE = 4;
+    
 }
