@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Shooter;
 
 
@@ -25,8 +26,9 @@ public class RobotContainer {
   public static Joystick leftJoystick = new Joystick(0);
   public static Joystick rightJoystick = new Joystick(1);
 
-
-
+private static JoystickButton AngleChangeSolenoidShooter = new JoystickButton(OperatingJoystick, 1);
+private static JoystickButton PIDFlyWheel = new JoystickButton(OperatingJoystick, 2);
+private static JoystickButton PIDSquishMotor = new JoystickButton(OperatingJoystick, 3);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -42,7 +44,9 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-  
+  AngleChangeSolenoidShooter.whenPressed(new frc.robot.commands.Shooter.AngleChangeSolenoidShooter(shooter));
+  PIDFlyWheel.whileHeld(new frc.robot.commands.Shooter.PIDFlyWheel(shooter));
+  PIDSquishMotor.whileHeld(new frc.robot.commands.Shooter.PIDSquishMotor(shooter));
   }
 
 
