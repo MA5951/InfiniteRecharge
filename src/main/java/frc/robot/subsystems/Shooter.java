@@ -70,18 +70,21 @@ public class Shooter extends SubsystemBase {
   public void ShooterValue(){
     SmartDashboard.putBoolean("IRball", isABallInTheShooter());
     SmartDashboard.putNumber("kRateFlyWheelSpeed", kRateFlyWheelSpeed());
-    SmartDashboard.putNumber("kRateFlyWheelSpeed", kRateFlyWheelSpeed());
+    SmartDashboard.putNumber("kRateSquishMotor", kRateSquishMotorSpeed());
   }
 
   public void controlFlyWheelMotor(double speed){
   flyWheelB.set(ControlMode.PercentOutput, speed);
   }
 
+  public void controlSquishMotor(double speed){
+    squishMotor.set(ControlMode.PercentOutput, speed);
+    }
+  
   public void OpenAngleChangeSolenoid(Boolean value){
   angleChange.set(value);
   }
   public double kRateFlyWheelSpeed(){
-  
     return (flyWheelB.getSelectedSensorVelocity() * (2 *Math.PI)) / tiksPerRoundflyWheel;
   }
 
@@ -102,7 +105,6 @@ public class Shooter extends SubsystemBase {
 
   public double calculateSpeedToFlyWheel(double deltaDistance) {
     double _shooterAngle = Math.toRadians(shooterAngle);
-    
   return (2 * (Math.sqrt((Gravity* deltaDistance)
    / 2* Math.pow(Math.cos(_shooterAngle), 2)
     * (deltaY - (deltaDistance * Math.tan(_shooterAngle)))))) / radiusFlyWheel;
