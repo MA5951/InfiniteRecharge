@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.roulettePID;
+import frc.robot.commands.roundThreeRoulettePID;
 import frc.robot.subsystems.Roulette;
 
 /**
@@ -21,12 +22,13 @@ import frc.robot.subsystems.Roulette;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  public static XboxController OperatingJoystick = new XboxController(2);
+  public static XboxController operatingJoystick = new XboxController(2);
   public static Joystick leftJoystick = new Joystick(0);
   public static Joystick rightJoystick = new Joystick(1);
   private Roulette roulette =Roulette.getinstance();
 
-  JoystickButton roulettePID =  new JoystickButton(OperatingJoystick, 1);
+  JoystickButton roulettePID =  new JoystickButton(operatingJoystick, 1);
+  JoystickButton roundThreeRoulette = new JoystickButton(operatingJoystick, 2);
 
 
   /**
@@ -43,7 +45,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    roulettePID.whenPressed(new roulettePID(roulette.spinPidOutput(roulette.roundThreeColorSetpoint), 0.1, roulette));
+    roulettePID.whenPressed(new roulettePID(roulette.blue(), 0.1, roulette));
+    roundThreeRoulette.whenPressed(new roundThreeRoulettePID(0.1, roulette));
   }
 
 

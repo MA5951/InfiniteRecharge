@@ -7,14 +7,9 @@
 
 package frc.robot.subsystems;
 
-import java.security.PublicKey;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.revrobotics.ColorMatch;
-import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -36,11 +31,9 @@ public class Roulette extends SubsystemBase {
 
   private TalonSRX rouletteMotor;
   private ColorSensorV3 colorSensor;
-  private ColorMatch colorMatcher;
   private Color detectedColor = colorSensor.getColor();
   private Color lastColor = detectedColor;
 
-  private String gameData = DriverStation.getInstance().getGameSpecificMessage();
   private String setpointColorString;
 
   public static int roundThreeColorSetpoint;
@@ -61,6 +54,17 @@ public class Roulette extends SubsystemBase {
     rouletteSpinControl = new PIDController(KP_ROULETTE, KI_ROULETTE, KD_ROULETTE);
     rouletteSpinControl.setTolerance(TOLERANCE);
     rouletteSpinControl.enableContinuousInput(0, 3);
+  }
+
+  private void displayValues() {
+    /**
+     * Display values into the shuffleboard
+     */
+    SmartDashboard.putNumber("blue", detectedColor.blue);
+    SmartDashboard.putNumber("green", detectedColor.green);
+    SmartDashboard.putNumber("red", detectedColor.red);
+    SmartDashboard.putString("SetpointColor", setpointColorString);
+    SmartDashboard.putNumber("Ticks", ticks);
   }
 
   public void countTicks() {
@@ -93,40 +97,22 @@ public class Roulette extends SubsystemBase {
     return rouletteSpinControl.atSetpoint();
   }
 
-  public void getColorFromFMS() {
-    if(gameData.length() > 0)
-    {
-      switch (gameData.charAt(0))
-      {
-        case 'B' :
-          //Blue case code
-          roundThreeColorSetpoint = 0;
-          setpointColorString = "blue";
-          break;
-        case 'G' :
-          //Green case code
-          roundThreeColorSetpoint = 1;
-          setpointColorString = "green";
-          break;
-        case 'R' :
-          //red case code
-          roundThreeColorSetpoint = 2;
-          setpointColorString = "red";
-          break;
-        case 'Y' :
-          //Yellow case code
-          roundThreeColorSetpoint = 3;
-          setpointColorString = "yellow";
-          break;
-        default :
-          //This is corrupt data
-          setpointColorString = "unknown";
-          break;
-      }
-    } else {
-      //Code for no data received yet
-    }
+  public int blue() {
+    return 0;
   }
+
+  public int green() {
+    return 1;
+  }
+
+  public int red() {
+    return 2;
+  }
+
+  public int yellow() {
+    return 3;
+  }
+
 
   public static Roulette getinstance() {
     if (roulette == null) {
@@ -137,9 +123,6 @@ public class Roulette extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("blue", detectedColor.blue);
-    SmartDashboard.putNumber("green", detectedColor.green);
-    SmartDashboard.putNumber("red", detectedColor.red);
-    SmartDashboard.putString("SetpointColor", setpointColorString);
+    displayValues();
   }
 }

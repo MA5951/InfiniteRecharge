@@ -7,24 +7,24 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Roulette;
 
-public class roulettePID extends CommandBase {
+public class roundThreeRoulettePID extends CommandBase {
   /**
-   * roulette PID command.
+   * The PID command for round 3.
    */
 
   private Roulette roulette;
-  private double setpoint;
   private double speed;
   private double lastTimeOnTarget;
   private double waitTime;
-
-
-  public roulettePID(double setpoint, double waitTime, Roulette roulette) {
-    this.setpoint = setpoint;
+  private int roundThreeColorSetpoint;
+  private String gameData = DriverStation.getInstance().getGameSpecificMessage();
+   
+  public roundThreeRoulettePID(double waitTime, Roulette roulette) {
     this.waitTime = waitTime;
     this.roulette = roulette;
     addRequirements(roulette);
@@ -39,7 +39,36 @@ public class roulettePID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    speed = roulette.spinPidOutput(setpoint);
+    if(gameData.length() > 0)
+    {
+      switch (gameData.charAt(0))
+      {
+        case 'B' :
+          // Blue case code
+          speed = roulette.spinPidOutput(roulette.blue());
+          break;
+        case 'G' :
+          // Green case code
+          speed = roulette.spinPidOutput(roulette.green());
+          break;
+        case 'R' :
+          //red case code
+          speed = roulette.spinPidOutput(roulette.red());
+          break;
+        case 'Y' :
+          //Yellow case code
+          speed = roulette.spinPidOutput(roulette.yellow());
+          break;
+        default :
+          //This is corrupt data
+          roulette.controlSpeed(0);
+          break;
+      }
+    } else {
+      //Code for no data received yet
+      roulette.controlSpeed(0);
+    }
+    // Set the PID for the given color
     roulette.controlSpeed(speed);
   }
 
