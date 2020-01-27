@@ -23,7 +23,6 @@ public class MAPath extends CommandBase {
   private double lastTimeOnTarget;
   private double waitTime;
 
-
   public MAPath(double waitTime , Chassis ch) {
     this.waitTime = waitTime;
     chassis = ch;

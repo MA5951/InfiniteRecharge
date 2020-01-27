@@ -10,7 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.Chassis.LimelightAngle3DToZeroPID;
+
 import frc.robot.commands.Chassis.PIDVision;
 
 import frc.robot.commands.Chassis.leftRocketPath;
@@ -50,7 +50,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    PIDVision.whileHeld(new LimelightAngle3DToZeroPID(chassis, 0 , 0.2));
+    PIDVision.whileHeld(new PIDVision( 0 , 0.2 ,chassis));
      MApath.whenPressed(new leftRocketPath(chassis));
      pathWriter.whileHeld(new pathWriter(0.5 , chassis));
 

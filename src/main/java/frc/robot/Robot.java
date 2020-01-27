@@ -25,17 +25,16 @@ import frc.robot.subsystems.Chassis;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   public static double x;
-  public static double v;
-  public static double area;
   public static double y;
-  public static double tlong;
   public static double yaw1;
+
   public static double distanceFromTargetLimelightX;
   public static double distanceFromTargetLimelightY;
-  public static double finalLimelightAng;
+  
   public static int path;
-   private Chassis chassis = Chassis.getinstance();
-   private tankDrive tDrive = new tankDrive(chassis);
+  
+  private Chassis chassis = Chassis.getinstance();
+  private tankDrive tDrive = new tankDrive(chassis);
 
 
   private RobotContainer m_robotContainer;
@@ -65,18 +64,12 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = table.getEntry("tx");
-    NetworkTableEntry tv = table.getEntry("tv");
-    NetworkTableEntry ta = table.getEntry("ta");
     NetworkTableEntry ty = table.getEntry("ty");
-    NetworkTableEntry tlong1 = table.getEntry("tlong");
     NetworkTableEntry yaw = table.getEntry("camtran");
 
     // read values periodically
     x = tx.getDouble(0.0);
-    v = tv.getDouble(0.0);
-    area = ta.getDouble(0.0);
     y = ty.getDouble(0.0);
-    tlong = tlong1.getDouble(0.0);
     yaw1 = yaw.getDoubleArray(new double[] {0,0,0,0,0,0,0})[4];
     distanceFromTargetLimelightX = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[0];
     distanceFromTargetLimelightY = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[2];

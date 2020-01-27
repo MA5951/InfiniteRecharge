@@ -29,16 +29,14 @@ public class tankDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // if(Math.abs(RobotContainer.leftJoystick.getY()) <  0.1 &&  Math.abs(RobotContainer.rightJoystick.getY()) <  0.1){
-    //   chassis.tankDrive(0, 0);
-    //       } else if(RobotContainer.leftJoystick.getRawButton(1) || RobotContainer.rightJoystick.getRawButton(1) ){
-    //         chassis.tankDrive(chassis.leftVelocityControlSetPoint(RobotContainer.leftJoystick.getY() *(chassis.RPM /4)),
-    //             chassis.rightVelocityControlSetPoint(RobotContainer.rightJoystick.getY() *(chassis.RPM / 4) ));
-    //       }else{
-    //        chassis.tankDrive(chassis.leftVelocityControlSetPoint(RobotContainer.leftJoystick.getY() * chassis.RPM),
-    //      chassis.rightVelocityControlSetPoint(RobotContainer.rightJoystick.getY() *chassis.RPM) );
-    //      }
-    chassis.tankDrive(RobotContainer.leftJoystick.getY(), RobotContainer.rightJoystick.getY());
+            if(RobotContainer.leftJoystick.getRawButton(1) || RobotContainer.rightJoystick.getRawButton(1) ){
+            chassis.tankDrive(chassis.leftVelocityControlSetPoint(RobotContainer.leftJoystick.getY() *(chassis.RPM /4)),
+                 chassis.rightVelocityControlSetPoint(RobotContainer.rightJoystick.getY() *(chassis.RPM / 4)));
+           }else{
+           chassis.tankDrive(chassis.leftVelocityControlSetPoint(RobotContainer.leftJoystick.getY() * chassis.RPM),
+          chassis.rightVelocityControlSetPoint(RobotContainer.rightJoystick.getY() *chassis.RPM) );
+        }
+ 
   }
 
   // Called once the command ends or is interrupted.

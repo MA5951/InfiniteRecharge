@@ -13,18 +13,13 @@ import frc.robot.subsystems.Chassis;
 
 public class PIDVision extends CommandBase {
   private Chassis chassis;
-  private double distance;
-  private double angleTolerance;
-  private double distanceTolerance;
   private double angle;
   private double lastTimeOnTarget;
   private double waitTime;
 
   
-  public PIDVision(double distance, double angle, double angleTolerance, double distanceTolerance, double waitTime , Chassis ch) {
-    this.distance = distance;
-    this.distanceTolerance = distanceTolerance;
-    this.angleTolerance = angleTolerance;
+  public PIDVision( double angle, double waitTime , Chassis ch) {
+ 
     this.angle = angle;
     this.waitTime = waitTime;
     chassis = ch;
@@ -36,13 +31,12 @@ public class PIDVision extends CommandBase {
   public void initialize() {
     chassis.rampRate(0);
     chassis.setidilmodeBrake();
-    // chassis.setSetpoint(angle, distance);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    chassis.PIDvision(angle, distance) ;
+    chassis.PIDvision(angle) ;
   }
 
   // Called once the command ends or is interrupted.
@@ -63,9 +57,9 @@ public class PIDVision extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (!chassis.stopPid(distanceTolerance, angleTolerance)) {
+    if (!chassis.isPIDVisionOnTarget()) {
       lastTimeOnTarget = Timer.getFPGATimestamp();
     }
-    return chassis.stopPid(distanceTolerance, angleTolerance) && Timer.getFPGATimestamp() - lastTimeOnTarget > waitTime;
+    return chassis.isPIDVisionOnTarget() && Timer.getFPGATimestamp() - lastTimeOnTarget > waitTime;
   }
 }
