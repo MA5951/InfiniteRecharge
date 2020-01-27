@@ -7,30 +7,18 @@
 
 package frc.robot.commands.Chassis;
 
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.subsystems.Chassis;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class leftRocketPath extends SequentialCommandGroup {
-  /**
-   * Creates a new leftRocketPath.
-   */
-  Chassis ch1;
-  public leftRocketPath(Chassis ch) {
-ch1 = ch;
-   
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());
-    addCommands(
-      new MAPath(0.1 , ch1)
-      // new 30, 0, 5, 3, 0.1);
-      // new MAPath(0.1);
-      // new MAPath(0.1);
-      // new PIDVision(30, 0, 5, 3, 0.1);
-    );
+public class IntakeOpenClose extends InstantCommand {
+  public IntakeOpenClose() {
+    // Use addRequirements() here to declare subsystem dependencies.
+  }
 
-}
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+  }
 }
