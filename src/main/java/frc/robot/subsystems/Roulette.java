@@ -18,7 +18,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
-import frc.robot.RoulleteConstants;
+import frc.robot.Robot;
+import frc.robot.RouletteConstants;
 
 public class Roulette extends SubsystemBase {
   /**
@@ -33,8 +34,6 @@ public class Roulette extends SubsystemBase {
   private Color detectedColor = colorSensor.getColor();
   private Color lastColor = detectedColor;
 
-  private String setpointColorString;
-
   public static int roundThreeColorSetpoint;
 
   private PIDController rouletteSpinControl;
@@ -46,7 +45,7 @@ public class Roulette extends SubsystemBase {
   private int ticks = 0;
 
   private Roulette() {
-    rouletteMotor = new TalonSRX(RoulleteConstants.ROULETTE_MOTOR);
+    rouletteMotor = new TalonSRX(RouletteConstants.ROULETTE_MOTOR);
     rouletteMotor.setNeutralMode(NeutralMode.Brake);
     colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
 
@@ -59,10 +58,7 @@ public class Roulette extends SubsystemBase {
     /**
      * Display values into the shuffleboard
      */
-    SmartDashboard.putNumber("blue", detectedColor.blue);
-    SmartDashboard.putNumber("green", detectedColor.green);
-    SmartDashboard.putNumber("red", detectedColor.red);
-    SmartDashboard.putString("SetpointColor", setpointColorString);
+    SmartDashboard.putString("Color", Robot.colorString);
     SmartDashboard.putNumber("Ticks", ticks);
   }
 
@@ -92,24 +88,23 @@ public class Roulette extends SubsystemBase {
 
   }
 
+  public int color(String color) {
+    if (color == "blue") {
+      return 0;
+    } else if (color == "green") {
+      return 1;
+    } else if (color == "red") {
+      return 2;
+    } else if (color == "yellow") {
+      return 3;
+    } 
+    // If nothing is true (because you have to return something)
+    return 5951;
+
+  }
+
   public boolean isPIDOnTarget() {
     return rouletteSpinControl.atSetpoint();
-  }
-
-  public int blue() {
-    return 0;
-  }
-
-  public int green() {
-    return 1;
-  }
-
-  public int red() {
-    return 2;
-  }
-
-  public int yellow() {
-    return 3;
   }
 
 

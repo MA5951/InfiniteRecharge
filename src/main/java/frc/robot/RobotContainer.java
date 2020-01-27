@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.roulettePID;
+import frc.robot.commands.roundTwoRoulettePID;
 import frc.robot.commands.roundThreeRoulettePID;
 import frc.robot.subsystems.Roulette;
 
@@ -45,7 +45,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    roulettePID.whenPressed(new roulettePID(roulette.blue(), 0.1, roulette));
+    roulettePID.whenPressed(new roundTwoRoulettePID(0.1, roulette));
     roundThreeRoulette.whenPressed(new roundThreeRoulettePID(0.1, roulette));
   }
 

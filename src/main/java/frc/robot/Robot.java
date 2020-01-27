@@ -7,9 +7,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Roulette;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -19,10 +21,14 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
- 
-
-
   private RobotContainer m_robotContainer;
+
+  private Roulette roulette = Roulette.getinstance();
+  private String gameData = DriverStation.getInstance().getGameSpecificMessage();
+  public static int setpointColor;
+  public static String colorString = "Unknown";
+
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -45,6 +51,35 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    if(gameData.length() > 0)
+    {
+      switch (gameData.charAt(0))
+      {
+        case 'B' :
+          // Blue case code
+          setpointColor = roulette.color("blue");
+          colorString = "blue";
+          break;
+        case 'G' :
+          // Green case code
+          setpointColor = roulette.color("green");
+          colorString = "green";
+          break;
+        case 'R' :
+          //red case code
+          setpointColor = roulette.color("red");
+          colorString = "red";
+          break;
+        case 'Y' :
+          //Yellow case code
+          setpointColor = roulette.color("yellow");
+          colorString = "yellow";
+          break;
+        default :
+          //This is corrupt data
+          break;
+      }
+    }
   }
 
   /**

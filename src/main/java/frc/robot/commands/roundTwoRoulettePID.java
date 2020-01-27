@@ -11,20 +11,19 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Roulette;
 
-public class roulettePID extends CommandBase {
+public class roundTwoRoulettePID extends CommandBase {
   /**
    * roulette PID command.
    */
 
   private Roulette roulette;
-  private double setpoint;
+  private double setpoint = 4 * 3.5;  // The number of color triangles multiply by 3.5 spins
   private double speed;
   private double lastTimeOnTarget;
   private double waitTime;
 
 
-  public roulettePID(double setpoint, double waitTime, Roulette roulette) {
-    this.setpoint = setpoint;
+  public roundTwoRoulettePID(double waitTime, Roulette roulette) {
     this.waitTime = waitTime;
     this.roulette = roulette;
     addRequirements(roulette);
