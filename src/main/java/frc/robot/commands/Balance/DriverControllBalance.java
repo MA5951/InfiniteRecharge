@@ -5,61 +5,43 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Chassis;
+package frc.robot.commands.Balance;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
+import frc.robot.subsystems.Balance;
 
-import frc.robot.subsystems.Chassis;
-
-public class LimelightAngle3DToZeroPID extends CommandBase {
+public class DriverControllBalance extends CommandBase {
   /**
-   * Creates a new limelightAngle3DPID.
+   * Creates a new DriverControllBalance.
    */
-  Chassis chassis;
-  double setPoint;
-  double power;
-  double lastTimeOnTarget;
+  Balance balance;
 
-  double waitTime;
-
-  public LimelightAngle3DToZeroPID(Chassis ch , double setPoint , double waitTime) {
+  public DriverControllBalance(Balance bl) {
     // Use addRequirements() here to declare subsystem dependencies.
-    chassis = ch;
-    addRequirements(chassis);
-    this.setPoint =setPoint;
-    this.waitTime =waitTime;
+    balance = bl;
+    addRequirements(balance);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    power = chassis.angleThreeDLimelightPIDOutput(setPoint);
-    chassis.tankDrive(-power, power);
+    balance.setDriverControllLeft(RobotContainer.leftJoystick.getX());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    chassis.tankDrive(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(!chassis.isLimeLightOnTarget()){
-      lastTimeOnTarget = Timer.getFPGATimestamp();
-    }
-      return chassis.isLimeLightOnTarget()&&(Timer.getFPGATimestamp() - lastTimeOnTarget > waitTime);
-    }
-  
-
-   
-  
+    return false;
+  }
 }
