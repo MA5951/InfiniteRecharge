@@ -17,7 +17,7 @@ public class roundTwoRoulettePID extends CommandBase {
    */
 
   private Roulette roulette;
-  private double setpoint = 4 * 3.5;  // The number of color triangles multiply by 3.5 spins
+  private double setpoint = 8 * 3.5;  // The number of color triangles multiply by 3.5 spins
   private double speed;
   private double lastTimeOnTarget;
   private double waitTime;
@@ -33,11 +33,13 @@ public class roundTwoRoulettePID extends CommandBase {
   @Override
   public void initialize() {
     roulette.resetTicks();
+    roulette.ticksControl(false);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    roulette.countTicks();
     speed = roulette.spinPidOutput(setpoint);
     roulette.controlSpeed(speed);
   }

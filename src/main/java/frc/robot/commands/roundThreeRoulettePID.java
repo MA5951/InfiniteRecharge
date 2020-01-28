@@ -7,7 +7,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
@@ -32,12 +31,15 @@ public class roundThreeRoulettePID extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    roulette.ticksControl(true);
     roulette.resetTicks();
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    roulette.countTicks();
     speed = roulette.spinPidOutput(Robot.setpointColor);
     roulette.controlSpeed(speed);
   }

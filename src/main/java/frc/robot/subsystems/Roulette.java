@@ -31,8 +31,8 @@ public class Roulette extends SubsystemBase {
 
   private TalonSRX rouletteMotor;
   private ColorSensorV3 colorSensor;
-  private Color detectedColor = colorSensor.getColor();
-  private Color lastColor = detectedColor;
+  private Color detectedColor;
+  private Color lastColor;
 
   public static int roundThreeColorSetpoint;
 
@@ -45,13 +45,15 @@ public class Roulette extends SubsystemBase {
   private int ticks = 0;
 
   private Roulette() {
+    detectedColor = colorSensor.getColor();
+    lastColor = detectedColor;
+
     rouletteMotor = new TalonSRX(RouletteConstants.ROULETTE_MOTOR);
     rouletteMotor.setNeutralMode(NeutralMode.Brake);
     colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
 
     rouletteSpinControl = new PIDController(KP_ROULETTE, KI_ROULETTE, KD_ROULETTE);
     rouletteSpinControl.setTolerance(TOLERANCE);
-    rouletteSpinControl.enableContinuousInput(0, 3);
   }
 
   private void displayValues() {
@@ -69,6 +71,14 @@ public class Roulette extends SubsystemBase {
     if (detectedColor != lastColor) {
       ticks++;
       lastColor = detectedColor;
+    }
+  }
+
+  public void ticksControl(boolean enable) {
+    if(enable) {
+      rouletteSpinControl.enableContinuousInput(0, 3);
+    } else {
+      rouletteSpinControl.disableContinuousInput();
     }
   }
 
