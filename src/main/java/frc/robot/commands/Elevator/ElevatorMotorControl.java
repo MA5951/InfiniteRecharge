@@ -8,16 +8,17 @@
 package frc.robot.commands.Elevator;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Elevator;
 
 public class ElevatorMotorControl extends CommandBase {
-  Elevator elevator;
-  private double speed;
+  private Elevator elevator;
+ 
 
-  public ElevatorMotorControl(Elevator el, double speed) {
+  public ElevatorMotorControl(Elevator el) {
     elevator = el;
    addRequirements(elevator);
-   this.speed = speed;
+   
   }
 
   // Called when the command is initially scheduled.
@@ -29,7 +30,7 @@ public class ElevatorMotorControl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    elevator.setElvatorMotorSpeed(speed);
+    elevator.setElvatorMotorSpeed(RobotContainer.operatingJoystick.getRawAxis(1));
     
   }
 

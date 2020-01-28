@@ -15,24 +15,13 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {
-
-    public static final int LEFT_FRONT_MOTOR = 1;
-    public static final int LEFT_MOTOR = 2;
-
-    public static final int RIGHT_FRONT_MOTOR = 3;
-    public static final int RIGHT_MOTOR = 4;
-
-    public static final int LEFT_CHASSIS_ENCODER_A = 0;
-    public static final int LEFT_CHASSIS_ENCODER_B = 1;
-
-    public static final int RIGHT_CHASSIS_ENCODER_A = 2;
-    public static final int RIGHT_CHASSIS_ENCODER_B = 3;
-
+public final class ConstantsElevator {
     //Elevator
     public static final int ELEVATOR_MOTOR = 8;
+
     public static final int ELEVATOR_ENCODER_A = 0;
     public static final int ELEVATOR_ENCODER_B = 1;
+
     public static final int ELEVATOR_DOUBLE_SOLENOID_A = 0;
     public static final int ELEVATOR_DOUBLE_SOLENOID_B = 1;
 

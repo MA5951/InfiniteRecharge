@@ -7,12 +7,10 @@
 
 package frc.robot;
 
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.Elevator.ElevatorMotorControl;
 import frc.robot.subsystems.Elevator;
 
 /**
@@ -23,11 +21,9 @@ import frc.robot.subsystems.Elevator;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  public static double x;
    private Elevator elevator = Elevator.getinstance();
-
-
   private RobotContainer m_robotContainer;
+  private ElevatorMotorControl el = new ElevatorMotorControl(elevator);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -38,6 +34,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    CommandScheduler.getInstance().setDefaultCommand(elevator, el);
   }
 
   /**

@@ -11,6 +11,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.Elevator.ElevetorPID;
+import frc.robot.commands.Elevator.OpenAndCloesPiston;
+import frc.robot.subsystems.Elevator;
+
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -19,8 +23,13 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  public static XboxController operatingJoystick = new XboxController(2);
+  public static Joystick leftJoystick = new Joystick(0);
+  public static Joystick rightJoystick = new Joystick(1);
+  Elevator elevator = Elevator.getinstance();
 
-
+  private JoystickButton PIDElevator = new JoystickButton(operatingJoystick, 1);
+  private JoystickButton Pistol = new JoystickButton(operatingJoystick, 2);
 
 
   /**
@@ -37,7 +46,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    
+    PIDElevator.whenPressed(new ElevetorPID(elevator, 30, 0.2));
+    Pistol.whenPressed(new OpenAndCloesPiston(elevator));
 
 
   }
