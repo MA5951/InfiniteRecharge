@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Chassis.IntakeEmitAbsorb;
 import frc.robot.commands.Chassis.IntakeOpenClose;
+import frc.robot.commands.Chassis.IntakePullPush;
 import frc.robot.subsystems.Intake;
 
 
@@ -50,8 +50,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-      pushIntake.whileHeld(new IntakeEmitAbsorb(-0.5, intake));
-      pullIntake.whileHeld(new IntakeEmitAbsorb(0.5, intake));
+      pushIntake.whileHeld(new IntakePullPush(-0.5, intake));
+      pullIntake.whileHeld(new IntakePullPush(0.5, intake));
       openCloseIntake.whenPressed(new IntakeOpenClose(intake));
     }
 

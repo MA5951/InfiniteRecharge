@@ -10,14 +10,15 @@ package frc.robot.commands.Chassis;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
-public class IntakeEmitAbsorb extends CommandBase {
+public class IntakePullPush extends CommandBase {
   /**
    * Creates a new IntakeEmitAbsorb.
    */
-  private  Intake intake;
+  private Intake intake;
 
   private double intakeMotorValue;
-  public IntakeEmitAbsorb(Double intakeMotorValueInput,  Intake in) {
+
+  public IntakePullPush(Double intakeMotorValueInput, Intake in) {
     // Use addRequirements() here to declare subsystem dependencies.
     intake = in;
     intakeMotorValue = intakeMotorValueInput;
