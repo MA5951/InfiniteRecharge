@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.I2C.Port;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {
+public final class BalanceConstants {
 
     public static final int SPARK_MAX_BALANCE_PORT = 9;
     public static final int IR_RIGHT = 1;

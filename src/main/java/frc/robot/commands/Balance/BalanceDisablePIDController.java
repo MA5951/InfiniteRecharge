@@ -16,6 +16,7 @@ public class BalanceDisablePIDController extends CommandBase {
    * Creates a new BalanceDisablePIDController.
    */
   Balance balance;
+  boolean flag;
   public BalanceDisablePIDController(Balance bl) {
     // Use addRequirements() here to declare subsystem dependencies.
     balance = bl;
@@ -25,7 +26,6 @@ public class BalanceDisablePIDController extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    balance.disableBalancePIDController();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -38,6 +38,7 @@ public class BalanceDisablePIDController extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    
   }
 
   // Returns true when the command should end.

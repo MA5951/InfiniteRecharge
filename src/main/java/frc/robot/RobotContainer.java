@@ -10,7 +10,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-
+import frc.robot.commands.Balance.*;
+import frc.robot.subsystems.Balance;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -20,13 +21,13 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  public static Balance balance = Balance.getinstance();
   public static XboxController OperatingJoystick = new XboxController(2);
   public static Joystick leftJoystick = new Joystick(0);
   public static Joystick rightJoystick = new Joystick(1);
 
-  private JoystickButton PIDVision = new JoystickButton(OperatingJoystick, 1);
-  private JoystickButton MApath = new JoystickButton(OperatingJoystick, 2);
-  private JoystickButton pathWriter = new JoystickButton(rightJoystick, 2);
+  private JoystickButton BalanceMoveDriverControll = new JoystickButton(leftJoystick,2);
+  private JoystickButton BalanceTurnPIDOn = new JoystickButton(rightJoystick, 2);
 
 
 
@@ -44,6 +45,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    BalanceTurnPIDOn.whileHeld(new BalancePID(5,balance));
+    BalanceMoveDriverControll.whileHeld(new DriverControllBalance(balance));
 
   }
 

@@ -8,7 +8,9 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.SparkMax;
-import frc.robot.Constants;
+import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
+
+import frc.robot.BalanceConstants;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
@@ -24,6 +26,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -34,8 +37,8 @@ public class Balance extends SubsystemBase {
    */
    private CANSparkMax balanceMotor;
 
-   private DigitalInput iRLeft;
-   private DigitalInput iRRight;
+   private CANDigitalInput iRLeft;
+   private CANDigitalInput iRRight;
 
    private AHRS navx;
 
@@ -46,17 +49,18 @@ public class Balance extends SubsystemBase {
 
    private PIDController balancePidController;
 
+   private static Balance balance;
+
 
    
    
    
   public Balance() {
 
-    balanceMotor = new CANSparkMax(Constants.SPARK_MAX_BALANCE_PORT,MotorType.kBrushless);
+    balanceMotor = new CANSparkMax(BalanceConstants.SPARK_MAX_BALANCE_PORT,MotorType.kBrushless);
 
-    iRLeft = new DigitalInput(Constants.IR_LEFT);
-    iRRight = new DigitalInput(Constants.IR_RIGHT);
-
+    iRLeft = balanceMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+    iRRight = balanceMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
     navx = new AHRS(Port.kOnboard );
 
     balancePidController = new PIDController(KP_BALANCE,KI_BALANCE,KD_BALANCE);
@@ -75,11 +79,9 @@ public class Balance extends SubsystemBase {
   public void setDriverControllLeft(double speed){
     balanceMotor.set(speed);
   }
-  public void disableBalancePIDController()
-  {
-    balancePidController.close();
+  public float getAngleFromNavx(){
+    return navx.getPitch();
   }
-
   public void resetNavx()
   {
     navx.reset();
@@ -99,13 +101,13 @@ public class Balance extends SubsystemBase {
     return iRLeft.get();
   }
 
-  //public static Balance getinstance()
- // {
-   // if (Balance == null) {
-     // balance = new Balance();
-    //}
-    //return balance;
- // }
+  public static Balance getinstance()
+  {
+    if (balance == null) {
+      balance = new Balance();
+    }
+    return balance;
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

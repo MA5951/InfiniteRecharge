@@ -8,6 +8,8 @@
 package frc.robot.commands.Balance;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.BalanceConstants;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Balance;
 
 public class BalancePID extends CommandBase {
@@ -17,7 +19,7 @@ public class BalancePID extends CommandBase {
 
    private Balance balance;
    private double angle;
-  public BalancePID(double angle,double angleTolerance,Balance bl) {
+  public BalancePID(double angle,Balance bl) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.angle = angle;
     balance = bl;
