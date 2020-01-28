@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.ColorMatch;
+import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.I2C;
@@ -33,6 +35,12 @@ public class Roulette extends SubsystemBase {
   private ColorSensorV3 colorSensor;
   private Color detectedColor;
   private Color lastColor;
+  private ColorMatch colorMatcher;
+  private ColorMatchResult match;
+  private final Color blue;
+  private final Color green;
+  private final Color red;
+  private final Color yellow;
 
   public static int roundThreeColorSetpoint;
 
@@ -47,6 +55,15 @@ public class Roulette extends SubsystemBase {
   private Roulette() {
     detectedColor = colorSensor.getColor();
     lastColor = detectedColor;
+    colorMatcher = new ColorMatch();
+    blue = ColorMatch.makeColor(0, 255, 255);
+    green = ColorMatch.makeColor(0, 255, 0);
+    red = ColorMatch.makeColor(255, 0, 0);
+    yellow = ColorMatch.makeColor(255, 0, 0);
+    colorMatcher.addColorMatch(blue);
+    colorMatcher.addColorMatch(green);
+    colorMatcher.addColorMatch(red);
+    colorMatcher.addColorMatch(yellow);
 
     rouletteMotor = new TalonSRX(RouletteConstants.ROULETTE_MOTOR);
     rouletteMotor.setNeutralMode(NeutralMode.Brake);
@@ -62,6 +79,19 @@ public class Roulette extends SubsystemBase {
      */
     SmartDashboard.putString("Color", Robot.colorString);
     SmartDashboard.putNumber("Ticks", ticks);
+  }
+
+  public int getCurrentColor() {
+    if (match.color == blue) {
+      return 0;
+    } else if (match.color == green) {
+      return 1;
+    } else if (match.color == red) {
+      return 2;
+    } else if (match.color == yellow) {
+      return 3;
+    }
+    return 0;
   }
 
   public void countTicks() {
@@ -109,7 +139,7 @@ public class Roulette extends SubsystemBase {
       return 3;
     } 
     // If nothing is true (because you have to return something)
-    return 5951;
+    return 0;
 
   }
 
@@ -128,5 +158,6 @@ public class Roulette extends SubsystemBase {
   @Override
   public void periodic() {
     displayValues();
+    match = colorMatcher.matchClosestColor(detectedColor);
   }
 }

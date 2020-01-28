@@ -19,6 +19,7 @@ public class roundThreeRoulettePID extends CommandBase {
 
   private Roulette roulette;
   private double speed;
+  private int setpoint;
   private double lastTimeOnTarget;
   private double waitTime;
    
@@ -33,6 +34,7 @@ public class roundThreeRoulettePID extends CommandBase {
   public void initialize() {
     roulette.ticksControl(true);
     roulette.resetTicks();
+    setpoint = Robot.setpointColor - roulette.getCurrentColor();
     
   }
 
@@ -40,7 +42,7 @@ public class roundThreeRoulettePID extends CommandBase {
   @Override
   public void execute() {
     roulette.countTicks();
-    speed = roulette.spinPidOutput(Robot.setpointColor);
+    speed = roulette.spinPidOutput(setpoint);
     roulette.controlSpeed(speed);
   }
 
