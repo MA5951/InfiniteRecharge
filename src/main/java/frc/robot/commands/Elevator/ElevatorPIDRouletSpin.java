@@ -5,52 +5,37 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Chassis;
+package frc.robot.commands.Elevator;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Elevator;
 
-public class pathWriter extends CommandBase {
-  Chassis chassis;
-  double dist;
-  double angle;
-  double time;
-  double lastTime;
-  double waitTime;
-  double check = 0.25;
-  
-  public pathWriter(double check , Chassis ch) {
-    this.check = check;
-    chassis = ch;
-    addRequirements(chassis);
+public class ElevatorPIDRouletSpin extends CommandBase {
+  Elevator elevator;
+  public static final double ROULET_SPIN_HIGHT = 1;
+
+  public ElevatorPIDRouletSpin(Elevator el) {
+    elevator = el;
+   addRequirements(elevator);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
-    chassis.resetValue();
+    elevator.setElevatorHightSetpoint(ROULET_SPIN_HIGHT);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    dist = chassis.average() / chassis.ticksPerMeter;
-    angle = chassis.fixedAngle();
-    time = Timer.getFPGATimestamp();
-
-    if (time > waitTime) {
-      System.out.printf("new double[] { %.3f, %.3f, 0.3, 10, 0.35, 0.7  },\n", dist, angle);
-      waitTime += this.check;
-    } else {
-      lastTime = Timer.getFPGATimestamp();
-    }
+    elevator.setElvatorMotorSpeed(elevator.getElevatorHightPIDOutput(ROULET_SPIN_HIGHT));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    elevator.setElvatorMotorSpeed(0);
+
   }
 
   // Returns true when the command should end.

@@ -13,8 +13,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.Chassis.tankDrive;
-import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Elevator;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,17 +24,7 @@ import frc.robot.subsystems.Chassis;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   public static double x;
-  public static double v;
-  public static double area;
-  public static double y;
-  public static double tlong;
-  public static double yaw1;
-  public static double distanceFromTargetLimelightX;
-  public static double distanceFromTargetLimelightY;
-  public static double finalLimelightAng;
-  public static int path;
-   private Chassis chassis = Chassis.getinstance();
-   private tankDrive tDrive = new tankDrive(chassis);
+   private Elevator elevator = Elevator.getinstance();
 
 
   private RobotContainer m_robotContainer;
@@ -49,8 +38,6 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-   CommandScheduler.getInstance().setDefaultCommand(chassis, tDrive);
-   chassis.getinstance().rampRate(0);
   }
 
   /**
@@ -63,23 +50,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tx = table.getEntry("tx");
-    NetworkTableEntry tv = table.getEntry("tv");
-    NetworkTableEntry ta = table.getEntry("ta");
-    NetworkTableEntry ty = table.getEntry("ty");
-    NetworkTableEntry tlong1 = table.getEntry("tlong");
-    NetworkTableEntry yaw = table.getEntry("camtran");
-
-    // read values periodically
-    x = tx.getDouble(0.0);
-    v = tv.getDouble(0.0);
-    area = ta.getDouble(0.0);
-    y = ty.getDouble(0.0);
-    tlong = tlong1.getDouble(0.0);
-    yaw1 = yaw.getDoubleArray(new double[] {0,0,0,0,0,0,0})[4];
-    distanceFromTargetLimelightX = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[0];
-    distanceFromTargetLimelightY = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[2];
   }
 
   /**
@@ -87,7 +57,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    chassis.getinstance().setidilmodeBrake();
+    elevator.getinstance().setElvatorMotorSpeed(0);;
   }
 
   @Override
@@ -116,7 +86,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    chassis.resetValue();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove

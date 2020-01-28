@@ -28,4 +28,13 @@ public final class Constants {
 
     public static final int RIGHT_CHASSIS_ENCODER_A = 2;
     public static final int RIGHT_CHASSIS_ENCODER_B = 3;
+
+    //Elevator
+    public static final int ELEVATOR_MOTOR = 8;
+    public static final int ELEVATOR_ENCODER_A = 0;
+    public static final int ELEVATOR_ENCODER_B = 1;
+    public static final int ELEVATOR_DOUBLE_SOLENOID_A = 0;
+    public static final int ELEVATOR_DOUBLE_SOLENOID_B = 1;
+
+
 }

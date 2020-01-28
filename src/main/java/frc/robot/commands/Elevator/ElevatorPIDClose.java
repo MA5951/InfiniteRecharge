@@ -5,61 +5,44 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Chassis;
+package frc.robot.commands.Elevator;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Elevator;
 
-import frc.robot.subsystems.Chassis;
+public class ElevatorPIDClose extends CommandBase {
+  Elevator elevator;
+  public static final double CLOSE_HIGHT = 0;
 
-public class LimelightAngle3DToZeroPID extends CommandBase {
-  /**
-   * Creates a new limelightAngle3DPID.
-   */
-  Chassis chassis;
-  double setPoint;
-  double power;
-  double lastTimeOnTarget;
 
-  double waitTime;
-
-  public LimelightAngle3DToZeroPID(Chassis ch , double setPoint , double waitTime) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    chassis = ch;
-    addRequirements(chassis);
-    this.setPoint =setPoint;
-    this.waitTime =waitTime;
+  public ElevatorPIDClose(Elevator el) {
+    elevator = el;
+   addRequirements(elevator);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    elevator.setElevatorHightSetpoint(CLOSE_HIGHT);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    power = chassis.angleThreeDLimelightPIDOutput(setPoint);
-    chassis.tankDrive(-power, power);
+    elevator.setElvatorMotorSpeed(elevator.getElevatorHightPIDOutput(CLOSE_HIGHT));
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    chassis.tankDrive(0, 0);
+    elevator.setElvatorMotorSpeed(0);
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(!chassis.isLimeLightOnTarget()){
-      lastTimeOnTarget = Timer.getFPGATimestamp();
-    }
-      return chassis.isLimeLightOnTarget()&&(Timer.getFPGATimestamp() - lastTimeOnTarget > waitTime);
-    }
-  
-
-   
-  
+    return false;
+  }
 }
