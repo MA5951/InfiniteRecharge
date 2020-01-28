@@ -20,6 +20,4 @@ import edu.wpi.first.wpilibj.I2C.Port;
 public final class BalanceConstants {
 
     public static final int SPARK_MAX_BALANCE_PORT = 9;
-    public static final int IR_RIGHT = 1;
-    public static final int IR_LEFT = 1;
 }

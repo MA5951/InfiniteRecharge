@@ -79,9 +79,6 @@ public class Balance extends SubsystemBase {
   public void setDriverControllLeft(double speed){
     balanceMotor.set(speed);
   }
-  public float getAngleFromNavx(){
-    return navx.getPitch();
-  }
   public void resetNavx()
   {
     navx.reset();
