@@ -30,8 +30,8 @@ public class RobotContainer {
   public static Joystick leftJoystick = new Joystick(0);
   public static Joystick rightJoystick = new Joystick(1);
 
-  private JoystickButton emitIntake = new JoystickButton(OperatingJoystick, Constants.emitIntakeButton);
-  private JoystickButton absorbIntake = new JoystickButton(OperatingJoystick, Constants.absorbIntakeButton);
+  private JoystickButton pushIntake = new JoystickButton(OperatingJoystick, Constants.pushIntakeButton);
+  private JoystickButton pullIntake = new JoystickButton(OperatingJoystick, Constants.pullIntakeButton);
   private JoystickButton openCloseIntake = new JoystickButton(OperatingJoystick, Constants.openCloseIntakeButton);
 
 
@@ -50,8 +50,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-      emitIntake.whileHeld(new IntakeEmitAbsorb(false, intake));
-      absorbIntake.whileHeld(new IntakeEmitAbsorb(true, intake));
+      pushIntake.whileHeld(new IntakeEmitAbsorb(-0.5, intake));
+      pullIntake.whileHeld(new IntakeEmitAbsorb(0.5, intake));
       openCloseIntake.whenPressed(new IntakeOpenClose(intake));
     }
 

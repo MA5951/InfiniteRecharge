@@ -21,14 +21,14 @@ public final class Constants {
     public static final int TransportationMotor = 13;
 
     //Pnuematics
-    public static final int IntakeSolenoidOne = 2;
-    public static final int IntakeSolenoidTwo = 3;
+    public static final int IntakeSolenoidA = 2;
+    public static final int IntakeSolenoidB = 3;
 
     //Joysticks
     public static final int controlTransportationButton = 4;
 
-    public static final int emitIntakeButton = 3;
-    public static final int absorbIntakeButton = 2;
+    public static final int pushIntakeButton = 3;
+    public static final int pullIntakeButton = 2;
     public static final int openCloseIntakeButton = 1;
     
 }

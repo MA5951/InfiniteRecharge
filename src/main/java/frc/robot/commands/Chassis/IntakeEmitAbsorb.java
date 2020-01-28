@@ -16,11 +16,11 @@ public class IntakeEmitAbsorb extends CommandBase {
    */
   private  Intake intake;
 
-  private boolean isIntakeReallyAbsorbing;
-  public IntakeEmitAbsorb(Boolean isIntakeAbsorbing,  Intake in) {
+  private double intakeMotorValue;
+  public IntakeEmitAbsorb(Double intakeMotorValueInput,  Intake in) {
     // Use addRequirements() here to declare subsystem dependencies.
     intake = in;
-    isIntakeReallyAbsorbing = isIntakeAbsorbing;
+    intakeMotorValue = intakeMotorValueInput;
     addRequirements(intake);
   }
 
@@ -32,11 +32,7 @@ public class IntakeEmitAbsorb extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (isIntakeReallyAbsorbing) {
-      intake.intakeMotorControl(0.5);
-    } else if (!isIntakeReallyAbsorbing) {
-      intake.intakeMotorControl(-0.5);
-    }
+    intake.intakeMotorControl(intakeMotorValue);
   }
 
   // Called once the command ends or is interrupted.

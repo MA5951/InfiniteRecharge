@@ -27,7 +27,7 @@ public class Intake extends SubsystemBase {
   private WPI_VictorSPX intakeVictorSPX;
 
   public Intake() {
-      intakeSolenoid = new DoubleSolenoid(Constants.IntakeSolenoidOne, Constants.IntakeSolenoidTwo);
+      intakeSolenoid = new DoubleSolenoid(Constants.IntakeSolenoidA, Constants.IntakeSolenoidB);
 
       intakeVictorSPX = new WPI_VictorSPX(Constants.IntakeMotor);
   }
