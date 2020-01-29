@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.roundTwoRoulettePID;
-import frc.robot.commands.roundThreeRoulettePID;
+import frc.robot.commands.Roulette.roundTwoRoulettePID;
+import frc.robot.commands.Roulette.roundThreeRoulettePID;
 import frc.robot.subsystems.Roulette;
 
 /**
