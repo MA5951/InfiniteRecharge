@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -18,18 +19,18 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   /**
-   * Creates a new Intake.
+   * Creates a new Intake. 
    */
   private static Intake intake;
 
   private DoubleSolenoid intakeSolenoid;
 
-  private WPI_VictorSPX intakeVictorSPX;
+  private VictorSPX intakeVictorSPX;
 
   public Intake() {
       intakeSolenoid = new DoubleSolenoid(Constants.IntakeSolenoidA, Constants.IntakeSolenoidB);
 
-      intakeVictorSPX = new WPI_VictorSPX(Constants.IntakeMotor);
+      intakeVictorSPX = new VictorSPX(Constants.IntakeMotor);
   }
 
   public void intakeSolenoidControl(Value value) {
@@ -37,13 +38,14 @@ public class Intake extends SubsystemBase {
   }
 
   public void intakeMotorControl(double power) {
-    intakeVictorSPX.set(power);
+    intakeVictorSPX.set(ControlMode.PercentOutput, power);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
+  
   public static Intake getinstance() {
     if (intake == null) {
       intake = new Intake();
