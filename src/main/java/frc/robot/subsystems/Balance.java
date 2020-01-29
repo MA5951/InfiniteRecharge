@@ -10,7 +10,6 @@ package frc.robot.subsystems;
 import com.revrobotics.SparkMax;
 import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 
-import frc.robot.BalanceConstants;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
@@ -26,6 +25,8 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpiutil.math.MathUtil;
+
 import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
@@ -37,8 +38,8 @@ public class Balance extends SubsystemBase {
    */
    private CANSparkMax balanceMotor;
 
-   private CANDigitalInput iRLeft;
-   private CANDigitalInput iRRight;
+   private CANDigitalInput IRLeft;
+   private CANDigitalInput IRRight;
 
    private AHRS navx;
 
@@ -59,43 +60,49 @@ public class Balance extends SubsystemBase {
 
     balanceMotor = new CANSparkMax(BalanceConstants.SPARK_MAX_BALANCE_PORT,MotorType.kBrushless);
 
-    iRLeft = balanceMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-    iRRight = balanceMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+    IRLeft = balanceMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+    IRRight = balanceMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
     navx = new AHRS(Port.kOnboard );
 
     balancePidController = new PIDController(KP_BALANCE,KI_BALANCE,KD_BALANCE);
     balancePidController.setTolerance(angleTolorance);
-    //balancePidController.enableContinuousInput(-1, 1);
 
   }
+
   public double balancePidControllerSetPoint(double balanceSetPoint)
   {
-    return balancePidController.calculate(navx.getPitch(), balanceSetPoint);
+    return MathUtil.clamp(balancePidController.calculate(navx.getPitch(), balanceSetPoint), -1, 1); // TODO
   }
+
   public boolean isBalancePIDOnTarget(){
     return balancePidController.atSetpoint();
   }
+
   //sets speed by driver conrtoll (joystick)
-  public void setDriverControllLeft(double speed){
+  public void controlBalanceMotor(double speed){
     balanceMotor.set(speed);
   }
-  public void resetNavx()
-  {
+
+  public void resetNavx() {
     navx.reset();
   }
+
   public void changeModeSparkMaxBrake(){
     balanceMotor.setIdleMode(IdleMode.kBrake);
   }
+
   public void changeModeSparkMaxCoast(){
     balanceMotor.setIdleMode(IdleMode.kCoast);
   }
+
   public boolean isCloseTotargetfromRight()
   {
-    return iRRight.get();
+    return IRRight.get();
   }
+
   public boolean isCloseTotargetfromLeft()
   {
-    return iRLeft.get();
+    return IRLeft.get();
   }
 
   public static Balance getinstance()
@@ -105,6 +112,7 @@ public class Balance extends SubsystemBase {
     }
     return balance;
   }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

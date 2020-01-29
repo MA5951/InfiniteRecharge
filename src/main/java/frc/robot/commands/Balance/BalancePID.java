@@ -8,8 +8,6 @@
 package frc.robot.commands.Balance;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.BalanceConstants;
-import frc.robot.RobotContainer;
 import frc.robot.subsystems.Balance;
 
 public class BalancePID extends CommandBase {
@@ -36,7 +34,7 @@ public class BalancePID extends CommandBase {
   @Override
   public void execute() {
    double power = balance.balancePidControllerSetPoint(angle);
-    balance.setDriverControllLeft(power);
+    balance.controlBalanceMotor(power);
   }
 
   // Called once the command ends or is interrupted.
