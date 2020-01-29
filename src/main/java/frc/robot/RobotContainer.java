@@ -17,6 +17,8 @@ import frc.robot.subsystems.Transportation;
 import frc.robot.commands.Intake.IntakeOpenClose;
 import frc.robot.commands.Intake.IntakePullPush;
 import frc.robot.subsystems.Intake;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.Shooter;
 
 
 /**
@@ -30,6 +32,7 @@ public class RobotContainer {
 
   private static Intake intake = Intake.getinstance();
 
+  private static Shooter shooter = Shooter.getinstance(); 
   public static XboxController OperatingJoystick = new XboxController(2);
   public static Joystick leftJoystick = new Joystick(0);
   public static Joystick rightJoystick = new Joystick(1);
@@ -40,6 +43,9 @@ public class RobotContainer {
   private JoystickButton openCloseIntake = new JoystickButton(OperatingJoystick, IntakeConstants.openCloseIntakeButton);
 
 
+private static JoystickButton AngleChangeSolenoidShooter = new JoystickButton(OperatingJoystick, 1);
+private static JoystickButton PIDFlyWheel = new JoystickButton(OperatingJoystick, 2);
+private static JoystickButton PIDSquishMotor = new JoystickButton(OperatingJoystick, 3);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -59,7 +65,10 @@ public class RobotContainer {
       pushIntake.whileHeld(new IntakePullPush(-0.5, intake));
       pullIntake.whileHeld(new IntakePullPush(0.5, intake));
       openCloseIntake.whenPressed(new IntakeOpenClose(intake));
-    }
+  AngleChangeSolenoidShooter.whenPressed(new frc.robot.commands.Shooter.AngleChangeSolenoidShooter(shooter));
+  PIDFlyWheel.whileHeld(new frc.robot.commands.Shooter.PIDFlyWheel(shooter));
+  PIDSquishMotor.whileHeld(new frc.robot.commands.Shooter.PIDSquishMotor(shooter));
+  }
 
 
   /**

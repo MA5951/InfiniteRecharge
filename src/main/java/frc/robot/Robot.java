@@ -33,9 +33,6 @@ public class Robot extends TimedRobot {
   public static double distanceFromTargetLimelightY;
   public static double finalLimelightAng;
   public static int path;
-
-
-
   private RobotContainer m_robotContainer;
 
   /**
@@ -70,6 +67,7 @@ public class Robot extends TimedRobot {
 
     // read values periodically
    
+ 
   }
 
   /**
@@ -77,6 +75,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    
   }
 
   @Override
@@ -103,6 +102,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
