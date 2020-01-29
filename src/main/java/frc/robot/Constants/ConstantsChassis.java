@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package frc.robot.Constants;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -15,20 +15,12 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class IntakeConstants {
-    //Motors
-    public static final int IntakeMotor = 12;
-    public static final int TransportationMotor = 13;
+public final class ConstantsChassis {
 
-    //Pnuematics
-    public static final int IntakeSolenoidA = 2;
-    public static final int IntakeSolenoidB = 3;
+    public static final int LEFT_FRONT_MOTOR = 1;
+    public static final int LEFT_MOTOR = 2;
 
-    //Joysticks
-    public static final int controlTransportationButton = 4;
+    public static final int RIGHT_FRONT_MOTOR = 3;
+    public static final int RIGHT_MOTOR = 4;
 
-    public static final int pushIntakeButton = 3;
-    public static final int pullIntakeButton = 2;
-    public static final int openCloseIntakeButton = 1;
-    
 }

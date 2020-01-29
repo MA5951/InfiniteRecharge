@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
-import frc.robot.ShooterConstants;
+import frc.robot.Constants.*;
 
 /**
  * An example subsystem. You can replace me with your own Subsystem.

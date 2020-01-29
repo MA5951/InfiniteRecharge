@@ -15,7 +15,7 @@ import frc.robot.commands.Chassis.pathWriter;
 import frc.robot.commands.Chassis.roulettePath;
 import frc.robot.subsystems.Chassis;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.TransportationContorl;
+import frc.robot.commands.Transportation.*;
 import frc.robot.subsystems.Transportation;
 import frc.robot.commands.Intake.IntakeOpenClose;
 import frc.robot.commands.Intake.IntakePullPush;
@@ -46,9 +46,9 @@ public class RobotContainer {
 
 
  private JoystickButton transportationControlButton = new JoystickButton(OperatingJoystick, 1);
-  private JoystickButton pushIntake = new JoystickButton(OperatingJoystick, IntakeConstants.pushIntakeButton);
-  private JoystickButton pullIntake = new JoystickButton(OperatingJoystick, IntakeConstants.pullIntakeButton);
-  private JoystickButton openCloseIntake = new JoystickButton(OperatingJoystick, IntakeConstants.openCloseIntakeButton);
+  private JoystickButton pushIntake = new JoystickButton(OperatingJoystick,1);
+  private JoystickButton pullIntake = new JoystickButton(OperatingJoystick, 1);
+  private JoystickButton openCloseIntake = new JoystickButton(OperatingJoystick, 1);
 
   JoystickButton roulettePID =  new JoystickButton(OperatingJoystick, 1);
   JoystickButton roundThreeRoulette = new JoystickButton(OperatingJoystick, 2);

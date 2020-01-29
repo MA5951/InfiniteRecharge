@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Robot;
-import frc.robot.RouletteConstants;
+import frc.robot.Constants.*;
 
 public class Roulette extends SubsystemBase {
   /**
