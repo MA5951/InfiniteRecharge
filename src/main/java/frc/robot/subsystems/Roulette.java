@@ -32,11 +32,14 @@ public class Roulette extends SubsystemBase {
   private static Roulette roulette;
 
   private TalonSRX rouletteMotor;
+  
   private ColorSensorV3 colorSensor;
+
   private Color detectedColor;
   private Color lastColor;
   private ColorMatch colorMatcher;
   private ColorMatchResult match;
+
   private final Color blue;
   private final Color green;
   private final Color red;
@@ -159,5 +162,6 @@ public class Roulette extends SubsystemBase {
   public void periodic() {
     displayValues();
     match = colorMatcher.matchClosestColor(detectedColor);
+    // TODO Check where to call ticks count function
   }
 }

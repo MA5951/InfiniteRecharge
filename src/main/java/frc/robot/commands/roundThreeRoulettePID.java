@@ -35,7 +35,6 @@ public class roundThreeRoulettePID extends CommandBase {
     roulette.ticksControl(true);
     roulette.resetTicks();
     setpoint = Robot.setpointColor - roulette.getCurrentColor();
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -49,11 +48,7 @@ public class roundThreeRoulettePID extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (interrupted) {
-      roulette.controlSpeed(0);
-    } else {
-      roulette.controlSpeed(0);
-    }
+    roulette.controlSpeed(0);
   }
 
   // Returns true when the command should end.
