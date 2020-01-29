@@ -19,7 +19,6 @@ import frc.robot.subsystems.Intake;
 public class IntakeOpenClose extends InstantCommand {
   private  Intake intake;
 
-  private boolean intakeOpen = true;
   public IntakeOpenClose(Intake in) {
     // Use addRequirements() here to declare subsystem dependencies.
     intake = in;
@@ -29,8 +28,7 @@ public class IntakeOpenClose extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intakeOpen = !intakeOpen;
-    if (intakeOpen) {
+    if (intake.isPistonOpen()) {
       intake.intakeSolenoidControl(Value.kReverse);
     } else {
       intake.intakeSolenoidControl(Value.kForward);

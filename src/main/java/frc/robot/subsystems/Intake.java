@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -41,9 +42,18 @@ public class Intake extends SubsystemBase {
     intakeVictorSPX.set(ControlMode.PercentOutput, power);
   }
 
+  public boolean isPistonOpen(){
+    return intakeSolenoid.get() == Value.kForward;
+  }
+
+  public void value(){
+    SmartDashboard.putBoolean("IsIntakeOpen", isPistonOpen());
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    value();
   }
   
   public static Intake getinstance() {
