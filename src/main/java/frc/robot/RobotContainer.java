@@ -20,6 +20,10 @@ import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Shooter;
 
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.Roulette.roundTwoRoulettePID;
+import frc.robot.commands.Roulette.roundThreeRoulettePID;
+import frc.robot.subsystems.Roulette;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -29,19 +33,22 @@ import frc.robot.subsystems.Shooter;
  */
 public class RobotContainer {
   private static Transportation transportation = Transportation.getinstance();
-
   private static Intake intake = Intake.getinstance();
-
   private static Shooter shooter = Shooter.getinstance(); 
+  private Roulette roulette =Roulette.getinstance();
+  
   public static XboxController OperatingJoystick = new XboxController(2);
   public static Joystick leftJoystick = new Joystick(0);
   public static Joystick rightJoystick = new Joystick(1);
+
 
  private JoystickButton transportationControlButton = new JoystickButton(OperatingJoystick, 1);
   private JoystickButton pushIntake = new JoystickButton(OperatingJoystick, IntakeConstants.pushIntakeButton);
   private JoystickButton pullIntake = new JoystickButton(OperatingJoystick, IntakeConstants.pullIntakeButton);
   private JoystickButton openCloseIntake = new JoystickButton(OperatingJoystick, IntakeConstants.openCloseIntakeButton);
 
+  JoystickButton roulettePID =  new JoystickButton(OperatingJoystick, 1);
+  JoystickButton roundThreeRoulette = new JoystickButton(OperatingJoystick, 2);
 
 private static JoystickButton AngleChangeSolenoidShooter = new JoystickButton(OperatingJoystick, 1);
 private static JoystickButton PIDFlyWheel = new JoystickButton(OperatingJoystick, 2);
@@ -65,9 +72,11 @@ private static JoystickButton PIDSquishMotor = new JoystickButton(OperatingJoyst
       pushIntake.whileHeld(new IntakePullPush(-0.5, intake));
       pullIntake.whileHeld(new IntakePullPush(0.5, intake));
       openCloseIntake.whenPressed(new IntakeOpenClose(intake));
-  AngleChangeSolenoidShooter.whenPressed(new frc.robot.commands.Shooter.AngleChangeSolenoidShooter(shooter));
-  PIDFlyWheel.whileHeld(new frc.robot.commands.Shooter.PIDFlyWheel(shooter));
-  PIDSquishMotor.whileHeld(new frc.robot.commands.Shooter.PIDSquishMotor(shooter));
+      AngleChangeSolenoidShooter.whenPressed(new frc.robot.commands.Shooter.AngleChangeSolenoidShooter(shooter));
+      PIDFlyWheel.whileHeld(new frc.robot.commands.Shooter.PIDFlyWheel(shooter));
+      PIDSquishMotor.whileHeld(new frc.robot.commands.Shooter.PIDSquishMotor(shooter));
+     roulettePID.whenPressed(new roundTwoRoulettePID(0.1, roulette));
+     roundThreeRoulette.whenPressed(new roundThreeRoulettePID(0.1, roulette));
   }
 
 
