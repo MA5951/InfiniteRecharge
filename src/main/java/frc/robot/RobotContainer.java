@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.Chassis.IntakeOpenClose;
-import frc.robot.commands.Chassis.IntakePullPush;
+import frc.robot.commands.Intake.IntakeOpenClose;
+import frc.robot.commands.Intake.IntakePullPush;
 import frc.robot.subsystems.Intake;
 
 
@@ -30,9 +30,9 @@ public class RobotContainer {
   public static Joystick leftJoystick = new Joystick(0);
   public static Joystick rightJoystick = new Joystick(1);
 
-  private JoystickButton pushIntake = new JoystickButton(OperatingJoystick, Constants.pushIntakeButton);
-  private JoystickButton pullIntake = new JoystickButton(OperatingJoystick, Constants.pullIntakeButton);
-  private JoystickButton openCloseIntake = new JoystickButton(OperatingJoystick, Constants.openCloseIntakeButton);
+  private JoystickButton pushIntake = new JoystickButton(OperatingJoystick, IntakeConstants.pushIntakeButton);
+  private JoystickButton pullIntake = new JoystickButton(OperatingJoystick, IntakeConstants.pullIntakeButton);
+  private JoystickButton openCloseIntake = new JoystickButton(OperatingJoystick, IntakeConstants.openCloseIntakeButton);
 
 
 

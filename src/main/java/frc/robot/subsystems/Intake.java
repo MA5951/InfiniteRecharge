@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.IntakeConstants;
 
 public class Intake extends SubsystemBase {
   /**
@@ -29,9 +29,9 @@ public class Intake extends SubsystemBase {
   private VictorSPX intakeVictorSPX;
 
   public Intake() {
-      intakeSolenoid = new DoubleSolenoid(Constants.IntakeSolenoidA, Constants.IntakeSolenoidB);
+      intakeSolenoid = new DoubleSolenoid(IntakeConstants.IntakeSolenoidA, IntakeConstants.IntakeSolenoidB);
 
-      intakeVictorSPX = new VictorSPX(Constants.IntakeMotor);
+      intakeVictorSPX = new VictorSPX(IntakeConstants.IntakeMotor);
   }
 
   public void intakeSolenoidControl(Value value) {
