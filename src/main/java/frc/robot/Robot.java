@@ -13,8 +13,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.Chassis.tankDrive;
-import frc.robot.subsystems.Chassis;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -34,8 +33,7 @@ public class Robot extends TimedRobot {
   public static double distanceFromTargetLimelightY;
   public static double finalLimelightAng;
   public static int path;
-   private Chassis chassis = Chassis.getinstance();
-   private tankDrive tDrive = new tankDrive(chassis);
+
 
 
   private RobotContainer m_robotContainer;
@@ -49,8 +47,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-   CommandScheduler.getInstance().setDefaultCommand(chassis, tDrive);
-   chassis.getinstance().rampRate(0);
+
   }
 
   /**
@@ -87,7 +84,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    chassis.getinstance().setidilmodeBrake();
   }
 
   @Override
@@ -116,7 +112,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    chassis.resetValue();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
