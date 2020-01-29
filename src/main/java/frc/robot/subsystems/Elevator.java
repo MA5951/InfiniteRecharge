@@ -12,6 +12,7 @@ import com.revrobotics.CANDigitalInput.LimitSwitch;
 import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -48,7 +49,7 @@ public class Elevator extends SubsystemBase {
 
     //PID
     elevatorPID = new PIDController(KP_ELEVATOR, KI_ELEVATOR, KD_ELEVATOR);
-    elevatorPID.setTolerance(10);
+    elevatorPID.setTolerance(10); // TODO
 
     //Piston
     elevatorPiston = new DoubleSolenoid(ConstantsElevator.ELEVATOR_DOUBLE_SOLENOID_A, ConstantsElevator.ELEVATOR_DOUBLE_SOLENOID_B);
@@ -65,6 +66,7 @@ public class Elevator extends SubsystemBase {
   // updat the value in the smart dash bord
     public void value() {
      SmartDashboard.putNumber("encoderValue", encoderElevator.getDistance());
+     SmartDashboard.putBoolean("elevatorPistonStatus", isPistonOpen());
     }
   
   // pid reset
@@ -92,6 +94,10 @@ public class Elevator extends SubsystemBase {
 
   public void closeElevatorPiston(){
     elevatorPiston.set(DoubleSolenoid.Value.kReverse);
+  } 
+
+  public boolean isPistonOpen(){
+    return elevatorPiston.get()==Value.kForward;
   } 
 
 

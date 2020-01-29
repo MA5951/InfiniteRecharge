@@ -17,7 +17,7 @@ public class ElevatorMotorControl extends CommandBase {
 
   public ElevatorMotorControl(Elevator el) {
     elevator = el;
-   addRequirements(elevator);
+    addRequirements(elevator);
    
   }
 

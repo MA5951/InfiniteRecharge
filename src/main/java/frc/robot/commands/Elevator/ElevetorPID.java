@@ -17,6 +17,7 @@ public class ElevetorPID extends CommandBase {
    */
   private Elevator elevator;
   private double setpoint;
+  private double speed;
   private double lastTimeOnTarget;
   private double waitTime;
   public ElevetorPID(Elevator elevator , double setpoint , double waitTime) {
@@ -34,7 +35,8 @@ public class ElevetorPID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    elevator.setElvatorMotorSpeed(elevator.getElevatorPIDOutput(setpoint));
+    speed = elevator.getElevatorPIDOutput(setpoint);
+    elevator.setElvatorMotorSpeed(speed);
   }
 
   // Called once the command ends or is interrupted.

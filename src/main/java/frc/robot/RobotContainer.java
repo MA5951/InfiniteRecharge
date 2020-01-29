@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Elevator.ElevetorPID;
-import frc.robot.commands.Elevator.OpenAndCloesPiston;
+import frc.robot.commands.Elevator.OpenAndClosePiston;
 import frc.robot.subsystems.Elevator;
 
 
@@ -47,7 +47,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     PIDElevator.whenPressed(new ElevetorPID(elevator, 30, 0.2));
-    Pistol.whenPressed(new OpenAndCloesPiston(elevator));
+    Pistol.whenPressed(new OpenAndClosePiston(elevator));
 
 
   }
