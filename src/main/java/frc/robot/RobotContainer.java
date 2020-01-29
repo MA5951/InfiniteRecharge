@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.XboxController;
 
 import frc.robot.commands.Chassis.PIDVision;
 
-import frc.robot.commands.Chassis.leftRocketPath;
+import frc.robot.commands.Chassis.roulettePath;
 import frc.robot.commands.Chassis.pathWriter;
 import frc.robot.subsystems.Chassis;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -51,7 +51,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     PIDVision.whileHeld(new PIDVision( 0 , 0.2 ,chassis));
-     MApath.whenPressed(new leftRocketPath(chassis));
+     MApath.whenPressed(new roulettePath(chassis));
      pathWriter.whileHeld(new pathWriter(0.5 , chassis));
 
 

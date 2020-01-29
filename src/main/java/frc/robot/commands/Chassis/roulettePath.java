@@ -10,12 +10,12 @@ package frc.robot.commands.Chassis;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Chassis;
-public class leftRocketPath extends SequentialCommandGroup {
+public class roulettePath extends SequentialCommandGroup {
   /**
    * Creates a new leftRocketPath.
    */
   Chassis ch1;
-  public leftRocketPath(Chassis ch) {
+  public roulettePath(Chassis ch) {
 ch1 = ch;
    
     
