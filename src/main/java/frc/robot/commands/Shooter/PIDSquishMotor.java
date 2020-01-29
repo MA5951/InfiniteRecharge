@@ -28,18 +28,14 @@ public class PIDSquishMotor extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double power = shooter.squishMotorSpeedOutPut();
+    double power = shooter.squishMotorSpeedOutput();
     this.shooter.controlSquishMotor(power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if(interrupted){
-      this.shooter.controlSquishMotor(0);
-    }else{
-      this.shooter.controlSquishMotor(0);
-    }
+    this.shooter.controlSquishMotor(0);
   }
 
   // Returns true when the command should end.

@@ -24,7 +24,7 @@ public class PIDFlyWheel extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flyWheelSpeed = this.shooter.calculateSpeedToFlyWheel(1); // TODO;
+    flyWheelSpeed = this.shooter.calculateSpeedToFlyWheel(1); // TODO
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,11 +37,8 @@ public class PIDFlyWheel extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if(interrupted){
-      this.shooter.controlFlyWheelMotor(0);
-    }else{
-      this.shooter.controlFlyWheelMotor(0);
-    }
+    this.shooter.controlFlyWheelMotor(0);
+   
   }
 
   // Returns true when the command should end.

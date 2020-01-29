@@ -16,8 +16,8 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class ShooterConstants {
-    public static final int FLY_WHEELB = 5;
-    public static final int FLY_WHEELA = 6;
+    public static final int FLY_WHEEL_B = 5;
+    public static final int FLY_WHEEL_A = 6;
 
     public static final int SQUISH_MOTOR = 7;
     public static final int IR_BALL = 2;

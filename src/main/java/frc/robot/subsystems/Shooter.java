@@ -27,24 +27,24 @@ public class Shooter extends SubsystemBase {
   private double KI_FLY_WHEEL_SPEED = 0;
   private double KD_FLY_WHEEL_SPEED = 0;
 
-  private double KP_SQUIS_MOTOR_SPEED = 0;
-  private double KI_SQUIS_MOTOR_SPEED = 0;
-  private double KD_SQUIS_MOTOR_SPEED = 0;
+  private double KP_SQUISH_MOTOR_SPEED = 0;
+  private double KI_SQUISH_MOTOR_SPEED = 0;
+  private double KD_SQUISH_MOTOR_SPEED = 0;
 
   public static double shooterAngle = 0; //TODO
-  private double Gravity = 4.9035;
+  private double Gravity = 9.8; // TODO
 
   private double deltaY = 0; //TODO
   private double radiusFlyWheel = 0.0508; // TODO
 
-  private double tiksPerRoundsquishMotor = 1; //TODO;
-  private double tiksPerRoundflyWheel = 1; //TODO;
+  private double ticksPerRoundsquishMotor = 1; //TODO;
+  private double ticksPerRoundflyWheel = 1; //TODO;
 
   private TalonSRX flyWheelA;
   private TalonSRX flyWheelB;
   private TalonSRX squishMotor;
 
-  private double KrateSquis = 0; // TODO
+  private double kRateSquish = 0; // TODO
   
   private DigitalInput IRBall;
   private Solenoid angleChange;
@@ -54,8 +54,8 @@ public class Shooter extends SubsystemBase {
 
   private Shooter(){
 
-  flyWheelA = new TalonSRX(ShooterConstants.FLY_WHEELA);
-  flyWheelB = new TalonSRX(ShooterConstants.FLY_WHEELB);
+  flyWheelA = new TalonSRX(ShooterConstants.FLY_WHEEL_A);
+  flyWheelB = new TalonSRX(ShooterConstants.FLY_WHEEL_B);
   flyWheelA.follow(flyWheelB);
 
 
@@ -64,13 +64,20 @@ public class Shooter extends SubsystemBase {
   angleChange = new Solenoid(ShooterConstants.ANGLE_CHANGE);
 
   flyWheelSpeed = new edu.wpi.first.wpilibj.controller.PIDController( KP_FLY_WHEEL_SPEED, KI_FLY_WHEEL_SPEED, KD_FLY_WHEEL_SPEED);
-  squishMotorSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_SQUIS_MOTOR_SPEED, KI_SQUIS_MOTOR_SPEED, KD_SQUIS_MOTOR_SPEED);
-  }
+  squishMotorSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_SQUISH_MOTOR_SPEED, KI_SQUISH_MOTOR_SPEED, KD_SQUISH_MOTOR_SPEED);
+  flyWheelSpeed.setTolerance(1); // TODO
+  squishMotorSpeed.setTolerance(1); // TODO
+}
 
   public void ShooterValue(){
-    SmartDashboard.putBoolean("IRball", isABallInTheShooter());
+    SmartDashboard.putBoolean("IRball", isBallInShooter());
     SmartDashboard.putNumber("kRateFlyWheelSpeed", kRateFlyWheelSpeed());
     SmartDashboard.putNumber("kRateSquishMotor", kRateSquishMotorSpeed());
+    SmartDashboard.putBoolean("isPistonOpen", isPistonOpen());
+  }
+
+  public boolean isPistonOpen(){
+    return angleChange.get();
   }
 
   public void controlFlyWheelMotor(double speed){
@@ -85,29 +92,37 @@ public class Shooter extends SubsystemBase {
   angleChange.set(value);
   }
   public double kRateFlyWheelSpeed(){
-    return (flyWheelB.getSelectedSensorVelocity() * (2 *Math.PI)) / tiksPerRoundflyWheel;
+    return (flyWheelB.getSelectedSensorVelocity() * (2 *Math.PI)) / ticksPerRoundflyWheel;
   }
 
   public double kRateSquishMotorSpeed(){
-    return (squishMotor.getSelectedSensorVelocity() * (2 *Math.PI)) / tiksPerRoundsquishMotor;
+    return (squishMotor.getSelectedSensorVelocity() * (2 *Math.PI)) / ticksPerRoundsquishMotor;
   }
   public double flyWheelSpeedOutPut(double setPoint){
   return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), -1, 1);
   }
 
-  public double squishMotorSpeedOutPut(){
-  return MathUtil.clamp(squishMotorSpeed.calculate(kRateSquishMotorSpeed(), KrateSquis), -1, 1) ;
+  public double squishMotorSpeedOutput(){
+  return MathUtil.clamp(squishMotorSpeed.calculate(kRateSquishMotorSpeed(), kRateSquish), -1, 1) ;
   }
 
-  public boolean isABallInTheShooter(){
+  public boolean isBallInShooter(){
     return IRBall.get();
   }
 
   public double calculateSpeedToFlyWheel(double deltaDistance) {
-    double _shooterAngle = Math.toRadians(shooterAngle);
-  return (2 * (Math.sqrt((Gravity* deltaDistance)
-   / 2* Math.pow(Math.cos(_shooterAngle), 2)
-    * (deltaY - (deltaDistance * Math.tan(_shooterAngle)))))) / radiusFlyWheel;
+    double radShooterAngle = Math.toRadians(shooterAngle);
+  return (2 * (Math.sqrt(((Gravity / 2) * deltaDistance)
+   / 2* Math.pow(Math.cos(radShooterAngle), 2)
+    * (deltaY - (deltaDistance * Math.tan(radShooterAngle)))))) / radiusFlyWheel;
+  }
+
+  public boolean isFlyWheelOnTraget() {
+    return flyWheelSpeed.atSetpoint();
+  }
+
+  public boolean isSquishOnTarget() {
+    return squishMotorSpeed.atSetpoint();
   }
 
   public static Shooter getinstance() {

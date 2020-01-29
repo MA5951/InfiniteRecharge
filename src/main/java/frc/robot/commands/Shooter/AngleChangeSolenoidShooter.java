@@ -14,7 +14,6 @@ import frc.robot.subsystems.Shooter;
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class AngleChangeSolenoidShooter extends InstantCommand {
- private boolean CloseOrOpen = false;
 private Shooter shooter;
 
   public AngleChangeSolenoidShooter(Shooter shooter) {
@@ -25,12 +24,11 @@ private Shooter shooter;
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    CloseOrOpen = !CloseOrOpen;
- if(CloseOrOpen){
+ if(shooter.isPistonOpen()){
    shooter.shooterAngle = 0; //TODO
  }else{
   shooter.shooterAngle = 0; //TODO
  }
-    this.shooter.OpenAngleChangeSolenoid(CloseOrOpen);
+    this.shooter.OpenAngleChangeSolenoid(!shooter.isPistonOpen());
   }
 }
