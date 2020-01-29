@@ -14,6 +14,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.TransportationContorl;
 import frc.robot.subsystems.Transportation;
+import frc.robot.commands.Intake.IntakeOpenClose;
+import frc.robot.commands.Intake.IntakePullPush;
+import frc.robot.subsystems.Intake;
+
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -24,12 +28,16 @@ import frc.robot.subsystems.Transportation;
 public class RobotContainer {
   private static Transportation transportation = Transportation.getinstance();
 
+  private static Intake intake = Intake.getinstance();
 
   public static XboxController OperatingJoystick = new XboxController(2);
   public static Joystick leftJoystick = new Joystick(0);
   public static Joystick rightJoystick = new Joystick(1);
 
  private JoystickButton transportationControlButton = new JoystickButton(OperatingJoystick, 1);
+  private JoystickButton pushIntake = new JoystickButton(OperatingJoystick, IntakeConstants.pushIntakeButton);
+  private JoystickButton pullIntake = new JoystickButton(OperatingJoystick, IntakeConstants.pullIntakeButton);
+  private JoystickButton openCloseIntake = new JoystickButton(OperatingJoystick, IntakeConstants.openCloseIntakeButton);
 
 
 
@@ -48,9 +56,10 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     transportationControlButton.whileHeld(new TransportationContorl(transportation));
-
-
-  }
+      pushIntake.whileHeld(new IntakePullPush(-0.5, intake));
+      pullIntake.whileHeld(new IntakePullPush(0.5, intake));
+      openCloseIntake.whenPressed(new IntakeOpenClose(intake));
+    }
 
 
   /**

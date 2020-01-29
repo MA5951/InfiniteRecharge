@@ -60,23 +60,16 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry tx = table.getEntry("tx");
-    NetworkTableEntry tv = table.getEntry("tv");
-    NetworkTableEntry ta = table.getEntry("ta");
-    NetworkTableEntry ty = table.getEntry("ty");
-    NetworkTableEntry tlong1 = table.getEntry("tlong");
-    NetworkTableEntry yaw = table.getEntry("camtran");
+    final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    final NetworkTableEntry tx = table.getEntry("tx");
+    final NetworkTableEntry tv = table.getEntry("tv");
+    final NetworkTableEntry ta = table.getEntry("ta");
+    final NetworkTableEntry ty = table.getEntry("ty");
+    final NetworkTableEntry tlong1 = table.getEntry("tlong");
+    final NetworkTableEntry yaw = table.getEntry("camtran");
 
     // read values periodically
-    x = tx.getDouble(0.0);
-    v = tv.getDouble(0.0);
-    area = ta.getDouble(0.0);
-    y = ty.getDouble(0.0);
-    tlong = tlong1.getDouble(0.0);
-    yaw1 = yaw.getDoubleArray(new double[] {0,0,0,0,0,0,0})[4];
-    distanceFromTargetLimelightX = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[0];
-    distanceFromTargetLimelightY = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[2];
+   
   }
 
   /**
@@ -98,9 +91,7 @@ public class Robot extends TimedRobot {
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
-    }
+
   }
 
   /**
@@ -116,11 +107,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
-  }
 
+  }
   /**
    * This function is called periodically during operator control.
    */
