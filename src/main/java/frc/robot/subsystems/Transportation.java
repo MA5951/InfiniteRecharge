@@ -7,11 +7,11 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.TransportationConstants;
 
 public class Transportation extends SubsystemBase {
   /**
@@ -19,13 +19,13 @@ public class Transportation extends SubsystemBase {
    */
   private static Transportation transportation;
 
-  private WPI_VictorSPX transportationMotor;
+  private VictorSPX transportationMotor;
   private Transportation() {
-      transportationMotor = new WPI_VictorSPX(Constants.transportationMotor);
+      transportationMotor = new VictorSPX(TransportationConstants.transportationMotor);
   }
 
   public void transportationControl(double power) {
-    transportationMotor.set(power);
+    transportationMotor.set(ControlMode.PercentOutput, power);
   }
   @Override
   public void periodic() {
