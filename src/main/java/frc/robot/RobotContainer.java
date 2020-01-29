@@ -10,17 +10,19 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-
+import frc.robot.commands.Chassis.PIDVision;
+import frc.robot.commands.Chassis.pathWriter;
+import frc.robot.commands.Chassis.roulettePath;
+import frc.robot.subsystems.Chassis;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.TransportationContorl;
 import frc.robot.subsystems.Transportation;
 import frc.robot.commands.Intake.IntakeOpenClose;
 import frc.robot.commands.Intake.IntakePullPush;
 import frc.robot.subsystems.Intake;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 import frc.robot.subsystems.Shooter;
 
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Roulette.roundTwoRoulettePID;
 import frc.robot.commands.Roulette.roundThreeRoulettePID;
 import frc.robot.subsystems.Roulette;
@@ -36,6 +38,7 @@ public class RobotContainer {
   private static Intake intake = Intake.getinstance();
   private static Shooter shooter = Shooter.getinstance(); 
   private Roulette roulette =Roulette.getinstance();
+  private Chassis chassis = Chassis.getinstance();
   
   public static XboxController OperatingJoystick = new XboxController(2);
   public static Joystick leftJoystick = new Joystick(0);
@@ -53,7 +56,9 @@ public class RobotContainer {
 private static JoystickButton AngleChangeSolenoidShooter = new JoystickButton(OperatingJoystick, 1);
 private static JoystickButton PIDFlyWheel = new JoystickButton(OperatingJoystick, 2);
 private static JoystickButton PIDSquishMotor = new JoystickButton(OperatingJoystick, 3);
-
+private JoystickButton PIDVision = new JoystickButton(OperatingJoystick, 1);
+private JoystickButton MApath = new JoystickButton(OperatingJoystick, 2);
+private JoystickButton pathWriter = new JoystickButton(rightJoystick, 2);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -77,6 +82,11 @@ private static JoystickButton PIDSquishMotor = new JoystickButton(OperatingJoyst
       PIDSquishMotor.whileHeld(new frc.robot.commands.Shooter.PIDSquishMotor(shooter));
      roulettePID.whenPressed(new roundTwoRoulettePID(0.1, roulette));
      roundThreeRoulette.whenPressed(new roundThreeRoulettePID(0.1, roulette));
+    PIDVision.whileHeld(new PIDVision( 0 , 0.2 ,chassis));
+     MApath.whenPressed(new roulettePath(chassis));
+     pathWriter.whileHeld(new pathWriter(0.5 , chassis));
+
+
   }
 
 
