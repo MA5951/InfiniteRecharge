@@ -85,6 +85,7 @@ private JoystickButton pathWriter = new JoystickButton(rightJoystick, 2);
     PIDVision.whileHeld(new PIDVision( 0 , 0.2 ,chassis));
      MApath.whenPressed(new roulettePath(chassis));
      pathWriter.whileHeld(new pathWriter(0.5 , chassis));
+     new ConditionalCommand(Automation.getinstance().shooting, Automation.getinstance().preparationShooting, Automation.getinstance().isShootingPrepared);
 
 
   }
