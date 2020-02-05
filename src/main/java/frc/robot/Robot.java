@@ -35,7 +35,8 @@ public class Robot extends TimedRobot {
   public static double distanceFromTargetLimelightY;
   public static double finalLimelightAng;
   public static int path;
-
+  public static boolean isShootingPrepared;
+  
   private RobotContainer m_robotContainer;
  
 
@@ -87,6 +88,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    isShootingPrepared = false;
 
   }
 

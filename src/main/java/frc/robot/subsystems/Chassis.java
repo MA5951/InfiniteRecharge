@@ -250,7 +250,7 @@ return 0;
   }
 
   public double anglePIDVisionOutput( double setpoint) {
-    return MathUtil.clamp(anglePIDVision.calculate(navx.getFusedHeading(), setpoint) -1 , 1);
+    return MathUtil.clamp(anglePIDVision.calculate(navx.getFusedHeading(), setpoint),  -1 , 1);
   }
 
   public void ArcadeDrive (double angel , double distacne  ){
