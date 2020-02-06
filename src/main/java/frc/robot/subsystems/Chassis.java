@@ -23,8 +23,7 @@ import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.Path.Path;
-import frc.robot.commands.Chassis.MAPath;
-import frc.robot.commands.Chassis.PIDVisionAngel;
+import frc.robot.commands.Chassis.*;
 
 /**
  * An example subsystem. You can replace me with your own Subsystem.
@@ -51,6 +50,13 @@ public class Chassis extends SubsystemBase {
   private static final double KI_Vision_angle = 0.5e-6 * 1.6875; 
   private static final double KD_Vision_angle = 1e-5 * 1.6875;
 
+  // private static final double KP_VELOCITY_LEFT = 0.00065;
+  // private static final double KI_VELOCITY_LEFT = 0.000;
+  // private static final double KD_VELOCITY_LEFT = 0.00000000000099;
+
+  // private static final double KP_VELOCITY_RIGHT = 0.00065;
+  // private static final double KI_VELOCITY_RIGHT = 0.000;
+  // private static final double KD_VELOCITY_RIGHT = 0.00000000000099;
   private static final double KP_VELOCITY_LEFT = 0.000058 *6;
   private static final double KI_VELOCITY_LEFT = 0;
   private static final double KD_VELOCITY_LEFT = 0.000001 *6;
@@ -58,7 +64,7 @@ public class Chassis extends SubsystemBase {
   private static final double KP_VELOCITY_RIGHT = 0.000058 *6 ;
   private static final double KI_VELOCITY_RIGHT = 0;
   private static final double KD_VELOCITY_RIGHT = 0.000001 *6;
-
+  
   private static final double KP_LIMELIGHTANGLE = 0.01;
   private static final double KI_LIMELIGHTANGLE = 0;
   private static final double KD_LIMELIGHTANGLE = 0.0025;
@@ -82,15 +88,6 @@ public class Chassis extends SubsystemBase {
   
   private  CANSparkMax rightFrontMotor;
   private  CANSparkMax rightMotor;
-
-  private  CANSparkMax leftFrontMotor1;
-  private  CANSparkMax leftMotor1;
-  
-  private  CANSparkMax rightFrontMotor1;
-  private  CANSparkMax rightMotor1;
-
-  private CANEncoder canEncoderRightCIMcoder;
-  private CANEncoder canEncoderLeftCIMcoder;
 
 private CANEncoder canEncoderleft;
 private CANEncoder canEncoderRight;
@@ -119,21 +116,9 @@ private CANEncoder canEncoderRight;
         com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
         rightMotor = new CANSparkMax(Constants.RIGHT_MOTOR, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
 
-    leftFrontMotor1 = new CANSparkMax(5,com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushed);
-    leftMotor1 = new CANSparkMax(6,com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushed);
-
-    rightFrontMotor1 = new CANSparkMax(9,com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushed);
-        rightMotor1 = new CANSparkMax(8, com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushed);
-
-    canEncoderLeftCIMcoder = leftMotor.getAlternateEncoder(AlternateEncoderType.kQuadrature, 1);
-    canEncoderRightCIMcoder = rightMotor.getAlternateEncoder(AlternateEncoderType.kQuadrature, 1);
-    canEncoderRightCIMcoder.setInverted(true);
 
     canEncoderRight = rightFrontMotor.getEncoder();
     canEncoderleft = leftFrontMotor.getEncoder();
-
-    canEncoderRightCIMcoder.setPositionConversionFactor(1);
-    canEncoderLeftCIMcoder.setPositionConversionFactor(1);
 
     leftMotor.follow(leftFrontMotor);
     rightMotor.follow(rightFrontMotor);
@@ -180,6 +165,7 @@ private CANEncoder canEncoderRight;
   public double rightVelocityControlRPM() {
     return canEncoderRight.getVelocity();
   }
+  
 
   // updat the value in the smart dash bord
   public void value() {
@@ -208,8 +194,6 @@ private CANEncoder canEncoderRight;
     SmartDashboard.putNumber("leftVelocityControlSetPoint", leftVelocityControl.getSetpoint());
     SmartDashboard.putNumber("rightVelocityControlSetPoint", rightVelocityControl.getSetpoint());
 
-    SmartDashboard.putNumber("canEncoderLeftCIMcoder", canEncoderLeftCIMcoder.getPosition());
-    SmartDashboard.putNumber("canEncoderRightCIMcoder", canEncoderRightCIMcoder.getPosition());
 SmartDashboard.putNumber("angelVison", limelightAngleFinal());
   }
 
@@ -246,7 +230,7 @@ return 0;
 
   // the average of the encoders
   public double average() {
-    return (canEncoderRightCIMcoder.getPosition() + canEncoderLeftCIMcoder.getPosition()) / 2;
+    return 1;
   }
 
   
@@ -284,8 +268,6 @@ return 0;
   // resat the value of the encoder and the navx
   public void resetValue() {
     navx.reset();
-    canEncoderLeftCIMcoder.setPosition(0);
-    canEncoderRightCIMcoder.setPosition(0);
   }
 
   // pid vison distance
@@ -376,13 +358,6 @@ return 0;
     return MathUtil.clamp(distancePidMApath.calculate(average()),-1.0 , 1.0);
   }
 
-public void proto(){
-     leftFrontMotor1.set(1);
-     leftMotor1.set(1);
-  
-     rightFrontMotor1.set(1);
-     rightMotor1.set(1);
-}
   // MApath
   public void pathfinder() {
 
