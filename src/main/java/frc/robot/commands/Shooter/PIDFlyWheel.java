@@ -32,14 +32,14 @@ public class PIDFlyWheel extends CommandBase {
   @Override
   public void execute() {
     double power = shooter.flyWheelSpeedOutPut(flyWheelSpeed);
-    this.shooter.controlFlyWheelMotor(0.8);
+    this.shooter.controlFlyWheelMotor(power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
    
-      //this.shooter.controlFlyWheelMotor(0);
+      this.shooter.controlFlyWheelMotor(0);
     
   }
 

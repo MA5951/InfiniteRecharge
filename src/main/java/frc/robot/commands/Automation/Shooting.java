@@ -10,10 +10,11 @@ package frc.robot.commands.Automation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.commands.Shooter.PIDFlyWheel;
-import frc.robot.commands.Shooter.PIDSquishMotor;
+import frc.robot.commands.ShooterTransportation.PIDSquishMotor;
 import frc.robot.commands.Transportation.TransportationContorl;
 import frc.robot.subsystems.Automation;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterTransportation;
 import frc.robot.subsystems.Transportation;
 
 public class Shooting extends CommandBase {
@@ -25,7 +26,7 @@ public class Shooting extends CommandBase {
   private CommandBase squishSpeed, transportation, flyWheel;
 
   public Shooting(Automation automation) {
-    squishSpeed = new PIDSquishMotor(Shooter.getinstance());
+    squishSpeed = new PIDSquishMotor(ShooterTransportation.getinstance());
     transportation = new TransportationContorl(Transportation.getinstance());
     flyWheel = new PIDFlyWheel(Shooter.getinstance());
 

@@ -10,12 +10,12 @@ package frc.robot.commands.Automation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.commands.Chassis.PIDVision;
-import frc.robot.commands.Shooter.AngleChangeSolenoidShooter;
 import frc.robot.commands.Shooter.PIDFlyWheel;
 import frc.robot.commands.Transportation.TransportationContorl;
 import frc.robot.subsystems.Automation;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterTransportation;
 import frc.robot.subsystems.Transportation;
 
 public class PreparationShooting extends CommandBase {
@@ -31,7 +31,6 @@ public class PreparationShooting extends CommandBase {
     visionPID = new PIDVision(0, 0.1, Chassis.getinstance());
     flyWheelPID = new PIDFlyWheel(Shooter.getinstance());
     transportation = new TransportationContorl(Transportation.getinstance());
-    changeShooterAngle = new AngleChangeSolenoidShooter(Shooter.getinstance());
 
     auto = automation;
     addRequirements(auto);
@@ -55,7 +54,7 @@ public class PreparationShooting extends CommandBase {
     visionPID.execute();
     flyWheelPID.execute();
 
-    if (!Shooter.getinstance().isBallInShooter()) {
+    if (!ShooterTransportation.getinstance().isBallInShooter()) {
       transportation.execute();
     } else {
       transportation.cancel();

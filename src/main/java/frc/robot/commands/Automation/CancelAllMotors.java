@@ -10,6 +10,7 @@ package frc.robot.commands.Automation;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterTransportation;
 import frc.robot.subsystems.Transportation;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -19,6 +20,7 @@ public class CancelAllMotors extends InstantCommand {
   Intake intake;
   Transportation transportation;
   Shooter shooter;
+  ShooterTransportation shooterTransportation;
   public CancelAllMotors(Intake intake, Transportation transportation, Shooter shooter) {
     intake = this.intake;
     transportation = this.transportation;
@@ -32,6 +34,6 @@ public class CancelAllMotors extends InstantCommand {
     intake.intakeMotorControl(0);
     transportation.transportationControl(0);
     shooter.controlFlyWheelMotor(0);
-    shooter.controlSquishMotor(0);
+    shooterTransportation.controlSquishMotor(0);
   }
 }

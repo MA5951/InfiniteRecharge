@@ -11,11 +11,12 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Intake.IntakeOpenClose;
 import frc.robot.commands.Intake.IntakePullPush;
-import frc.robot.commands.Shooter.PIDSquishMotor;
+import frc.robot.commands.ShooterTransportation.PIDSquishMotor;
 import frc.robot.commands.Transportation.TransportationContorl;
 import frc.robot.subsystems.Automation;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterTransportation;
 import frc.robot.subsystems.Transportation;
 
 public class IntakeAutomation extends CommandBase {
@@ -35,7 +36,7 @@ public class IntakeAutomation extends CommandBase {
     piston = new IntakeOpenClose(Intake.getinstance());
     roller = new IntakePullPush(0.7, Intake.getinstance()); // TODO Enter real speed value
     transportation = new TransportationContorl(Transportation.getinstance());
-    PIDSquish = new PIDSquishMotor(Shooter.getinstance());
+    PIDSquish = new PIDSquishMotor(ShooterTransportation.getinstance());
     auto = automation;
     addRequirements(auto);
   }
@@ -54,7 +55,7 @@ public class IntakeAutomation extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Shooter.getinstance().isBallInShooter()) {
+    if (ShooterTransportation.getinstance().isBallInShooter()) {
       PIDSquish.execute();
     } else {
       PIDSquish.cancel();

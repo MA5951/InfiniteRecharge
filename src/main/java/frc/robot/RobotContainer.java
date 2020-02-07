@@ -33,6 +33,7 @@ import frc.robot.commands.Roulette.roundTwoRoulettePID;
 import frc.robot.commands.Roulette.roundThreeRoulettePID;
 import frc.robot.subsystems.Roulette;
 */
+import frc.robot.subsystems.ShooterTransportation;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -49,6 +50,7 @@ public class RobotContainer {
   private  Shooter shooter = Shooter.getinstance();
   private Chassis chassis = Chassis.getinstance();
   private Automation auto = Automation.getinstance();
+  private ShooterTransportation shooterTransportation = ShooterTransportation.getinstance();
 
   public static XboxController OperatingJoystick = new XboxController(2);
   public static Joystick leftJoystick = new Joystick(0);
@@ -87,9 +89,8 @@ public class RobotContainer {
     transportationControlButton.whileHeld(new IntakeAutomation(auto));
     pullIntake.whileHeld(new IntakePullPush(0.7, intake));
     openCloseIntake.whenPressed(new IntakeOpenClose(intake));
-    AngleChangeSolenoidShooter.whenPressed(new frc.robot.commands.Shooter.AngleChangeSolenoidShooter(shooter));
     PIDFlyWheel.whileHeld(new frc.robot.commands.Shooter.PIDFlyWheel(shooter));
-    PIDSquishMotor.whileHeld(new frc.robot.commands.Shooter.PIDSquishMotor(shooter));
+    PIDSquishMotor.whileHeld(new frc.robot.commands.ShooterTransportation.PIDSquishMotor(shooterTransportation));
 
     //PIDVision.whileHeld(new PIDVision(0, 0.2, chassis));
     //MApath.whenPressed(new roulettePath(chassis));
