@@ -86,7 +86,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    transportationControlButton.whileHeld(new IntakeAutomation(auto));
+    transportationControlButton.whileHeld(new TransportationContorl(transportation));
     pullIntake.whileHeld(new IntakePullPush(0.7, intake));
     openCloseIntake.whenPressed(new IntakeOpenClose(intake));
     PIDFlyWheel.whileHeld(new frc.robot.commands.Shooter.PIDFlyWheel(shooter));

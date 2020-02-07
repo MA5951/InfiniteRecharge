@@ -9,17 +9,13 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.revrobotics.EncoderType;
-
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants.*;
-import frc.robot.commands.Shooter.PIDFlyWheel;
+
 
 /**
  * An example subsystem. You can replace me with your own Subsystem.
@@ -27,8 +23,8 @@ import frc.robot.commands.Shooter.PIDFlyWheel;
 public class Shooter extends SubsystemBase {
   private static Shooter shooter;
 
-  private double KP_FLY_WHEEL_SPEED = 0.05;
-  private double KI_FLY_WHEEL_SPEED = 0;
+  private double KP_FLY_WHEEL_SPEED = 0.0055;
+  private double KI_FLY_WHEEL_SPEED = 0.000019;
   private double KD_FLY_WHEEL_SPEED = 0;
 
 
@@ -46,7 +42,7 @@ public class Shooter extends SubsystemBase {
 
 
   public double shootCounter = 0;
-  private boolean lastState;
+  
 
   private edu.wpi.first.wpilibj.controller.PIDController flyWheelSpeed;
 
@@ -63,10 +59,12 @@ public class Shooter extends SubsystemBase {
     flyWheelSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_FLY_WHEEL_SPEED, KI_FLY_WHEEL_SPEED,
         KD_FLY_WHEEL_SPEED);
     flyWheelSpeed.setTolerance(1); // TODO
-
+    flyWheelSpeed.setIntegratorRange(-0.8, 0.8);
     flyWheelEncoder = new Encoder(9 , 8 , false , EncodingType.k4X);
 
     flyWheelEncoder.setDistancePerPulse(1);
+
+    
 
   }
 
@@ -77,8 +75,9 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("kRateFlyWheelSpeed", kRateFlyWheelSpeed());
     SmartDashboard.putNumber("kRateFlyWheelEncoder", flyWheelEncoder.getRate());
     SmartDashboard.putNumber("kSetPointPID", flyWheelSpeed.getSetpoint());
-
-    
+    SmartDashboard.putNumber("Output", flyWheelSpeedOutPut(610));
+    SmartDashboard.putNumber("iFlyWheel", flyWheelSpeed.getI());
+    SmartDashboard.putNumber("pFlyWheel", flyWheelSpeed.getP());
   }
 
   
@@ -108,7 +107,7 @@ public class Shooter extends SubsystemBase {
    * @return The result of the calculation
    */
   public double flyWheelSpeedOutPut(double setPoint) {
-    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), -1, 1);
+    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), -0.9, 0.9);
   }
 
   
