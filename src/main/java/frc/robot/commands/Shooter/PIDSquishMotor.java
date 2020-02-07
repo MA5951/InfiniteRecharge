@@ -36,7 +36,7 @@ public class PIDSquishMotor extends CommandBase {
   @Override
   public void end(boolean interrupted) {
 
-      this.shooter.controlSquishMotor(0);
+      //this.shooter.controlSquishMotor(0);
     
  
   }

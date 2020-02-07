@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.CancelAllMotors;
+
 import frc.robot.commands.Chassis.tankDrive;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Intake;
@@ -43,11 +43,6 @@ public class Robot extends TimedRobot {
   public static int path;
   public static boolean isShootingPrepared;
   private RobotContainer m_robotContainer;
-
-  Intake intake = Intake.getinstance();
-  Transportation transportation = Transportation.getinstance();
-  Shooter shooter = Shooter.getinstance();
-  CancelAllMotors cancelAllMotors = new CancelAllMotors(intake, transportation, shooter);
  
 tankDrive tankDrive = new tankDrive( Chassis.getinstance());
  // private Roulette roulette = Roulette.getinstance();
@@ -164,7 +159,7 @@ tankDrive tankDrive = new tankDrive( Chassis.getinstance());
     Chassis.getinstance().resetValue();
     CommandScheduler.getInstance().cancelAll();
     Shooter.getinstance().shootCounter = 0;
-    cancelAllMotors.initialize();
+   
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to

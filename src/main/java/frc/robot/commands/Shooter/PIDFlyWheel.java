@@ -39,7 +39,7 @@ public class PIDFlyWheel extends CommandBase {
   @Override
   public void end(boolean interrupted) {
    
-      this.shooter.controlFlyWheelMotor(0);
+      //this.shooter.controlFlyWheelMotor(0);
     
   }
 
