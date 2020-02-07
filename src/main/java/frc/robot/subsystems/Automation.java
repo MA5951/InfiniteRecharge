@@ -24,12 +24,10 @@ public class Automation extends SubsystemBase {
   // here. Call these from Commands.
   private static Automation auto;
   public static BooleanSupplier isShootingPrepared;
-  public static CommandBase shooting;
-  public static CommandBase preparationShooting;
+
 
   private Automation(){
-    shooting = new Shooting(auto.getinstance());
-    preparationShooting = new PreparationShooting(auto.getinstance());
+
     
   }
 

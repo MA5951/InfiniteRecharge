@@ -20,7 +20,8 @@ public final class ShooterConstants {
     public static final int FLY_WHEEL_A = 6;
 
     public static final int SQUISH_MOTOR = 7;
-    public static final int IR_BALL = 2;
+    public static final int IR_BALL = 5;
+
     public static final int ANGLE_CHANGE = 4;
     
 }

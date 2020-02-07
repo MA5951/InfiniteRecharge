@@ -5,58 +5,43 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Roulette;
+package frc.robot.commands.Intake;
 
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
-import frc.robot.subsystems.Roulette;
+import frc.robot.subsystems.Intake;
 
-public class roundThreeRoulettePID extends CommandBase {
+public class OpenIntake extends CommandBase {
   /**
-   * The PID command for round 3.
+   * Creates a new OpenIntake.
    */
 
-  private Roulette roulette;
-  private double speed;
-  private int setpoint;
-  private double lastTimeOnTarget;
-  private double waitTime;
-   
-  public roundThreeRoulettePID(double waitTime, Roulette roulette) {
-    this.waitTime = waitTime;
-    this.roulette = roulette;
-    addRequirements(roulette);
+   Intake intake;
+
+  public OpenIntake(Intake intake) {
+    intake = this.intake;
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    roulette.ticksControl(true);
-    roulette.resetTicks();
-    setpoint = Robot.setpointColor - roulette.getCurrentColor();
+    intake.intakeSolenoidControl(Value.kForward);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    roulette.countTicks();
-    speed = roulette.spinPidOutput(setpoint);
-    roulette.controlSpeed(speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    roulette.controlSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (!roulette.isPIDOnTarget()) {
-      lastTimeOnTarget = Timer.getFPGATimestamp();
-    }
-    return roulette.isPIDOnTarget() && Timer.getFPGATimestamp() - lastTimeOnTarget > waitTime;
+    return false;
   }
 }

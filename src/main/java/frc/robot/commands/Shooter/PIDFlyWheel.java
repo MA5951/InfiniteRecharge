@@ -8,6 +8,7 @@
 package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Shooter;
 
 public class PIDFlyWheel extends CommandBase {
@@ -24,21 +25,22 @@ public class PIDFlyWheel extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flyWheelSpeed = this.shooter.calculateSpeedToFlyWheel(1); // TODO
+    flyWheelSpeed = this.shooter.calculateSpeedToFlyWheel(Chassis.getinstance().distance()); // TODO
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     double power = shooter.flyWheelSpeedOutPut(flyWheelSpeed);
-    this.shooter.controlFlyWheelMotor(power);
+    this.shooter.controlFlyWheelMotor(0.8);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.shooter.controlFlyWheelMotor(0);
    
+      this.shooter.controlFlyWheelMotor(0);
+    
   }
 
   // Returns true when the command should end.

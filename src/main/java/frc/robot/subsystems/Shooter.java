@@ -9,9 +9,12 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.EncoderType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
@@ -31,7 +34,7 @@ public class Shooter extends SubsystemBase {
   private double KI_SQUISH_MOTOR_SPEED = 0;
   private double KD_SQUISH_MOTOR_SPEED = 0;
 
-  public static double shooterAngle = 0; // TODO
+  public static double shooterAngle = 25; // TODO
   private double Gravity = 9.8; // TODO
 
   private double deltaY = 0; // TODO
@@ -49,15 +52,17 @@ public class Shooter extends SubsystemBase {
   private DigitalInput IRBall;
   private Solenoid angleChange;
 
-  public int shootCounter = 0;
+  public double shootCounter = 0;
   private boolean lastState;
 
   private edu.wpi.first.wpilibj.controller.PIDController flyWheelSpeed;
   private edu.wpi.first.wpilibj.controller.PIDController squishMotorSpeed;
 
-  private Shooter() {
+  private Encoder flyWheelEncoder;
+  private Encoder squishMotorEncoder;
 
-    lastState = IRBall.get();
+
+  private Shooter() {
 
     flyWheelA = new TalonSRX(ShooterConstants.FLY_WHEEL_A);
     flyWheelB = new TalonSRX(ShooterConstants.FLY_WHEEL_B);
@@ -73,16 +78,26 @@ public class Shooter extends SubsystemBase {
         KD_SQUISH_MOTOR_SPEED);
     flyWheelSpeed.setTolerance(1); // TODO
     squishMotorSpeed.setTolerance(1); // TODO
+
+    flyWheelEncoder = new Encoder(9 , 8 , false , EncodingType.k4X);
+    squishMotorEncoder = new Encoder (6 ,7 , false , EncodingType.k4X);
+
+    flyWheelEncoder.setDistancePerPulse(1);
+    squishMotorEncoder.setDistancePerPulse(1);
+
+    lastState = IRBall.get();
   }
 
   /**
    * Display The given values to the shuffleboard
    */
   public void ShooterValue() {
-    SmartDashboard.putBoolean("IRball", isBallInShooter());
+    SmartDashboard.putBoolean("IRball", !IRBall.get());
     SmartDashboard.putNumber("kRateFlyWheelSpeed", kRateFlyWheelSpeed());
     SmartDashboard.putNumber("kRateSquishMotor", kRateSquishMotorSpeed());
     SmartDashboard.putBoolean("isPistonOpen", isPistonOpen());
+    SmartDashboard.putNumber("ball", shootCounter);
+    
   }
 
   /**
@@ -122,7 +137,7 @@ public class Shooter extends SubsystemBase {
    * @return The kRate calculation
    */
   public double kRateFlyWheelSpeed() {
-    return (flyWheelB.getSelectedSensorVelocity() * (2 * Math.PI)) / ticksPerRoundflyWheel;
+    return (flyWheelEncoder.getRate() * (2 * Math.PI)) / ticksPerRoundflyWheel;
   }
 
   /**
@@ -130,7 +145,7 @@ public class Shooter extends SubsystemBase {
    * @return The kRate calculation
    */
   public double kRateSquishMotorSpeed() {
-    return (squishMotor.getSelectedSensorVelocity() * (2 * Math.PI)) / ticksPerRoundsquishMotor;
+    return (squishMotorEncoder.getRate() * (2 * Math.PI)) / ticksPerRoundsquishMotor;
   }
 
   /**

@@ -102,6 +102,9 @@ public class Chassis extends SubsystemBase {
 
     canEncoderRightCIMcoder.setPositionConversionFactor(1);
     canEncoderLeftCIMcoder.setPositionConversionFactor(1);
+    
+    canEncoderRight.setVelocityConversionFactor(1);
+    canEncoderleft.setVelocityConversionFactor(1);
 
     leftMotor.follow(leftFrontMotor);
     rightMotor.follow(rightFrontMotor);
@@ -162,6 +165,10 @@ public class Chassis extends SubsystemBase {
 
     SmartDashboard.putNumber("canEncoderLeftCIMcoder", canEncoderLeftCIMcoder.getPosition());
     SmartDashboard.putNumber("canEncoderRightCIMcoder", canEncoderRightCIMcoder.getPosition());
+
+    SmartDashboard.putNumber("CANEncoderLeftRate", canEncoderRight.getVelocity());
+    SmartDashboard.putNumber("CANEncoderRightRate", canEncoderRight.getVelocity());
+
     SmartDashboard.putNumber("angelVison", limelightAngleFinal());
   }
 

@@ -19,7 +19,6 @@ public final class TransportationConstants {
     //Motors
     public static final int transportationMotor =11;
 
-    //Joysticks
-    public static final int transportationButton = 1;
+
 
 }

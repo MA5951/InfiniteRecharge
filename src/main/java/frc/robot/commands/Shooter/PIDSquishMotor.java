@@ -29,13 +29,16 @@ public class PIDSquishMotor extends CommandBase {
   @Override
   public void execute() {
     double power = shooter.squishMotorSpeedOutput();
-    this.shooter.controlSquishMotor(power);
+    this.shooter.controlSquishMotor(-0.9);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.shooter.controlSquishMotor(0);
+
+      this.shooter.controlSquishMotor(0);
+    
+ 
   }
 
   // Returns true when the command should end.

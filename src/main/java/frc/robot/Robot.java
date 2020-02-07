@@ -14,8 +14,14 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.CancelAllMotors;
+import frc.robot.commands.Chassis.tankDrive;
 import frc.robot.subsystems.Chassis;
-import frc.robot.subsystems.Roulette;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Transportation;
+
+//import frc.robot.subsystems.Roulette;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -36,16 +42,20 @@ public class Robot extends TimedRobot {
   public static double finalLimelightAng;
   public static int path;
   public static boolean isShootingPrepared;
-  
   private RobotContainer m_robotContainer;
- 
 
-  private Roulette roulette = Roulette.getinstance();
+  Intake intake = Intake.getinstance();
+  Transportation transportation = Transportation.getinstance();
+  Shooter shooter = Shooter.getinstance();
+  CancelAllMotors cancelAllMotors = new CancelAllMotors(intake, transportation, shooter);
+ 
+tankDrive tankDrive = new tankDrive( Chassis.getinstance());
+ // private Roulette roulette = Roulette.getinstance();
   private String gameData = DriverStation.getInstance().getGameSpecificMessage();
   public static int setpointColor;
   public static String colorString = "Unknown";
 
-
+/*
   public void getColorFromFMS() {
     if(gameData.length() > 0)
     {
@@ -77,7 +87,7 @@ public class Robot extends TimedRobot {
       }
     }
   }
-
+*/
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -89,7 +99,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     isShootingPrepared = false;
-
+    CommandScheduler.getInstance().setDefaultCommand(Chassis.getinstance(), tankDrive);
+  
   }
 
   /**
@@ -113,7 +124,7 @@ public class Robot extends TimedRobot {
     // read values periodically
    
  
-    getColorFromFMS();
+    //getColorFromFMS();
 
   }
 
@@ -123,6 +134,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     Chassis.getinstance().setidilmodeBrake();
+    CommandScheduler.getInstance().cancelAll();
   }
 
   @Override
@@ -149,6 +161,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    Chassis.getinstance().resetValue();
+    CommandScheduler.getInstance().cancelAll();
+    Shooter.getinstance().shootCounter = 0;
+    cancelAllMotors.initialize();
 
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to

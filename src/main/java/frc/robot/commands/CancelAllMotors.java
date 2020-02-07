@@ -5,30 +5,33 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Shooter;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Transportation;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class AngleChangeSolenoidShooter extends InstantCommand {
-private Shooter shooter;
-
-  public AngleChangeSolenoidShooter(Shooter shooter) {
-    this.shooter = shooter;
-    addRequirements(this.shooter);
+public class CancelAllMotors extends InstantCommand {
+  Intake intake;
+  Transportation transportation;
+  Shooter shooter;
+  public CancelAllMotors(Intake intake, Transportation transportation, Shooter shooter) {
+    intake = this.intake;
+    transportation = this.transportation;
+    shooter = this.shooter;
+    addRequirements(intake, transportation, shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
- if(shooter.isPistonOpen()){
-   shooter.shooterAngle = 68.5; //TODO
- }else{
-  shooter.shooterAngle = 25; //TODO
- }
-    this.shooter.OpenAngleChangeSolenoid(!shooter.isPistonOpen());
+    intake.intakeMotorControl(0);
+    transportation.transportationControl(0);
+    shooter.controlFlyWheelMotor(0);
+    shooter.controlSquishMotor(0);
   }
 }
