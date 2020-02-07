@@ -27,18 +27,18 @@ import frc.robot.commands.Shooter.PIDFlyWheel;
 public class Shooter extends SubsystemBase {
   private static Shooter shooter;
 
-  private double KP_FLY_WHEEL_SPEED = 0;
+  private double KP_FLY_WHEEL_SPEED = 0.05;
   private double KI_FLY_WHEEL_SPEED = 0;
   private double KD_FLY_WHEEL_SPEED = 0;
 
 
   public static double shooterAngle = 25; // TODO
-  private double Gravity = 9.8; // TODO
+  private double Gravity = 9.807; // TODO
 
   private double deltaY = 0; // TODO
   private double radiusFlyWheel = 0.0508; // TODO
 
-  private double ticksPerRoundflyWheel = 1; // TODO;
+  private double ticksPerRoundflyWheel = 1074.5; // TODO;
 
   private TalonSRX flyWheelA;
   private TalonSRX flyWheelB;
@@ -131,13 +131,7 @@ public class Shooter extends SubsystemBase {
     return flyWheelSpeed.atSetpoint();
   }
 
-  /**
-   * Check if the squish is on the setpoint
-   * @return True if on target, false if isn't
-   */
-  public boolean isSquishOnTarget() {
-    return squishMotorSpeed.atSetpoint();
-  }
+
 
   public static Shooter getinstance() {
     if (shooter == null) {
