@@ -23,8 +23,8 @@ import frc.robot.Constants.*;
 public class Shooter extends SubsystemBase {
   private static Shooter shooter;
 
-  private double KP_FLY_WHEEL_SPEED = 0.0055;
-  private double KI_FLY_WHEEL_SPEED = 0.000019;
+  private double KP_FLY_WHEEL_SPEED = 0.0093;
+  private double KI_FLY_WHEEL_SPEED = 0.000048;
   private double KD_FLY_WHEEL_SPEED = 0;
 
 
@@ -34,7 +34,7 @@ public class Shooter extends SubsystemBase {
   private double deltaY = 0; // TODO
   private double radiusFlyWheel = 0.0508; // TODO
 
-  private double ticksPerRoundflyWheel = 1074.5; // TODO;
+  private double ticksPerRoundflyWheel = 999.5; // TODO;
 
   private TalonSRX flyWheelA;
   private TalonSRX flyWheelB;
@@ -59,7 +59,7 @@ public class Shooter extends SubsystemBase {
     flyWheelSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_FLY_WHEEL_SPEED, KI_FLY_WHEEL_SPEED,
         KD_FLY_WHEEL_SPEED);
     flyWheelSpeed.setTolerance(1); // TODO
-    flyWheelSpeed.setIntegratorRange(-0.8, 0.8);
+    flyWheelSpeed.setIntegratorRange(-0.85, 0.85);
     flyWheelEncoder = new Encoder(9 , 8 , false , EncodingType.k4X);
 
     flyWheelEncoder.setDistancePerPulse(1);
@@ -75,9 +75,7 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("kRateFlyWheelSpeed", kRateFlyWheelSpeed());
     SmartDashboard.putNumber("kRateFlyWheelEncoder", flyWheelEncoder.getRate());
     SmartDashboard.putNumber("kSetPointPID", flyWheelSpeed.getSetpoint());
-    SmartDashboard.putNumber("Output", flyWheelSpeedOutPut(610));
-    SmartDashboard.putNumber("iFlyWheel", flyWheelSpeed.getI());
-    SmartDashboard.putNumber("pFlyWheel", flyWheelSpeed.getP());
+    SmartDashboard.putNumber("Output", flyWheelSpeedOutPut(550));
   }
 
   
@@ -107,13 +105,11 @@ public class Shooter extends SubsystemBase {
    * @return The result of the calculation
    */
   public double flyWheelSpeedOutPut(double setPoint) {
-    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), -0.9, 0.9);
+    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), -0.85, 0.85);
   }
 
-  
   /**
-   * Calculate the needed speed of the fly wheel to shoot the ball
-   * @param deltaDistance The disired distance
+   * @param deltaDistance The distance the robot need to reach
    * @return The result of the calculation
    */
   public double calculateSpeedToFlyWheel(double deltaDistance) {

@@ -26,16 +26,16 @@ import frc.robot.Constants.*;
 public class ShooterTransportation extends SubsystemBase {
   private static ShooterTransportation shooterTransportation;
 
-  private double KP_SQUISH_MOTOR_SPEED = 0;
-  private double KI_SQUISH_MOTOR_SPEED = 0;
+  private double KP_SQUISH_MOTOR_SPEED = 0.0093;
+  private double KI_SQUISH_MOTOR_SPEED = 0.0025;
   private double KD_SQUISH_MOTOR_SPEED = 0;
 
 
 
-  private double ticksPerRoundsquishMotor = 1; // TODO;
+  private double ticksPerRoundsquishMotor = 919.25; // TODO;
   private TalonSRX squishMotor;
 
-  private double kRateSquish = 0; // TODO
+  private double kRateSquish = -90; // TODO
 
   private DigitalInput IRBall;
 
@@ -56,7 +56,9 @@ public class ShooterTransportation extends SubsystemBase {
         KD_SQUISH_MOTOR_SPEED);
     squishMotorSpeed.setTolerance(1); // TODO
 
-    squishMotorEncoder = new Encoder (6 ,7 , false , EncodingType.k4X);
+squishMotorSpeed.setIntegratorRange(-0.85, 0.85);
+
+    squishMotorEncoder = new Encoder (6 ,7 , true , EncodingType.k4X);
 
     squishMotorEncoder.setDistancePerPulse(1);
 
@@ -70,6 +72,9 @@ public class ShooterTransportation extends SubsystemBase {
     SmartDashboard.putBoolean("IRball", !IRBall.get());
     SmartDashboard.putNumber("kRateSquishMotor", kRateSquishMotorSpeed());
     SmartDashboard.putNumber("ball", shootCounter);
+    SmartDashboard.putNumber("kRateSquishEncoder", squishMotorEncoder.getRate());
+    SmartDashboard.putNumber("kSetPointPIDSquish", squishMotorSpeed.getSetpoint());
+    SmartDashboard.putNumber("Output", squishMotorSpeedOutput());
     
   }
 
@@ -95,7 +100,7 @@ public class ShooterTransportation extends SubsystemBase {
    * @return The result of the calculation
    */
   public double squishMotorSpeedOutput() {
-    return MathUtil.clamp(squishMotorSpeed.calculate(kRateSquishMotorSpeed(), kRateSquish), -1, 1);
+    return MathUtil.clamp(squishMotorSpeed.calculate(kRateSquishMotorSpeed(), kRateSquish), -0.8, 0.8);
   }
 
   /**
