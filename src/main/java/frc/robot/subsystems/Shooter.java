@@ -9,6 +9,12 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.EncoderType;
+import com.revrobotics.SparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,7 +31,7 @@ public class Shooter extends SubsystemBase {
 
   private double KP_FLY_WHEEL_SPEED = 0.09;
   private double KI_FLY_WHEEL_SPEED = 0.00004;
-  private double KD_FLY_WHEEL_SPEED =0.0002;
+  private double KD_FLY_WHEEL_SPEED =0.0001;
 
 
   public static double shooterAngle = 25; // TODO
@@ -46,11 +52,9 @@ public class Shooter extends SubsystemBase {
 
   private edu.wpi.first.wpilibj.controller.PIDController flyWheelSpeed;
 
-  private Encoder flyWheelEncoder;
-
+  private Encoder flyWheelEncoder;  
 
   private Shooter() {
-
     flyWheelA = new TalonSRX(ShooterConstants.FLY_WHEEL_A);
     flyWheelB = new TalonSRX(ShooterConstants.FLY_WHEEL_B);
     flyWheelA.follow(flyWheelB);
@@ -59,7 +63,7 @@ public class Shooter extends SubsystemBase {
     flyWheelSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_FLY_WHEEL_SPEED, KI_FLY_WHEEL_SPEED,
         KD_FLY_WHEEL_SPEED);
     flyWheelSpeed.setTolerance(1); // TODO
-    flyWheelSpeed.setIntegratorRange(0, 0.85);
+    flyWheelSpeed.setIntegratorRange(0, 0.01);
     flyWheelEncoder = new Encoder(9 , 8 , false , EncodingType.k4X);
 
     flyWheelEncoder.setDistancePerPulse(1);
@@ -105,7 +109,7 @@ public class Shooter extends SubsystemBase {
    * @return The result of the calculation
    */
   public double flyWheelSpeedOutPut(double setPoint) {
-    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), 0.01, 0.85);
+    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), 0, 0.85);
   }
 
   /**
