@@ -7,6 +7,7 @@
 
 package frc.robot.commands.Shooter;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Shooter;
@@ -25,7 +26,7 @@ public class PIDFlyWheel extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flyWheelSpeed = 600;//this.shooter.calculateSpeedToFlyWheel(Chassis.getinstance().distance()); // TODO
+    flyWheelSpeed = SmartDashboard.getNumber("flywheelSetpoint", 0);;//this.shooter.calculateSpeedToFlyWheel(Chassis.getinstance().distance()); // TODO
   }
 
   // Called every time the scheduler runs while the command is scheduled.

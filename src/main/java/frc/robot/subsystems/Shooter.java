@@ -57,6 +57,7 @@ public class Shooter extends SubsystemBase {
   private Shooter() {
     flyWheelA = new TalonSRX(ShooterConstants.FLY_WHEEL_A);
     flyWheelB = new TalonSRX(ShooterConstants.FLY_WHEEL_B);
+    flyWheelB.configOpenloopRamp(0.5);
     flyWheelA.follow(flyWheelB);
 
 
@@ -79,7 +80,7 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("kRateFlyWheelSpeed", kRateFlyWheelSpeed());
     SmartDashboard.putNumber("kRateFlyWheelEncoder", flyWheelEncoder.getRate());
     SmartDashboard.putNumber("kSetPointPID", flyWheelSpeed.getSetpoint());
-    SmartDashboard.putNumber("Output", flyWheelSpeedOutPut(550));
+    //SmartDashboard.putNumber("Output", flyWheelSpeedOutPut(550));
   }
 
   
