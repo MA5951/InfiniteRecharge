@@ -37,8 +37,8 @@ public class Shooting extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flyWheel.schedule(false);
-    squishSpeed.schedule(false);
+    flyWheel.schedule();
+    squishSpeed.schedule();
     transportation.schedule();
     Shooter.getinstance().shootCounter = 0;
     flyWheel.initialize();

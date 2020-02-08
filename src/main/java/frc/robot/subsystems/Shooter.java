@@ -80,7 +80,7 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("kRateFlyWheelSpeed", kRateFlyWheelSpeed());
     SmartDashboard.putNumber("kRateFlyWheelEncoder", flyWheelEncoder.getRate());
     SmartDashboard.putNumber("kSetPointPID", flyWheelSpeed.getSetpoint());
-    //SmartDashboard.putNumber("Output", flyWheelSpeedOutPut(550));
+
   }
 
   

@@ -39,7 +39,7 @@ public class PreparationShooting extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flyWheelPID.schedule(false);
+    flyWheelPID.schedule();
     Robot.isShootingPrepared = false;
     visionPID.initialize();
     flyWheelPID.initialize();
