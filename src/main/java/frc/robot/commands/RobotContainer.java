@@ -5,11 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Robot;
 import frc.robot.commands.Automation.IntakeAutomation;
 import frc.robot.commands.Automation.PreparationShooting;
 import frc.robot.commands.Automation.Shooting;
@@ -90,7 +91,7 @@ public class RobotContainer {
     pullIntake.whileHeld(new IntakePullPush(0.7, intake));
     openCloseIntake.whenPressed(new IntakeOpenClose(intake));
     PIDFlyWheel.whileHeld(new frc.robot.commands.Shooter.PIDFlyWheel(shooter));
-    PIDSquishMotor.whileHeld(new frc.robot.commands.ShooterTransportation.PIDSquishMotor(shooterTransportation));
+    PIDSquishMotor.whileHeld(new frc.robot.commands.ShooterTransportation.PIDSquishMotor(auto));
     pushOut.whileHeld(new pushTransportationAndSquish(auto));
     //PIDVision.whileHeld(new PIDVision(0, 0.2, chassis));
     //MApath.whenPressed(new roulettePath(chassis));

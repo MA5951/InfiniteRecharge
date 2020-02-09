@@ -8,6 +8,8 @@
 package frc.robot.commands.ShooterTransportation;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Automation;
+import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterTransportation;
 import frc.robot.subsystems.Transportation;
@@ -17,9 +19,15 @@ public class PIDSquishMotor extends CommandBase {
    * Creates a new PIDSquishMotor.
    */
   private ShooterTransportation shooterTransportation;
-  public PIDSquishMotor(ShooterTransportation shooterTransportation) {
-    this.shooterTransportation = shooterTransportation;
-     addRequirements(this.shooterTransportation);
+  private Shooter shooter;
+  private Automation auto;
+  public PIDSquishMotor(Automation auto) {
+    this.shooterTransportation = ShooterTransportation.getinstance();
+    this.shooter = Shooter.getinstance();
+    this.auto = auto;
+
+
+     addRequirements(this.auto);
   }
 
   // Called when the command is initially scheduled.
@@ -31,11 +39,17 @@ public class PIDSquishMotor extends CommandBase {
   @Override
   public void execute() {
     double power = shooterTransportation.squishMotorSpeedOutput();
+    if(shooter.getRate()>shooter.getPIDSetpoint()-100 && shooter.getRate()< shooter.getPIDSetpoint()+100){
+      
     if(shooterTransportation.getMotorCurrnet() < -30) {
       shooterTransportation.controlSquishMotor(-power);
     } else {
       this.shooterTransportation.controlSquishMotor(power);
     }
+  }
+  else{
+    this.shooterTransportation.controlSquishMotor(0);
+  }
   }
 
   // Called once the command ends or is interrupted.

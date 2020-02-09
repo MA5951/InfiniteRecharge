@@ -9,11 +9,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.EncoderType;
-import com.revrobotics.SparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
@@ -131,7 +126,13 @@ public class Shooter extends SubsystemBase {
     return flyWheelSpeed.atSetpoint();
   }
 
+  public double getRate(){
+    return flyWheelEncoder.getRate();
+  }
 
+  public double getPIDSetpoint(){
+    return flyWheelSpeed.getSetpoint();
+  }
 
   public static Shooter getinstance() {
     if (shooter == null) {

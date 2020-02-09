@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants.*;
+import frc.robot.commands.Shooter.PIDFlyWheel;
 
 /**
  * An example subsystem. You can replace me with your own Subsystem.
@@ -56,7 +57,7 @@ public class ShooterTransportation extends SubsystemBase {
         KD_SQUISH_MOTOR_SPEED);
     squishMotorSpeed.setTolerance(1); // TODO
 
-squishMotorSpeed.setIntegratorRange(-0.85, 0.85);
+    squishMotorSpeed.setIntegratorRange(-0.85, 0.85);
 
     squishMotorEncoder = new Encoder (6 ,7 , true , EncodingType.k4X);
 
@@ -138,6 +139,8 @@ squishMotorSpeed.setIntegratorRange(-0.85, 0.85);
       lastState = IRBall.get();
     }
   }
+
+
 
   @Override
   public void periodic() {
