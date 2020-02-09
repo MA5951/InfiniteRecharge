@@ -10,6 +10,7 @@ package frc.robot.commands.ShooterTransportation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterTransportation;
+import frc.robot.subsystems.Transportation;
 
 public class PIDSquishMotor extends CommandBase {
   /**
@@ -30,7 +31,11 @@ public class PIDSquishMotor extends CommandBase {
   @Override
   public void execute() {
     double power = shooterTransportation.squishMotorSpeedOutput();
-    this.shooterTransportation.controlSquishMotor(power);
+    if(shooterTransportation.getMotorCurrnet() < -30) {
+      shooterTransportation.controlSquishMotor(-power);
+    } else {
+      this.shooterTransportation.controlSquishMotor(power);
+    }
   }
 
   // Called once the command ends or is interrupted.

@@ -8,18 +8,23 @@
 package frc.robot.commands.Transportation;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Automation;
 import frc.robot.subsystems.ShooterTransportation;
 import frc.robot.subsystems.Transportation;
 
-public class TransportationContorl extends CommandBase {
+public class pushTransportationAndSquish extends CommandBase {
   /**
-   * Creates a new TransportationContorl.
+   * Creates a new pushTransportationAndSquish.
    */
-  private Transportation transportation;
-  public TransportationContorl(Transportation tr) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    transportation = tr;
-    addRequirements(transportation);
+  Transportation transportation;
+  Automation auto;
+  double speed;
+  ShooterTransportation shooterTransportation;
+  public pushTransportationAndSquish(Automation auto) {
+    this.auto = auto;
+    transportation = Transportation.getinstance();
+    shooterTransportation = ShooterTransportation.getinstance();
+    addRequirements(auto);
   }
 
   // Called when the command is initially scheduled.
@@ -30,16 +35,14 @@ public class TransportationContorl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(ShooterTransportation.getinstance().getMotorCurrnet() < -30) {
-      transportation.transportationControl(0.6);
-    } else {
-      transportation.transportationControl(-0.6);
-    }
+    transportation.transportationControl(0.5);
+    shooterTransportation.controlSquishMotor(0.5);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    shooterTransportation.controlSquishMotor(0);
     transportation.transportationControl(0);
   }
 

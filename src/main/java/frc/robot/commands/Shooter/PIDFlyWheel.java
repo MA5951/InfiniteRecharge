@@ -26,7 +26,7 @@ public class PIDFlyWheel extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flyWheelSpeed = SmartDashboard.getNumber("flywheelSetpoint", 0);;//this.shooter.calculateSpeedToFlyWheel(Chassis.getinstance().distance()); // TODO
+    flyWheelSpeed = 500; //this.shooter.calculateSpeedToFlyWheel(Chassis.getinstance().distance()); // TODO
   }
 
   // Called every time the scheduler runs while the command is scheduled.

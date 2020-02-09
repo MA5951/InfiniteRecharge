@@ -60,7 +60,7 @@ public class RobotContainer {
   private JoystickButton pullIntake = new JoystickButton(OperatingJoystick, 2);
   private JoystickButton openCloseIntake = new JoystickButton(OperatingJoystick, 5);
 
-  private static JoystickButton AngleChangeSolenoidShooter = new JoystickButton(OperatingJoystick, 6);
+  private static JoystickButton pushOut = new JoystickButton(OperatingJoystick, 6);
   private static JoystickButton PIDFlyWheel = new JoystickButton(OperatingJoystick, 3);
   private static JoystickButton PIDSquishMotor = new JoystickButton(OperatingJoystick, 4);
   
@@ -68,8 +68,8 @@ public class RobotContainer {
   private JoystickButton MApath = new JoystickButton(OperatingJoystick, 2);
   private JoystickButton pathWriter = new JoystickButton(rightJoystick, 2);
 
-  private  CommandBase shooting = new Shooting(auto.getinstance());
-  private  CommandBase preparationShooting = new PreparationShooting(auto.getinstance());
+  private  CommandBase shooting = new Shooting(auto);
+  private  CommandBase preparationShooting = new PreparationShooting(auto);
   
 
   /**
@@ -91,7 +91,7 @@ public class RobotContainer {
     openCloseIntake.whenPressed(new IntakeOpenClose(intake));
     PIDFlyWheel.whileHeld(new frc.robot.commands.Shooter.PIDFlyWheel(shooter));
     PIDSquishMotor.whileHeld(new frc.robot.commands.ShooterTransportation.PIDSquishMotor(shooterTransportation));
-
+    pushOut.whileHeld(new pushTransportationAndSquish(auto));
     //PIDVision.whileHeld(new PIDVision(0, 0.2, chassis));
     //MApath.whenPressed(new roulettePath(chassis));
     //pathWriter.whileHeld(new pathWriter(0.5, chassis));

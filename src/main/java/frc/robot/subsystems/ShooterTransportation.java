@@ -75,9 +75,12 @@ squishMotorSpeed.setIntegratorRange(-0.85, 0.85);
     SmartDashboard.putNumber("kRateSquishEncoder", squishMotorEncoder.getRate());
     SmartDashboard.putNumber("kSetPointPIDSquish", squishMotorSpeed.getSetpoint());
     SmartDashboard.putNumber("Output", squishMotorSpeedOutput());
-    
+    SmartDashboard.putNumber("squishMotorCurrent", squishMotor.getStatorCurrent());
   }
 
+  public double getMotorCurrnet() {
+    return squishMotor.getStatorCurrent();
+  }
 
    /**
    * Set the power to the squish motors

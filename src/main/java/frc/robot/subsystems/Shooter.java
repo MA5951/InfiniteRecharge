@@ -57,7 +57,7 @@ public class Shooter extends SubsystemBase {
   private Shooter() {
     flyWheelA = new TalonSRX(ShooterConstants.FLY_WHEEL_A);
     flyWheelB = new TalonSRX(ShooterConstants.FLY_WHEEL_B);
-    flyWheelB.configOpenloopRamp(0.5);
+    flyWheelB.configOpenloopRamp(0.05);
     flyWheelA.follow(flyWheelB);
 
 
