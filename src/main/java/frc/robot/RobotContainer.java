@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -88,14 +88,10 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     transportationControlButton.whileHeld(new TransportationContorl(transportation));
-    pullIntake.whileHeld(new IntakePullPush(0.7, intake));
+    pullIntake.whileHeld(new IntakePullPush(-0.7, intake));
     openCloseIntake.whenPressed(new IntakeOpenClose(intake));
     PIDFlyWheel.whileHeld(new frc.robot.commands.Shooter.PIDFlyWheel(shooter));
-    PIDSquishMotor.whileHeld(new frc.robot.commands.ShooterTransportation.PIDSquishMotor(auto));
-    pushOut.whileHeld(new pushTransportationAndSquish(auto));
-    //PIDVision.whileHeld(new PIDVision(0, 0.2, chassis));
-    //MApath.whenPressed(new roulettePath(chassis));
-    //pathWriter.whileHeld(new pathWriter(0.5, chassis));
+    PIDSquishMotor.whileHeld(new frc.robot.commands.ShooterTransportation.PIDSquishMotor(shooterTransportation));
 
     // new ConditionalCommand(Automation.getinstance().shooting,
     // Automation.getinstance().preparationShooting,

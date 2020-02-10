@@ -40,7 +40,7 @@ public class Shooter extends SubsystemBase {
   private TalonSRX flyWheelA;
   private TalonSRX flyWheelB;
 
-
+public static double PIDsetpointFlyWheel =0;
 
   public double shootCounter = 0;
   
@@ -75,6 +75,8 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("kRateFlyWheelSpeed", kRateFlyWheelSpeed());
     SmartDashboard.putNumber("kRateFlyWheelEncoder", flyWheelEncoder.getRate());
     SmartDashboard.putNumber("kSetPointPID", flyWheelSpeed.getSetpoint());
+    //PIDsetpointFlyWheel = SmartDashboard.getNumber("PIDsetpointFlyWheel", 0);
+
 
   }
 

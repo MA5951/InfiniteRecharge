@@ -20,14 +20,14 @@ public class PIDSquishMotor extends CommandBase {
    */
   private ShooterTransportation shooterTransportation;
   private Shooter shooter;
-  private Automation auto;
-  public PIDSquishMotor(Automation auto) {
-    this.shooterTransportation = ShooterTransportation.getinstance();
+
+  public PIDSquishMotor( ShooterTransportation shooterTransportation) {
+    this.shooterTransportation = shooterTransportation;
     this.shooter = Shooter.getinstance();
-    this.auto = auto;
+   
 
 
-     addRequirements(this.auto);
+     addRequirements(this.shooterTransportation);
   }
 
   // Called when the command is initially scheduled.
