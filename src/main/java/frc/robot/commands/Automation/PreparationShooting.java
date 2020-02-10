@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.commands.Chassis.PIDVision;
 import frc.robot.commands.Shooter.PIDFlyWheel;
+import frc.robot.commands.ShooterTransportation.PIDSquishMotor;
 import frc.robot.commands.Transportation.TransportationContorl;
 import frc.robot.subsystems.Automation;
 import frc.robot.subsystems.Chassis;
@@ -25,11 +26,12 @@ public class PreparationShooting extends CommandBase {
 
   private Automation auto;
 
-  private CommandBase visionPID, flyWheelPID, transportation, changeShooterAngle;
+  private CommandBase visionPID, flyWheelPID, transportation, SquishWheelPID;
 
   public PreparationShooting(Automation automation) {
     visionPID = new PIDVision(0, 0.1, Chassis.getinstance());
     flyWheelPID = new PIDFlyWheel(Shooter.getinstance());
+    SquishWheelPID = new PIDSquishMotor(ShooterTransportation.getinstance());
     transportation = new TransportationContorl(Transportation.getinstance());
 
     auto = automation;
@@ -40,12 +42,12 @@ public class PreparationShooting extends CommandBase {
   @Override
   public void initialize() {
     flyWheelPID.schedule();
+    visionPID.schedule();
+    transportation.schedule();
+    SquishWheelPID.schedule();
     Robot.isShootingPrepared = false;
     visionPID.initialize();
     flyWheelPID.initialize();
-    if (Chassis.getinstance().distance() > 1) { // TODO Check the real ditance
-      changeShooterAngle.initialize();
-    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -54,13 +56,16 @@ public class PreparationShooting extends CommandBase {
     visionPID.execute();
     flyWheelPID.execute();
 
-    if (!ShooterTransportation.getinstance().isBallInShooter()) {
+    if (ShooterTransportation.getinstance().isBallInShooter()) {
       transportation.execute();
+      SquishWheelPID.execute();
     } else {
       transportation.cancel();
+      SquishWheelPID.cancel();
     }
 
-    if (Shooter.getinstance().isFlyWheelOnTraget() && Chassis.getinstance().isPIDVisionOnTarget()) {
+    if (Shooter.getinstance().isFlyWheelOnTraget() ){
+      //&& Chassis.getinstance().isPIDVisionOnTarget()) { //TODO
       Robot.isShootingPrepared = true;
     }
   }
@@ -68,10 +73,10 @@ public class PreparationShooting extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+   
     visionPID.cancel();
-    flyWheelPID.cancel();
     transportation.cancel();
-    changeShooterAngle.cancel();
+    SquishWheelPID.cancel();
     Robot.isShootingPrepared = false;
   }
 

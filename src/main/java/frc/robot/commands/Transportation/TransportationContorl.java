@@ -40,7 +40,8 @@ public class TransportationContorl extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    transportation.transportationControl(0);
+    this.transportation.transportationControl(0);
+    System.out.println("Finished");
   }
 
   // Returns true when the command should end.

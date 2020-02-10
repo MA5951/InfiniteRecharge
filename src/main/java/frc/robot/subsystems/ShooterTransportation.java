@@ -13,11 +13,12 @@ import com.revrobotics.EncoderType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Solenoid;
+
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
+import frc.robot.Robot;
 import frc.robot.Constants.*;
 import frc.robot.commands.Shooter.PIDFlyWheel;
 
@@ -57,7 +58,7 @@ public class ShooterTransportation extends SubsystemBase {
         KD_SQUISH_MOTOR_SPEED);
     squishMotorSpeed.setTolerance(1); // TODO
 
-    squishMotorSpeed.setIntegratorRange(-0.85, 0.85);
+    squishMotorSpeed.setIntegratorRange(-0.85, 0);
 
     squishMotorEncoder = new Encoder (6 ,7 , true , EncodingType.k4X);
 
@@ -75,9 +76,10 @@ public class ShooterTransportation extends SubsystemBase {
     SmartDashboard.putNumber("ball", shootCounter);
     SmartDashboard.putNumber("kRateSquishEncoder", squishMotorEncoder.getRate());
     SmartDashboard.putNumber("kSetPointPIDSquish", squishMotorSpeed.getSetpoint());
-    SmartDashboard.putNumber("Output", squishMotorSpeedOutput());
     SmartDashboard.putNumber("squishMotorCurrent", squishMotor.getStatorCurrent());
+    SmartDashboard.putBoolean("preparaedtoshoot", Robot.isShootingPrepared);
   }
+
 
   public double getMotorCurrnet() {
     return squishMotor.getStatorCurrent();
@@ -104,7 +106,7 @@ public class ShooterTransportation extends SubsystemBase {
    * @return The result of the calculation
    */
   public double squishMotorSpeedOutput() {
-    return MathUtil.clamp(squishMotorSpeed.calculate(kRateSquishMotorSpeed(), kRateSquish), -0.8, 0.8);
+    return MathUtil.clamp(squishMotorSpeed.calculate(kRateSquishMotorSpeed(), kRateSquish), -0.8, 0);
   }
 
   /**

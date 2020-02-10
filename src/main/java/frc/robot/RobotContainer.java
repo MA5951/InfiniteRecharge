@@ -91,11 +91,9 @@ public class RobotContainer {
     pullIntake.whileHeld(new IntakePullPush(-0.7, intake));
     openCloseIntake.whenPressed(new IntakeOpenClose(intake));
     PIDFlyWheel.whileHeld(new frc.robot.commands.Shooter.PIDFlyWheel(shooter));
-    PIDSquishMotor.whileHeld(new frc.robot.commands.ShooterTransportation.PIDSquishMotor(shooterTransportation));
+    PIDSquishMotor.whileHeld(new Shooting(auto));
 
-    // new ConditionalCommand(Automation.getinstance().shooting,
-    // Automation.getinstance().preparationShooting,
-    // Automation.getinstance().isShootingPrepared);
+    //PIDSquishMotor.whileHeld( new ConditionalCommand(shooting ,preparationShooting, Automation.getinstance().isShootingPrepared));
 
   }
 

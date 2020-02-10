@@ -24,9 +24,9 @@ import frc.robot.Constants.*;
 public class Shooter extends SubsystemBase {
   private static Shooter shooter;
 
-  private double KP_FLY_WHEEL_SPEED = 0.09;
-  private double KI_FLY_WHEEL_SPEED = 0.00004;
-  private double KD_FLY_WHEEL_SPEED =0.0001;
+  private double KP_FLY_WHEEL_SPEED = 0.003;
+  private double KI_FLY_WHEEL_SPEED = 0.002;
+  private double KD_FLY_WHEEL_SPEED =0;
 
 
   public static double shooterAngle = 25; // TODO
@@ -52,14 +52,15 @@ public static double PIDsetpointFlyWheel =0;
   private Shooter() {
     flyWheelA = new TalonSRX(ShooterConstants.FLY_WHEEL_A);
     flyWheelB = new TalonSRX(ShooterConstants.FLY_WHEEL_B);
-    flyWheelB.configOpenloopRamp(0.05);
+    //flyWheelB.configOpenloopRamp(0.06);
+    //flyWheelA.configOpenloopRamp(0.06);
     flyWheelA.follow(flyWheelB);
 
 
     flyWheelSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_FLY_WHEEL_SPEED, KI_FLY_WHEEL_SPEED,
         KD_FLY_WHEEL_SPEED);
-    flyWheelSpeed.setTolerance(1); // TODO
-    flyWheelSpeed.setIntegratorRange(0, 0.01);
+    flyWheelSpeed.setTolerance(75); // TODO
+    flyWheelSpeed.setIntegratorRange(0, 0.8) ;
     flyWheelEncoder = new Encoder(9 , 8 , false , EncodingType.k4X);
 
     flyWheelEncoder.setDistancePerPulse(1);
@@ -75,6 +76,7 @@ public static double PIDsetpointFlyWheel =0;
     SmartDashboard.putNumber("kRateFlyWheelSpeed", kRateFlyWheelSpeed());
     SmartDashboard.putNumber("kRateFlyWheelEncoder", flyWheelEncoder.getRate());
     SmartDashboard.putNumber("kSetPointPID", flyWheelSpeed.getSetpoint());
+    
     //PIDsetpointFlyWheel = SmartDashboard.getNumber("PIDsetpointFlyWheel", 0);
 
 
@@ -107,7 +109,7 @@ public static double PIDsetpointFlyWheel =0;
    * @return The result of the calculation
    */
   public double flyWheelSpeedOutPut(double setPoint) {
-    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), 0, 0.85);
+    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), 0, 1);
   }
 
   /**

@@ -39,6 +39,7 @@ public class Shooting extends CommandBase {
   public void initialize() {
     flyWheel.schedule();
     squishSpeed.schedule();
+
     transportation.schedule();
     Shooter.getinstance().shootCounter = 0;
     flyWheel.initialize();
@@ -47,21 +48,29 @@ public class Shooting extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Robot.isShootingPrepared) {
-      squishSpeed.execute();
-      transportation.execute();
+   {
       flyWheel.execute();
+      squishSpeed.execute();
+     if(Shooter.getinstance().isFlyWheelOnTraget()){
+      transportation.execute();
+     }else{
+      //squishSpeed.cancel();
+      transportation.cancel();
+     }
+      
+    
   }
 }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if(interrupted){
+  
       squishSpeed.cancel();
+      transportation.schedule();
       transportation.cancel();
       flyWheel.cancel();
-    }
+    // System.out.println("hi");
     
   }
 

@@ -39,26 +39,22 @@ public class PIDSquishMotor extends CommandBase {
   @Override
   public void execute() {
     double power = shooterTransportation.squishMotorSpeedOutput();
-    if(shooter.getRate()>shooter.getPIDSetpoint()-100 && shooter.getRate()< shooter.getPIDSetpoint()+100){
+    //if(shooter.getRate()>shooter.getPIDSetpoint() -100 && shooter.getRate()< shooter.getPIDSetpoint()+100){
       
     if(shooterTransportation.getMotorCurrnet() < -30) {
-      shooterTransportation.controlSquishMotor(-power);
+      shooterTransportation.controlSquishMotor(0.6);
     } else {
-      this.shooterTransportation.controlSquishMotor(power);
-    }
+      this.shooterTransportation.controlSquishMotor(-0.9);
+    
   }
-  else{
-    this.shooterTransportation.controlSquishMotor(0);
-  }
+ 
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
       this.shooterTransportation.controlSquishMotor(0);
-    
- 
   }
 
   // Returns true when the command should end.
