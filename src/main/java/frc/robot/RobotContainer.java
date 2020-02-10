@@ -92,10 +92,8 @@ public class RobotContainer {
     transportationControlButton.whileHeld(new TransportationContorl(transportation));
     pullIntake.whileHeld(new IntakePullPush(-0.7, intake));
     openCloseIntake.whenPressed(new IntakeOpenClose(intake));
-    PIDFlyWheel.whileHeld(new PIDFlyWheel(shooter));
+    PIDFlyWheel.whileHeld(new IntakeAutomation(auto));
     PIDSquishMotor.whileHeld(new Shooting(auto));
-
-    //PIDSquishMotor.whileHeld( new ConditionalCommand(shooting ,preparationShooting, Automation.getinstance().isShootingPrepared));
 
   }
 

@@ -29,13 +29,13 @@ public class Shooter extends SubsystemBase {
   private double KD_FLY_WHEEL_SPEED = 0;
 
 
-  public static double shooterAngle = 25; // TODO
-  private double Gravity = 9.807; // TODO
+  public static double shooterAngle = 68.5; // TODO
+  private double Gravity = 9.807; 
 
   private double deltaY = 0; // TODO
-  private double radiusFlyWheel = 0.0508; // TODO
+  private double radiusFlyWheel = 0.0508; 
 
-  private double ticksPerRoundflyWheel = 999.5; // TODO;
+  private double ticksPerRoundflyWheel = 999.5; 
 
   private TalonSRX flyWheelA;
   private TalonSRX flyWheelB;
@@ -52,10 +52,7 @@ public static double PIDsetpointFlyWheel =0;
   private Shooter() {
     flyWheelA = new TalonSRX(ShooterConstants.FLY_WHEEL_A);
     flyWheelB = new TalonSRX(ShooterConstants.FLY_WHEEL_B);
-    //flyWheelB.configOpenloopRamp(0.06);
-    //flyWheelA.configOpenloopRamp(0.06);
     flyWheelA.follow(flyWheelB);
-
 
     flyWheelSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_FLY_WHEEL_SPEED, KI_FLY_WHEEL_SPEED,
         KD_FLY_WHEEL_SPEED);
@@ -77,9 +74,6 @@ public static double PIDsetpointFlyWheel =0;
     SmartDashboard.putNumber("kRateFlyWheelEncoder", flyWheelEncoder.getRate());
     SmartDashboard.putNumber("kSetPointPID", flyWheelSpeed.getSetpoint());
     
-    //PIDsetpointFlyWheel = SmartDashboard.getNumber("PIDsetpointFlyWheel", 0);
-
-
   }
 
   
