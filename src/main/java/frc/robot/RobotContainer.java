@@ -26,6 +26,8 @@ import frc.robot.commands.Transportation.*;
 import frc.robot.subsystems.Transportation;
 import frc.robot.commands.Intake.IntakeOpenClose;
 import frc.robot.commands.Intake.IntakePullPush;
+import frc.robot.commands.Shooter.PIDFlyWheel;
+import frc.robot.commands.ShooterTransportation.PIDSquishMotor;
 import frc.robot.subsystems.Intake;
 
 import frc.robot.subsystems.Shooter;
@@ -90,7 +92,7 @@ public class RobotContainer {
     transportationControlButton.whileHeld(new TransportationContorl(transportation));
     pullIntake.whileHeld(new IntakePullPush(-0.7, intake));
     openCloseIntake.whenPressed(new IntakeOpenClose(intake));
-    PIDFlyWheel.whileHeld(new frc.robot.commands.Shooter.PIDFlyWheel(shooter));
+    PIDFlyWheel.whileHeld(new PIDFlyWheel(shooter));
     PIDSquishMotor.whileHeld(new Shooting(auto));
 
     //PIDSquishMotor.whileHeld( new ConditionalCommand(shooting ,preparationShooting, Automation.getinstance().isShootingPrepared));

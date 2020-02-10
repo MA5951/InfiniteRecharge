@@ -7,6 +7,7 @@
 
 package frc.robot.commands.Transportation;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShooterTransportation;
 import frc.robot.subsystems.Transportation;
@@ -30,10 +31,12 @@ public class TransportationContorl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(ShooterTransportation.getinstance().getMotorCurrnet() < -30) {
-      transportation.transportationControl(0.6);
+    if(ShooterTransportation.getinstance().getMotorCurrnet() < -20) {
+      transportation.transportationControl(0.4);
+      Timer.delay(0.2);
+
     } else {
-      transportation.transportationControl(-0.6);
+      transportation.transportationControl(-0.4);
     }
   }
 

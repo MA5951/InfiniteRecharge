@@ -78,6 +78,7 @@ public class ShooterTransportation extends SubsystemBase {
     SmartDashboard.putNumber("kSetPointPIDSquish", squishMotorSpeed.getSetpoint());
     SmartDashboard.putNumber("squishMotorCurrent", squishMotor.getStatorCurrent());
     SmartDashboard.putBoolean("preparaedtoshoot", Robot.isShootingPrepared);
+    SmartDashboard.putNumber("BallCounter", shootCounter);
   }
 
 

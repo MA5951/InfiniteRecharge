@@ -7,6 +7,7 @@
 
 package frc.robot.commands.ShooterTransportation;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Automation;
 import frc.robot.subsystems.Autonomous;
@@ -42,9 +43,10 @@ public class PIDSquishMotor extends CommandBase {
     //if(shooter.getRate()>shooter.getPIDSetpoint() -100 && shooter.getRate()< shooter.getPIDSetpoint()+100){
       
     if(shooterTransportation.getMotorCurrnet() < -30) {
-      shooterTransportation.controlSquishMotor(0.6);
+      shooterTransportation.controlSquishMotor(0.95);
+      Timer.delay(0.2);
     } else {
-      this.shooterTransportation.controlSquishMotor(-0.9);
+      this.shooterTransportation.controlSquishMotor(-0.95);
     
   }
  
