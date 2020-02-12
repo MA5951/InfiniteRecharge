@@ -107,7 +107,7 @@ public class ShooterTransportation extends SubsystemBase {
    * @return The result of the calculation
    */
   public double squishMotorSpeedOutput() {
-    return MathUtil.clamp(squishMotorSpeed.calculate(kRateSquishMotorSpeed(), kRateSquish), -0.8, 0);
+    return (setpoint/1200)+MathUtil.clamp(squishMotorSpeed.calculate(kRateSquishMotorSpeed(), kRateSquish), -0.8, 0);
   }
 
   /**
