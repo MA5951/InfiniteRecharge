@@ -24,8 +24,8 @@ import frc.robot.Constants.*;
 public class Shooter extends SubsystemBase {
   private static Shooter shooter;
 
-  private double KP_FLY_WHEEL_SPEED = 0.00003;
-  private double KI_FLY_WHEEL_SPEED = 0.1;
+  private double KP_FLY_WHEEL_SPEED = 0.007;
+  private double KI_FLY_WHEEL_SPEED = 0.0003;
   private double KD_FLY_WHEEL_SPEED = 0;
 
 
@@ -56,8 +56,10 @@ public static double PIDsetpointFlyWheel =0;
 
     flyWheelSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_FLY_WHEEL_SPEED, KI_FLY_WHEEL_SPEED,
         KD_FLY_WHEEL_SPEED);
-    flyWheelSpeed.setTolerance(10); // TODO
-    flyWheelSpeed.setIntegratorRange(-0.8, 0.8) ;
+    flyWheelSpeed.setTolerance(17); // TODO
+    flyWheelA.configClosedloopRamp(0.05);
+    flyWheelB.configClosedloopRamp(0.05);
+    //flyWheelSpeed.setIntegratorRange(-0.9, 0.9) ;
     flyWheelEncoder = new Encoder(9 , 8 , false , EncodingType.k4X);
 
     flyWheelEncoder.setDistancePerPulse(1);
@@ -73,6 +75,11 @@ public static double PIDsetpointFlyWheel =0;
     SmartDashboard.putNumber("kRateFlyWheelSpeed", kRateFlyWheelSpeed());
     SmartDashboard.putNumber("kRateFlyWheelEncoder", flyWheelEncoder.getRate());
     SmartDashboard.putNumber("kSetPointPID", flyWheelSpeed.getSetpoint());
+    SmartDashboard.putNumber("getPositionError", flyWheelSpeed.getPositionError());
+    SmartDashboard.putNumber("getVelocityError", flyWheelSpeed.getVelocityError() );
+    SmartDashboard.putNumber("motorOutput", flyWheelA.getMotorOutputPercent());
+    SmartDashboard.putBoolean("iseadytoshoot", flyWheelSpeed.atSetpoint());
+
     
   }
 
@@ -103,7 +110,7 @@ public static double PIDsetpointFlyWheel =0;
    * @return The result of the calculation
    */
   public double flyWheelSpeedOutPut(double setPoint) {
-    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), 0, 1);
+    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), -1, 1);
   }
 
   /**

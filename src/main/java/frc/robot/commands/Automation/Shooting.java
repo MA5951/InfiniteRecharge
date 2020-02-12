@@ -12,6 +12,7 @@ import frc.robot.commands.Shooter.PIDFlyWheel;
 import frc.robot.commands.ShooterTransportation.PIDSquishMotor;
 import frc.robot.commands.Transportation.TransportationContorl;
 import frc.robot.subsystems.Automation;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterTransportation;
 import frc.robot.subsystems.Transportation;
@@ -51,10 +52,14 @@ public class Shooting extends CommandBase {
      if(Shooter.getinstance().isFlyWheelOnTraget()){
       squishSpeed.execute();
       transportation.execute();
+      //Intake.getinstance().intakeMotorControl(-0.3);
      }else{
       //squishSpeed.cancel();
+      transportation.schedule();
+      squishSpeed.schedule();
       transportation.cancel();
       squishSpeed.cancel();
+      //Intake.getinstance().intakeMotorControl(0);
      }
       
     
@@ -64,11 +69,12 @@ public class Shooting extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    transportation.schedule();
       squishSpeed.schedule();
       squishSpeed.cancel();
-      transportation.schedule();
       transportation.cancel();
       flyWheel.cancel();
+     // Intake.getinstance().intakeMotorControl(0);
     // System.out.println("hi");
     
   }

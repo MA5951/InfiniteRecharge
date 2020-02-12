@@ -41,11 +41,11 @@ public class PIDSquishMotor extends CommandBase {
   public void execute() {
     double power = shooterTransportation.squishMotorSpeedOutput();
      
-    if(shooterTransportation.getMotorCurrnet() < -30) {
-      shooterTransportation.controlSquishMotor(0.95);
+    if(shooterTransportation.getMotorCurrnet() < -25) {
+      shooterTransportation.controlSquishMotor(0.8);
       Timer.delay(0.2);
     } else {
-      shooterTransportation.controlSquishMotor(-0.95);
+      shooterTransportation.controlSquishMotor(-0.8);
     
   }
  
