@@ -9,9 +9,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
@@ -44,8 +41,6 @@ public class Shooter extends SubsystemBase {
 
   private edu.wpi.first.wpilibj.controller.PIDController flyWheelSpeed;
 
-  private Encoder flyWheelEncoder;
-
   private Shooter() {
     flyWheelA = new TalonSRX(ShooterConstants.FLY_WHEEL_A);
     flyWheelB = new TalonSRX(ShooterConstants.FLY_WHEEL_B);
@@ -56,8 +51,6 @@ public class Shooter extends SubsystemBase {
     flyWheelSpeed.setTolerance(17); // TODO
     flyWheelA.configClosedloopRamp(0.05);
     flyWheelB.configClosedloopRamp(0.05);
-    flyWheelEncoder = new Encoder(9, 8, false, EncodingType.k4X);
-    flyWheelEncoder.setDistancePerPulse(1);
 
   }
 
@@ -88,7 +81,7 @@ public class Shooter extends SubsystemBase {
    * @return The kRate calculation
    */
   public double kRateFlyWheelSpeed() {
-    return (flyWheelEncoder.getRate() * (2 * Math.PI)) / ticksPerRoundflyWheel;
+    return (flyWheelA.getSelectedSensorVelocity() * (2 * Math.PI)) / ticksPerRoundflyWheel;
   }
 
   /**
@@ -121,7 +114,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getRate() {
-    return flyWheelEncoder.getRate();
+    return flyWheelA.getSelectedSensorVelocity();
   }
 
   public static Shooter getinstance() {

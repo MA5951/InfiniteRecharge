@@ -53,7 +53,7 @@ public class Chassis extends SubsystemBase {
   private static final double anglePidMApathSetInputRange = 180;
 
   public static double ticksPerMeter = 22000; // the number of ticks per meter //TODO
-  public static double RPM = 5240; //TODO
+  public static double RPM = 5700; 
   private double angle;
   private double sign;
   private double modle = sign;
@@ -92,6 +92,11 @@ public class Chassis extends SubsystemBase {
         com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
     rightMotor = new CANSparkMax(ConstantsChassis.RIGHT_MOTOR,
         com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
+
+    rightFrontMotor.setSmartCurrentLimit(60);
+    rightMotor.setSmartCurrentLimit(60);
+    leftFrontMotor.setSmartCurrentLimit(60);
+    leftMotor.setSmartCurrentLimit(60);
 
     canEncoderLeftCIMcoder = leftMotor.getAlternateEncoder(AlternateEncoderType.kQuadrature, 1);
     canEncoderRightCIMcoder = rightMotor.getAlternateEncoder(AlternateEncoderType.kQuadrature, 1);

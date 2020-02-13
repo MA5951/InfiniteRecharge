@@ -9,18 +9,11 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.revrobotics.EncoderType;
-
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
-import frc.robot.Robot;
 import frc.robot.Constants.*;
-import frc.robot.commands.Shooter.PIDFlyWheel;
 
 /**
  * An example subsystem. You can replace me with your own Subsystem.
@@ -44,8 +37,6 @@ public class ShooterTransportation extends SubsystemBase {
 
   private edu.wpi.first.wpilibj.controller.PIDController squishMotorSpeed;
 
-  private Encoder squishMotorEncoder;
-
   private ShooterTransportation() {
 
     squishMotor = new TalonSRX(ShooterConstants.SQUISH_MOTOR);
@@ -54,12 +45,6 @@ public class ShooterTransportation extends SubsystemBase {
     squishMotorSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_SQUISH_MOTOR_SPEED, KI_SQUISH_MOTOR_SPEED,
         KD_SQUISH_MOTOR_SPEED);
     squishMotorSpeed.setTolerance(1); // TODO
-
-    squishMotorSpeed.setIntegratorRange(-0.85, 0);
-
-    squishMotorEncoder = new Encoder(6, 7, true, EncodingType.k4X);
-
-    squishMotorEncoder.setDistancePerPulse(1);
 
     lastState = IRBall.get();
   }
@@ -95,7 +80,7 @@ public class ShooterTransportation extends SubsystemBase {
    * @return The kRate calculation
    */
   public double kRateSquishMotorSpeed() {
-    return (squishMotorEncoder.getRate() * (2 * Math.PI)) / ticksPerRoundsquishMotor;
+    return (squishMotor.getSelectedSensorVelocity() * (2 * Math.PI)) / ticksPerRoundsquishMotor;
   }
 
   /**

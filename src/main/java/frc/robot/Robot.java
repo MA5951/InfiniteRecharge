@@ -14,12 +14,23 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.Balance.DriverControllBalance;
 import frc.robot.commands.Chassis.tankDrive;
+import frc.robot.commands.Elevator.ElevatorMotorControl;
+import frc.robot.subsystems.Balance;
 import frc.robot.subsystems.Chassis;
-
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Roulette;
 import frc.robot.subsystems.Shooter;
 
 public class Robot extends TimedRobot {
+  private Roulette roulette = Roulette.getinstance();
+  private tankDrive tankDrive = new tankDrive(Chassis.getinstance());
+  private DriverControllBalance ControllBalance = new DriverControllBalance(Balance.getinstance());
+  private ElevatorMotorControl elevatorControl = new ElevatorMotorControl(Elevator.getinstance());
+  private String gameData = DriverStation.getInstance().getGameSpecificMessage();
+  public static int setpointColor;
+  public static String colorString = "Unknown";
   private Command m_autonomousCommand;
   public static double x;
   public static double y;
@@ -30,45 +41,66 @@ public class Robot extends TimedRobot {
   public static int path;
   private RobotContainer m_robotContainer;
 
-  tankDrive tankDrive = new tankDrive(Chassis.getinstance());
-  // private Roulette roulette = Roulette.getinstance();
-  private String gameData = DriverStation.getInstance().getGameSpecificMessage();
-  public static int setpointColor;
-  public static String colorString = "Unknown";
-
-  /*
-   * public void getColorFromFMS() { if(gameData.length() > 0) { switch
-   * (gameData.charAt(0)) { case 'B' : // Blue case code setpointColor =
-   * roulette.color("blue"); colorString = "blue"; break; case 'G' : // Green case
-   * code setpointColor = roulette.color("green"); colorString = "green"; break;
-   * case 'R' : //red case code setpointColor = roulette.color("red"); colorString
-   * = "red"; break; case 'Y' : //Yellow case code setpointColor =
-   * roulette.color("yellow"); colorString = "yellow"; break; default : //This is
-   * corrupt data break; } } }
-   */
+  public void getColorFromFMS() {
+    if(gameData.length() > 0)
+    {
+      switch (gameData.charAt(0))
+      {
+        case 'B' :
+          // Blue case code
+          setpointColor = roulette.color("blue");
+          colorString = "blue";
+          break;
+        case 'G' :
+          // Green case code
+          setpointColor = roulette.color("green");
+          colorString = "green";
+          break;
+        case 'R' :
+          //red case code
+          setpointColor = roulette.color("red");
+          colorString = "red";
+          break;
+        case 'Y' :
+          //Yellow case code
+          setpointColor = roulette.color("yellow");
+          colorString = "yellow";
+          break;
+        default :
+          //This is corrupt data
+          break;
+      }
+    }
+  }
 
   @Override
   public void robotInit() {
 
     m_robotContainer = new RobotContainer();
     CommandScheduler.getInstance().setDefaultCommand(Chassis.getinstance(), tankDrive);
+    CommandScheduler.getInstance().setDefaultCommand(Balance.getinstance(), ControllBalance);
+    CommandScheduler.getInstance().setDefaultCommand(Elevator.getinstance(), elevatorControl);
 
   }
 
   @Override
   public void robotPeriodic() {
-    CommandScheduler.getInstance().run();
-    final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    final NetworkTableEntry tx = table.getEntry("tx");
-    final NetworkTableEntry tv = table.getEntry("tv");
-    final NetworkTableEntry ta = table.getEntry("ta");
-    final NetworkTableEntry ty = table.getEntry("ty");
-    final NetworkTableEntry tlong1 = table.getEntry("tlong");
-    final NetworkTableEntry yaw = table.getEntry("camtran");
+     CommandScheduler.getInstance().run();
+     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+     NetworkTableEntry tx = table.getEntry("tx");
+     NetworkTableEntry ty = table.getEntry("ty");
+     NetworkTableEntry tlong1 = table.getEntry("tlong");
+     NetworkTableEntry yaw = table.getEntry("camtran");
 
     // read values periodically
+    x = tx.getDouble(0.0);
+    y = ty.getDouble(0.0);
+    tlong = tlong1.getDouble(0.0);
+    yaw1 = yaw.getDoubleArray(new double[] {0,0,0,0,0,0,0})[4];
+    distanceFromTargetLimelightX = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[0];
+    distanceFromTargetLimelightY = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[2];
 
-    // getColorFromFMS();
+     getColorFromFMS();
 
   }
 
