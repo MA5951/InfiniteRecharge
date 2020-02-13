@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Constants.*;
 
-
 /**
  * An example subsystem. You can replace me with your own Subsystem.
  */
@@ -28,26 +27,24 @@ public class Shooter extends SubsystemBase {
   private double KI_FLY_WHEEL_SPEED = 0.0003;
   private double KD_FLY_WHEEL_SPEED = 0;
 
-
   public static double shooterAngle = 68.5; // TODO
-  private double Gravity = 9.807; 
+  private double Gravity = 9.807;
 
   private double deltaY = 0; // TODO
-  private double radiusFlyWheel = 0.0508; 
+  private double radiusFlyWheel = 0.0508;
 
-  private double ticksPerRoundflyWheel = 999.5; 
+  private double ticksPerRoundflyWheel = 999.5; // TODO
 
   private TalonSRX flyWheelA;
   private TalonSRX flyWheelB;
 
-public static double PIDsetpointFlyWheel =0;
+  public static double PIDsetpointFlyWheel = 0;
 
   public double shootCounter = 0;
-  
 
   private edu.wpi.first.wpilibj.controller.PIDController flyWheelSpeed;
 
-  private Encoder flyWheelEncoder;  
+  private Encoder flyWheelEncoder;
 
   private Shooter() {
     flyWheelA = new TalonSRX(ShooterConstants.FLY_WHEEL_A);
@@ -59,12 +56,8 @@ public static double PIDsetpointFlyWheel =0;
     flyWheelSpeed.setTolerance(17); // TODO
     flyWheelA.configClosedloopRamp(0.05);
     flyWheelB.configClosedloopRamp(0.05);
-    //flyWheelSpeed.setIntegratorRange(-0.9, 0.9) ;
-    flyWheelEncoder = new Encoder(9 , 8 , false , EncodingType.k4X);
-
+    flyWheelEncoder = new Encoder(9, 8, false, EncodingType.k4X);
     flyWheelEncoder.setDistancePerPulse(1);
-
-    
 
   }
 
@@ -73,39 +66,34 @@ public static double PIDsetpointFlyWheel =0;
    */
   public void ShooterValue() {
     SmartDashboard.putNumber("kRateFlyWheelSpeed", kRateFlyWheelSpeed());
-    SmartDashboard.putNumber("kRateFlyWheelEncoder", flyWheelEncoder.getRate());
     SmartDashboard.putNumber("kSetPointPID", flyWheelSpeed.getSetpoint());
     SmartDashboard.putNumber("getPositionError", flyWheelSpeed.getPositionError());
-    SmartDashboard.putNumber("getVelocityError", flyWheelSpeed.getVelocityError() );
     SmartDashboard.putNumber("motorOutput", flyWheelA.getMotorOutputPercent());
     SmartDashboard.putBoolean("iseadytoshoot", flyWheelSpeed.atSetpoint());
 
-    
   }
 
-  
-   /**
+  /**
    * Set the power to the fly wheel motors
+   * 
    * @param speed The given power
    */
   public void controlFlyWheelMotor(double speed) {
     flyWheelB.set(ControlMode.PercentOutput, speed);
   }
 
-  
-
   /**
    * Set the angle velocity for the fly wheel
+   * 
    * @return The kRate calculation
    */
   public double kRateFlyWheelSpeed() {
     return (flyWheelEncoder.getRate() * (2 * Math.PI)) / ticksPerRoundflyWheel;
   }
 
-
-
   /**
    * Calculate the PID for the fly wheel
+   * 
    * @param setPoint The destanation the robot need to reach
    * @return The result of the calculation
    */
@@ -125,18 +113,15 @@ public static double PIDsetpointFlyWheel =0;
 
   /**
    * Check if the fly wheel is on the setpoint
+   * 
    * @return True if on target, false if isn't
    */
   public boolean isFlyWheelOnTraget() {
     return flyWheelSpeed.atSetpoint();
   }
 
-  public double getRate(){
+  public double getRate() {
     return flyWheelEncoder.getRate();
-  }
-
-  public double getPIDSetpoint(){
-    return flyWheelSpeed.getSetpoint();
   }
 
   public static Shooter getinstance() {

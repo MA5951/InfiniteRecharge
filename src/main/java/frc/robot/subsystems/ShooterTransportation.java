@@ -32,8 +32,6 @@ public class ShooterTransportation extends SubsystemBase {
   private double KI_SQUISH_MOTOR_SPEED = 0.0025;
   private double KD_SQUISH_MOTOR_SPEED = 0;
 
-
-
   private double ticksPerRoundsquishMotor = 919.25; // TODO;
   private TalonSRX squishMotor;
 
@@ -48,7 +46,6 @@ public class ShooterTransportation extends SubsystemBase {
 
   private Encoder squishMotorEncoder;
 
-
   private ShooterTransportation() {
 
     squishMotor = new TalonSRX(ShooterConstants.SQUISH_MOTOR);
@@ -60,7 +57,7 @@ public class ShooterTransportation extends SubsystemBase {
 
     squishMotorSpeed.setIntegratorRange(-0.85, 0);
 
-    squishMotorEncoder = new Encoder (6 ,7 , true , EncodingType.k4X);
+    squishMotorEncoder = new Encoder(6, 7, true, EncodingType.k4X);
 
     squishMotorEncoder.setDistancePerPulse(1);
 
@@ -74,20 +71,18 @@ public class ShooterTransportation extends SubsystemBase {
     SmartDashboard.putBoolean("IRball", !IRBall.get());
     SmartDashboard.putNumber("kRateSquishMotor", kRateSquishMotorSpeed());
     SmartDashboard.putNumber("ball", shootCounter);
-    SmartDashboard.putNumber("kRateSquishEncoder", squishMotorEncoder.getRate());
     SmartDashboard.putNumber("kSetPointPIDSquish", squishMotorSpeed.getSetpoint());
     SmartDashboard.putNumber("squishMotorCurrent", squishMotor.getStatorCurrent());
-    SmartDashboard.putBoolean("preparaedtoshoot", Robot.isShootingPrepared);
     SmartDashboard.putNumber("BallCounter", shootCounter);
   }
-
 
   public double getMotorCurrnet() {
     return squishMotor.getStatorCurrent();
   }
 
-   /**
+  /**
    * Set the power to the squish motors
+   * 
    * @param speed The given power
    */
   public void controlSquishMotor(double speed) {
@@ -96,6 +91,7 @@ public class ShooterTransportation extends SubsystemBase {
 
   /**
    * Set the angle speed for the squish
+   * 
    * @return The kRate calculation
    */
   public double kRateSquishMotorSpeed() {
@@ -104,14 +100,16 @@ public class ShooterTransportation extends SubsystemBase {
 
   /**
    * Calculate the PID for the squish
+   * 
    * @return The result of the calculation
    */
   public double squishMotorSpeedOutput() {
-    return (setpoint/1200)+MathUtil.clamp(squishMotorSpeed.calculate(kRateSquishMotorSpeed(), kRateSquish), -0.8, 0);
+    return MathUtil.clamp(squishMotorSpeed.calculate(kRateSquishMotorSpeed(), kRateSquish), -0.8, 0);
   }
 
   /**
-   * Check if the ball is in the shooter 
+   * Check if the ball is in the shooter
+   * 
    * @return True if IR is "seeing" something and flase if isn't
    */
   public boolean isBallInShooter() {
@@ -120,6 +118,7 @@ public class ShooterTransportation extends SubsystemBase {
 
   /**
    * Check if the squish is on the setpoint
+   * 
    * @return True if on target, false if isn't
    */
   public boolean isSquishOnTarget() {
@@ -142,8 +141,6 @@ public class ShooterTransportation extends SubsystemBase {
       lastState = IRBall.get();
     }
   }
-
-
 
   @Override
   public void periodic() {

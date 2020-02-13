@@ -7,28 +7,17 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
-import frc.robot.commands.Automation.PreparationShooting;
-import frc.robot.commands.Automation.Shooting;
-
-import java.util.function.BooleanSupplier;
 
 /**
  * This subsystem is used only for the automation commands
  */
 public class Automation extends SubsystemBase {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+
   private static Automation auto;
-  public static BooleanSupplier isShootingPrepared;
 
+  private Automation() {
 
-  private Automation(){
-
-    
   }
 
   public static Automation getinstance() {
@@ -40,6 +29,6 @@ public class Automation extends SubsystemBase {
 
   @Override
   public void periodic() {
-    isShootingPrepared = () -> Robot.isShootingPrepared;
+
   }
 }

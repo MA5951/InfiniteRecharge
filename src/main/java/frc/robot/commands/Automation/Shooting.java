@@ -12,7 +12,6 @@ import frc.robot.commands.Shooter.PIDFlyWheel;
 import frc.robot.commands.ShooterTransportation.PIDSquishMotor;
 import frc.robot.commands.Transportation.TransportationContorl;
 import frc.robot.subsystems.Automation;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterTransportation;
 import frc.robot.subsystems.Transportation;
@@ -40,43 +39,41 @@ public class Shooting extends CommandBase {
     flyWheel.schedule();
     squishSpeed.schedule();
     transportation.schedule();
-    Shooter.getinstance().shootCounter = 0;
     flyWheel.initialize();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   {
+    {
       flyWheel.execute();
-     if(Shooter.getinstance().isFlyWheelOnTraget()){
-      squishSpeed.execute();
-      transportation.execute();
-      //Intake.getinstance().intakeMotorControl(-0.3);
-     }else{
-      //squishSpeed.cancel();
-      transportation.schedule();
-      squishSpeed.schedule();
-      transportation.cancel();
-      squishSpeed.cancel();
-      //Intake.getinstance().intakeMotorControl(0);
-     }
-      
-    
+      if (Shooter.getinstance().isFlyWheelOnTraget()) {
+
+        squishSpeed.execute();
+        transportation.execute();
+
+      } else {
+
+        transportation.schedule();
+        squishSpeed.schedule();
+
+        transportation.cancel();
+        squishSpeed.cancel();
+      }
+
+    }
   }
-}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     transportation.schedule();
-      squishSpeed.schedule();
-      squishSpeed.cancel();
-      transportation.cancel();
-      flyWheel.cancel();
-     // Intake.getinstance().intakeMotorControl(0);
-    // System.out.println("hi");
-    
+    squishSpeed.schedule();
+
+    squishSpeed.cancel();
+    transportation.cancel();
+    flyWheel.cancel();
+
   }
 
   // Returns true when the command should end.

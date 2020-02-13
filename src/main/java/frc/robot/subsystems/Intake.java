@@ -17,7 +17,7 @@ import frc.robot.Constants.*;
 
 public class Intake extends SubsystemBase {
   /**
-   * Creates a new Intake. 
+   * Creates a new Intake.
    */
   private static Intake intake;
 
@@ -26,9 +26,9 @@ public class Intake extends SubsystemBase {
   private VictorSPX intakeVictorSPX;
 
   public Intake() {
-      intakeSolenoid = new DoubleSolenoid(IntakeConstants.IntakeSolenoidA, IntakeConstants.IntakeSolenoidB);
+    intakeSolenoid = new DoubleSolenoid(IntakeConstants.IntakeSolenoidA, IntakeConstants.IntakeSolenoidB);
 
-      intakeVictorSPX = new VictorSPX(IntakeConstants.IntakeMotor);
+    intakeVictorSPX = new VictorSPX(IntakeConstants.IntakeMotor);
   }
 
   public void intakeSolenoidControl(Value value) {
@@ -39,11 +39,11 @@ public class Intake extends SubsystemBase {
     intakeVictorSPX.set(ControlMode.PercentOutput, power);
   }
 
-  public boolean isPistonOpen(){
+  public boolean isPistonOpen() {
     return intakeSolenoid.get() == Value.kForward;
   }
 
-  public void value(){
+  public void value() {
     SmartDashboard.putBoolean("IsIntakeOpen", isPistonOpen());
   }
 
@@ -52,7 +52,7 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
     value();
   }
-  
+
   public static Intake getinstance() {
     if (intake == null) {
       intake = new Intake();

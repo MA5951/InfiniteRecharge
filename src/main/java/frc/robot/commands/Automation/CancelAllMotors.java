@@ -8,32 +8,27 @@
 package frc.robot.commands.Automation;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.subsystems.Automation;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterTransportation;
 import frc.robot.subsystems.Transportation;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class CancelAllMotors extends InstantCommand {
-  Intake intake;
-  Transportation transportation;
-  Shooter shooter;
-  ShooterTransportation shooterTransportation;
-  public CancelAllMotors(Intake intake, Transportation transportation, Shooter shooter) {
-    intake = this.intake;
-    transportation = this.transportation;
-    shooter = this.shooter;
-    addRequirements(intake, transportation, shooter);
+  Automation auot;
+
+  public CancelAllMotors(Automation auot) {
+    this.auot = auot;
+    addRequirements(auot);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.intakeMotorControl(0);
-    transportation.transportationControl(0);
-    shooter.controlFlyWheelMotor(0);
-    shooterTransportation.controlSquishMotor(0);
+    Intake.getinstance().intakeMotorControl(0);
+    Transportation.getinstance().transportationControl(0);
+    Shooter.getinstance().controlFlyWheelMotor(0);
+    ShooterTransportation.getinstance().controlSquishMotor(0);
+
   }
 }

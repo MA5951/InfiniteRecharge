@@ -9,26 +9,21 @@ package frc.robot.commands.ShooterTransportation;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Automation;
-import frc.robot.subsystems.Autonomous;
-import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterTransportation;
-import frc.robot.subsystems.Transportation;
+
 
 public class PIDSquishMotor extends CommandBase {
   /**
    * Creates a new PIDSquishMotor.
    */
   private ShooterTransportation shooterTransportation;
-  private Shooter shooter;
+  
 
-  public PIDSquishMotor( ShooterTransportation shooterTransportation) {
+  public PIDSquishMotor(ShooterTransportation shooterTransportation) {
     this.shooterTransportation = shooterTransportation;
-    this.shooter = Shooter.getinstance();
-   
+    
 
-
-     addRequirements(this.shooterTransportation);
+    addRequirements(this.shooterTransportation);
   }
 
   // Called when the command is initially scheduled.
@@ -40,22 +35,21 @@ public class PIDSquishMotor extends CommandBase {
   @Override
   public void execute() {
     double power = shooterTransportation.squishMotorSpeedOutput();
-     
-    if(shooterTransportation.getMotorCurrnet() < -30) {
+
+    if (shooterTransportation.getMotorCurrnet() < -30) {
       shooterTransportation.controlSquishMotor(0.8);
       Timer.delay(0.2);
     } else {
       shooterTransportation.controlSquishMotor(-0.8);
-    
-  }
- 
+
+    }
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      this.shooterTransportation.controlSquishMotor(0);
+    this.shooterTransportation.controlSquishMotor(0);
   }
 
   // Returns true when the command should end.

@@ -6,21 +6,14 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands.Intake;
-
-import java.lang.module.ModuleDescriptor.Requires;
-
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Intake;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class IntakeOpenClose extends InstantCommand {
-  private  Intake intake;
+  private Intake intake;
 
   public IntakeOpenClose(Intake in) {
-    // Use addRequirements() here to declare subsystem dependencies.
     intake = in;
     addRequirements(intake);
   }

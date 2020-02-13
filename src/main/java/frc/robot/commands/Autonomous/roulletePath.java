@@ -39,6 +39,7 @@ public class roulletePath extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Shooter.getinstance().shootCounter = 0;
     intakeCommand.schedule();
     Shooting.schedule();
     
@@ -61,6 +62,7 @@ public class roulletePath extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Shooting.schedule();
     intakeCommand.cancel();
     Shooting.cancel();
     maPath.cancel();
