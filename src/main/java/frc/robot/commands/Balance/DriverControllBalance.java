@@ -31,9 +31,9 @@ public class DriverControllBalance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (RobotContainer.rightJoystick.getRawAxis(3) > 0.5) {
-      balance.controlBalanceMotor(RobotContainer.leftJoystick.getX());
-    }
+    
+      balance.controlBalanceMotor(RobotContainer.OperatingJoystick.getRawAxis(0));
+    
   }
 
   // Called once the command ends or is interrupted.

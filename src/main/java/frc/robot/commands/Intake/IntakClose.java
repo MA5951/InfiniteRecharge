@@ -10,10 +10,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Intake;
 
-public class IntakeOpenClose extends InstantCommand {
+public class IntakClose extends InstantCommand {
   private Intake intake;
 
-  public IntakeOpenClose(Intake in) {
+  public IntakClose(Intake in) {
     intake = in;
     addRequirements(intake);
   }
@@ -21,10 +21,8 @@ public class IntakeOpenClose extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (intake.isPistonOpen()) {
+  
       intake.intakeSolenoidControl(Value.kReverse);
-    } else {
-      intake.intakeSolenoidControl(Value.kForward);
-    }
+  
   }
 }

@@ -15,9 +15,10 @@ public class BalancePID extends CommandBase {
    * Creates a new BalancePID.
    */
 
-   private Balance balance;
-   private double angle;
-  public BalancePID(double angle,Balance bl) {
+  private Balance balance;
+  private double angle;
+
+  public BalancePID(double angle, Balance bl) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.angle = angle;
     balance = bl;
@@ -33,8 +34,17 @@ public class BalancePID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   double power = balance.balancePidControllerSetPoint(angle);
-    balance.controlBalanceMotor(power);
+    // double power = balance.balancePidControllerSetPoint(angle);
+    // balance.controlBalanceMotor(power);
+
+    double threshold = 3;
+    double scale = 1;
+    double angle = balance.getinstance().getnavxPich();
+    double power = (Math.abs(angle) / angle) * scale;
+
+    if (Math.abs(angle) > threshold) {
+      balance.getinstance().controlBalanceMotor(power);
+    }
   }
 
   // Called once the command ends or is interrupted.

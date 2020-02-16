@@ -78,6 +78,10 @@ public class Balance extends SubsystemBase {
     navx.reset();
   }
 
+  public double getnavxPich() {
+    return navx.getPitch();
+  }
+
   public void changeModeSparkMaxBrake() {
     balanceMotor.setIdleMode(IdleMode.kBrake);
   }
