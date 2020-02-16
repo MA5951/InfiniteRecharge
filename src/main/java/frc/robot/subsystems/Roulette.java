@@ -15,6 +15,7 @@ import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -43,7 +44,7 @@ public class Roulette extends SubsystemBase {
   private final Color green;
   private final Color red;
   private final Color yellow;
-
+  private Solenoid roulettSolenoid;
   public static int roundThreeColorSetpoint;
 
   private PIDController rouletteSpinControl;
@@ -70,7 +71,7 @@ public class Roulette extends SubsystemBase {
     rouletteMotor = new TalonSRX(RouletteConstants.ROULETTE_MOTOR);
     rouletteMotor.setNeutralMode(NeutralMode.Brake);
     colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
-
+    roulettSolenoid = new Solenoid(RouletteConstants.ROULETTE_SOLENOID);
     rouletteSpinControl = new PIDController(KP_ROULETTE, KI_ROULETTE, KD_ROULETTE);
     rouletteSpinControl.setTolerance(TOLERANCE);
   }
@@ -155,7 +156,9 @@ public class Roulette extends SubsystemBase {
     }
     return roulette;
   }
-
+public void controlroulettSolenoid(boolean value){
+  roulettSolenoid.set(value);
+}
   @Override
   public void periodic() {
     displayValues();

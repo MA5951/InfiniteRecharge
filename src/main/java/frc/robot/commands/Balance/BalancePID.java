@@ -16,11 +16,10 @@ public class BalancePID extends CommandBase {
    */
 
   private Balance balance;
-  private double angle;
 
-  public BalancePID(double angle, Balance bl) {
+
+  public BalancePID( Balance bl) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.angle = angle;
     balance = bl;
     addRequirements(balance);
   }

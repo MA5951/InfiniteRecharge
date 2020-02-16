@@ -18,7 +18,8 @@ public class RouletteAutomation extends CommandBase {
    */
   Automation auto;
   CommandBase roulettestageone, roulettestagetwo;
-int stage; 
+  int stage;
+
   public RouletteAutomation(Automation auto) {
     this.auto = auto;
     roulettestageone = new roundTwoRoulettePID(0.1, Roulette.getinstance());
@@ -30,35 +31,38 @@ int stage;
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    roulettestagetwo.schedule();
-    roulettestageone.schedule();
-     
-    roulettestageone.initialize();
-    if(roulettestageone.isFinished()){
+    Roulette.getinstance().controlroulettSolenoid(true);
+
+    if (roulettestageone.isFinished()) {
       stage++;
     }
-    if(stage == 1){
+
+    if (stage == 1) {
+      roulettestagetwo.schedule();
       roulettestagetwo.initialize();
+    } else {
+      roulettestageone.schedule();
+      roulettestageone.initialize();
     }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-   if(stage == 1){
-   roulettestagetwo.execute();
-   }else{
-    roulettestageone.execute();
-   }
+    if (stage == 1) {
+      roulettestagetwo.execute();
+    } else {
+      roulettestageone.execute();
+    }
 
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Roulette.getinstance().controlroulettSolenoid(false);
     roulettestageone.schedule();
     roulettestagetwo.schedule();
-
     roulettestageone.cancel();
     roulettestagetwo.cancel();
   }
@@ -66,6 +70,10 @@ int stage;
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (stage == 0) {
+      return roulettestageone.isFinished();
+    } else {
+      return roulettestagetwo.isFinished();
+    }
   }
 }
