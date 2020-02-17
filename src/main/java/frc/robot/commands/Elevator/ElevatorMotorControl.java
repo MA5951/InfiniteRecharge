@@ -13,25 +13,29 @@ import frc.robot.subsystems.Elevator;
 
 public class ElevatorMotorControl extends CommandBase {
   private Elevator elevator;
- 
 
   public ElevatorMotorControl(Elevator el) {
     elevator = el;
     addRequirements(elevator);
-   
+
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    elevator.setElvatorMotorSpeed(RobotContainer.OperatingJoystick.getRawAxis(5));
-    
+    if (Elevator.getinstance().islimitswichdown()) {
+      double power = Math.max(0, RobotContainer.OperatingJoystick.getRawAxis(5));
+      elevator.setElvatorMotorSpeed(power);
+    } else {
+      elevator.setElvatorMotorSpeed(RobotContainer.OperatingJoystick.getRawAxis(5));
+    }
+
   }
 
   // Called once the command ends or is interrupted.

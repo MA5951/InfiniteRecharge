@@ -24,7 +24,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.Transportation.*;
 import frc.robot.subsystems.Transportation;
 import frc.robot.commands.Intake.IntakClose;
+import frc.robot.commands.Intake.IntakePullPush;
 import frc.robot.commands.Intake.OpenIntake;
+import frc.robot.commands.Shooter.PIDFlyWheel;
+import frc.robot.commands.ShooterTransportation.PIDSquishMotor;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Roulette;
 import frc.robot.subsystems.Shooter;
@@ -46,7 +49,10 @@ public class RobotContainer {
 
 
   private Intake intake = Intake.getinstance();
+  private Transportation transportation = Transportation.getinstance();
+  private ShooterTransportation shooterTransportation = ShooterTransportation.getinstance();
   private Chassis chassis = Chassis.getinstance();
+  private Shooter shooter = Shooter.getinstance();
   private Automation auto = Automation.getinstance();
   private Elevator elevator = Elevator.getinstance();
   private Balance balance = Balance.getinstance();
@@ -85,10 +91,10 @@ public class RobotContainer {
 
     OpenIntake.whenPressed(new OpenIntake(intake));
     CloseIntake.whenPressed(new IntakClose(intake));
-    intkaeAutomation.whileHeld(new IntakeAutomation(auto));
-    Shoot.whileActiveContinuous(new Shooting(auto));
-    RouletteControl.whenPressed(new RouletteAutomation(auto));
-    //BalanceControl.whenPressed(new IntakeAutomation(auto));
+    intkaeAutomation.whileHeld(new TransportationContorl(transportation));
+    Shoot.whileActiveContinuous(new PIDSquishMotor(shooterTransportation));
+    RouletteControl.whenPressed(new IntakePullPush(-0.7 ,intake));
+    BalanceControl.whenPressed(new PIDFlyWheel(shooter));
    
   }
 

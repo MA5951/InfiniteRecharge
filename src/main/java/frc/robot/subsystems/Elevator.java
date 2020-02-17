@@ -7,10 +7,14 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANDigitalInput;
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANDigitalInput.LimitSwitch;
 import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -30,13 +34,13 @@ public class Elevator extends SubsystemBase {
   private static final double KD_ELEVATOR = 0;
 
   private CANSparkMax elevatorMotor;
-  private Encoder encoderElevator;
+
 
   private PIDController elevatorPID; // PID controler for hight
   private DoubleSolenoid elevatorPiston;
 
-  private CANDigitalInput limitSwitchUp;
-  private CANDigitalInput limitSwitchDown;
+  private DigitalInput elevatorLimitSwich;
+  private CANEncoder canEncoder;
 
   private static Elevator elevator;
 
@@ -46,8 +50,7 @@ public class Elevator extends SubsystemBase {
         com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
 
     // Encoder
-    encoderElevator = new Encoder(ConstantsElevator.ELEVATOR_ENCODER_A, ConstantsElevator.ELEVATOR_ENCODER_B);
-    encoderElevator.setDistancePerPulse(1);
+
 
     // PID
     elevatorPID = new PIDController(KP_ELEVATOR, KI_ELEVATOR, KD_ELEVATOR);
@@ -58,28 +61,29 @@ public class Elevator extends SubsystemBase {
         ConstantsElevator.ELEVATOR_DOUBLE_SOLENOID_B);
 
     // Limit Switches
+    canEncoder = elevatorMotor.getAlternateEncoder(AlternateEncoderType.kQuadrature, 1);
+    canEncoder.setPositionConversionFactor(1);
+    elevatorLimitSwich = new DigitalInput(1);
 
-    limitSwitchUp = new CANDigitalInput(elevatorMotor, LimitSwitch.kForward, LimitSwitchPolarity.kNormallyOpen);
-    limitSwitchDown = new CANDigitalInput(elevatorMotor, LimitSwitch.kReverse, LimitSwitchPolarity.kNormallyOpen);
   }
 
   // updat the value in the smart dash bord
   public void value() {
-    SmartDashboard.putNumber("encoderValue", encoderElevator.getDistance());
+    SmartDashboard.putNumber("encoderValue", canEncoder.getPosition());
     SmartDashboard.putBoolean("elevatorPistonStatus", isPistonOpen());
+    SmartDashboard.putBoolean("limiswichdownelevator", elevatorLimitSwich.get());
 
-    SmartDashboard.putBoolean("isUpLimitSwitchPressed", isUpLimitSwitchPressed());
-    SmartDashboard.putBoolean("isDownLimitSwitchPressed", isDownLimitSwitchPressed());
+
   }
 
   // pid reset
   public void elevatorEncoderReset() {
-    encoderElevator.reset();
+    canEncoder.setPosition(0);
 
   }
 
   public double getElevatorPIDOutput(double setpoint) {
-    return MathUtil.clamp(elevatorPID.calculate(encoderElevator.getDistance(), setpoint), -1, 1);
+    return MathUtil.clamp(elevatorPID.calculate(canEncoder.getPosition(), setpoint), -1, 1);
   }
 
   public void setElvatorMotorSpeed(double speed) {
@@ -102,13 +106,9 @@ public class Elevator extends SubsystemBase {
     return elevatorPiston.get() == Value.kForward;
   }
 
-  public boolean isUpLimitSwitchPressed() {
-    return limitSwitchUp.get();
-  }
-
-  public boolean isDownLimitSwitchPressed() {
-    return limitSwitchDown.get();
-  }
+public boolean islimitswichdown(){
+  return elevatorLimitSwich.get();
+}
 
   public static Elevator getinstance() {
     if (elevator == null) {
@@ -119,9 +119,10 @@ public class Elevator extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (isDownLimitSwitchPressed()) {
+    if (elevatorLimitSwich.get()) {
       elevatorEncoderReset();
     }
+  
     value();
 
   }
