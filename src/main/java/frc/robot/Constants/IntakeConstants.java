@@ -17,8 +17,8 @@ package frc.robot.Constants;
  */
 public final class IntakeConstants {
     //Motors
-    public static final int IntakeMotor = 11;
+    public static final int IntakeMotor = 12;
     //Pnuematics
-    public static final int IntakeSolenoidA = 6;
-    public static final int IntakeSolenoidB = 7;
+    public static final int IntakeSolenoidA = 5;
+    public static final int IntakeSolenoidB = 4;
 }

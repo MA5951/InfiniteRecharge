@@ -9,7 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
@@ -31,7 +31,7 @@ public class Roulette extends SubsystemBase {
 
   private static Roulette roulette;
 
-  private TalonSRX rouletteMotor;
+  private VictorSPX rouletteMotor;
 
   private ColorSensorV3 colorSensor;
 
@@ -49,31 +49,34 @@ public class Roulette extends SubsystemBase {
 
   private PIDController rouletteSpinControl;
 
-  public static final int KP_ROULETTE = 0;
-  public static final int KI_ROULETTE = 0;
-  public static final int KD_ROULETTE = 0;
+  public static final double KP_ROULETTE = 0.05;
+  public static final double KI_ROULETTE = 0;
+  public static final double KD_ROULETTE = 0;
   public static final int TOLERANCE = 0;
   private int ticks = 0;
 
   private Roulette() {
+    rouletteMotor = new VictorSPX(RouletteConstants.ROULETTE_MOTOR);
+    rouletteMotor.setNeutralMode(NeutralMode.Brake);
+    colorSensor = new ColorSensorV3(I2C.Port.kMXP);
+    roulettSolenoid = new Solenoid(RouletteConstants.ROULETTE_SOLENOID);
+
+    rouletteSpinControl = new PIDController(KP_ROULETTE, KI_ROULETTE, KD_ROULETTE);
+    rouletteSpinControl.setTolerance(TOLERANCE);
+
     detectedColor = colorSensor.getColor();
     lastColor = detectedColor;
     colorMatcher = new ColorMatch();
+
     blue = ColorMatch.makeColor(0, 255, 255);
     green = ColorMatch.makeColor(0, 255, 0);
     red = ColorMatch.makeColor(255, 0, 0);
     yellow = ColorMatch.makeColor(255, 0, 0);
+
     colorMatcher.addColorMatch(blue);
     colorMatcher.addColorMatch(green);
     colorMatcher.addColorMatch(red);
     colorMatcher.addColorMatch(yellow);
-
-    rouletteMotor = new TalonSRX(RouletteConstants.ROULETTE_MOTOR);
-    rouletteMotor.setNeutralMode(NeutralMode.Brake);
-    colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
-    roulettSolenoid = new Solenoid(RouletteConstants.ROULETTE_SOLENOID);
-    rouletteSpinControl = new PIDController(KP_ROULETTE, KI_ROULETTE, KD_ROULETTE);
-    rouletteSpinControl.setTolerance(TOLERANCE);
   }
 
   private void displayValues() {
@@ -85,6 +88,7 @@ public class Roulette extends SubsystemBase {
   }
 
   public int getCurrentColor() {
+    match = colorMatcher.matchClosestColor(colorSensor.getColor());
     if (match.color == blue) {
       return 0;
     } else if (match.color == green) {
@@ -156,12 +160,15 @@ public class Roulette extends SubsystemBase {
     }
     return roulette;
   }
-public void controlroulettSolenoid(boolean value){
-  roulettSolenoid.set(value);
-}
+
+  public void controlroulettSolenoid(boolean value) {
+    roulettSolenoid.set(value);
+  }
+
   @Override
   public void periodic() {
     displayValues();
+    countTicks();
     match = colorMatcher.matchClosestColor(detectedColor);
     // TODO Check where to call ticks count function
   }

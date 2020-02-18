@@ -8,16 +8,10 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.AlternateEncoderType;
-import com.revrobotics.CANDigitalInput;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANDigitalInput.LimitSwitch;
-import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
-
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -37,7 +31,7 @@ public class Elevator extends SubsystemBase {
 
 
   private PIDController elevatorPID; // PID controler for hight
-  private DoubleSolenoid elevatorPiston;
+  private Solenoid elevatorPiston;
 
   private DigitalInput elevatorLimitSwich;
   private CANEncoder canEncoder;
@@ -57,13 +51,13 @@ public class Elevator extends SubsystemBase {
     elevatorPID.setTolerance(10); // TODO
 
     // Piston
-    elevatorPiston = new DoubleSolenoid(ConstantsElevator.ELEVATOR_DOUBLE_SOLENOID_A,
-        ConstantsElevator.ELEVATOR_DOUBLE_SOLENOID_B);
+    elevatorPiston = new Solenoid(ConstantsElevator.ELEVATOR_SOLENOID_A);
 
     // Limit Switches
     canEncoder = elevatorMotor.getAlternateEncoder(AlternateEncoderType.kQuadrature, 1);
     canEncoder.setPositionConversionFactor(1);
-    elevatorLimitSwich = new DigitalInput(1);
+    elevatorLimitSwich = new DigitalInput(10);
+    
 
   }
 
@@ -94,16 +88,12 @@ public class Elevator extends SubsystemBase {
     return elevatorPID.atSetpoint();
   }
 
-  public void openElevatorPiston() {
-    elevatorPiston.set(DoubleSolenoid.Value.kForward);
-  }
-
-  public void closeElevatorPiston() {
-    elevatorPiston.set(DoubleSolenoid.Value.kReverse);
+  public void ControlElevatorPiston(boolean value) {
+    elevatorPiston.set(value);
   }
 
   public boolean isPistonOpen() {
-    return elevatorPiston.get() == Value.kForward;
+    return elevatorPiston.get();
   }
 
 public boolean islimitswichdown(){
@@ -119,9 +109,9 @@ public boolean islimitswichdown(){
 
   @Override
   public void periodic() {
-    if (elevatorLimitSwich.get()) {
-      elevatorEncoderReset();
-    }
+    //if (elevatorLimitSwich.get()) {
+      //elevatorEncoderReset();
+    //}
   
     value();
 

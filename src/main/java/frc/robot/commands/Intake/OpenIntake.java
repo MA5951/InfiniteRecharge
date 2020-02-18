@@ -16,7 +16,7 @@ public class OpenIntake extends InstantCommand {
   Intake intake;
 
   public OpenIntake(Intake intake) {
-    intake = this.intake;
+    this.intake = intake;
     addRequirements(intake);
   }
 

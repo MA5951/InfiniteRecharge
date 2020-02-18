@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Balance.DriverControllBalance;
+import frc.robot.commands.Chassis.MAPath;
 import frc.robot.commands.Chassis.tankDrive;
 import frc.robot.commands.Elevator.ElevatorMotorControl;
 import frc.robot.subsystems.Balance;
@@ -123,6 +124,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    MAPath.pathnum = 0;
     // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -138,6 +140,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    MAPath.pathnum = 0;
+    Balance.getinstance().resetNavx();
     Chassis.getinstance().resetValue();
     Chassis.getinstance().rampRate(0);
     Shooter.getinstance().shootCounter = 0;

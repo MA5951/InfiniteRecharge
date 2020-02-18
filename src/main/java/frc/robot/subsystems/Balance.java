@@ -10,7 +10,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.I2C;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -46,7 +46,7 @@ public class Balance extends SubsystemBase {
 
     IRLeft = balanceMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
     IRRight = balanceMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-    navx = new AHRS(Port.kOnboard);
+    navx = new AHRS(I2C.Port.kOnboard);
 
     balancePidController = new PIDController(KP_BALANCE, KI_BALANCE, KD_BALANCE);
     balancePidController.setTolerance(angleTolorance);
@@ -55,8 +55,6 @@ public class Balance extends SubsystemBase {
 
   public void Value() {
     SmartDashboard.putNumber("BalanceNavxPich", navx.getPitch());
-    SmartDashboard.putNumber("BalanceNavxRoll", navx.getRoll());
-
     SmartDashboard.putBoolean("rightIR", IRRight.get());
     SmartDashboard.putBoolean("leftIR", IRLeft.get());
   }
@@ -84,6 +82,10 @@ public class Balance extends SubsystemBase {
 
   public void changeModeSparkMaxBrake() {
     balanceMotor.setIdleMode(IdleMode.kBrake);
+  }
+
+ public double getnavxangle() {
+    return navx.getAngle();
   }
 
   public void changeModeSparkMaxCoast() {

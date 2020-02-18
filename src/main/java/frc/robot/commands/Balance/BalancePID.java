@@ -37,7 +37,7 @@ public class BalancePID extends CommandBase {
     // balance.controlBalanceMotor(power);
 
     double threshold = 3;
-    double scale = 1;
+    double scale = 0.5;
     double angle = balance.getinstance().getnavxPich();
     double power = (Math.abs(angle) / angle) * scale;
 

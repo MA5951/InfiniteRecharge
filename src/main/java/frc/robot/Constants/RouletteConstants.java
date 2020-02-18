@@ -17,5 +17,5 @@ package frc.robot.Constants;
  */
 public final class RouletteConstants {
     public static final int ROULETTE_MOTOR = 10;
-    public static final int ROULETTE_SOLENOID = 10;
+    public static final int ROULETTE_SOLENOID = 6;
 }

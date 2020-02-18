@@ -46,9 +46,9 @@ public class Path {
         new double[]{-4.8, 180, 0.1, 5, 0.6,0.6},
         //new double[]{-4.25, -180.0, 0.05, 10, 1,1}
       };
-
+//distance,angale,distange frishhold,angle frishhold,distance speed, angle speed
       public static double[][] strightLine = {
-        new double[]{2, 0, 0.05, 10, 1, 1}
+        new double[]{0, 90, 0.05, 5, 0, 1}
       };
           public static double[][] try_path = {
             new double[]{0.8 , -5, 0.3, 10, 0.2, 1},

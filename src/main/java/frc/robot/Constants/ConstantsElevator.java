@@ -22,8 +22,8 @@ public final class ConstantsElevator {
     public static final int ELEVATOR_ENCODER_A = 0;
     public static final int ELEVATOR_ENCODER_B = 1;
 
-    public static final int ELEVATOR_DOUBLE_SOLENOID_A = 0;
-    public static final int ELEVATOR_DOUBLE_SOLENOID_B = 1;
+    public static final int ELEVATOR_SOLENOID_A = 7;
+ 
 
 
 }

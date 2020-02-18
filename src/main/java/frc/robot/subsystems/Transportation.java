@@ -8,7 +8,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
@@ -19,9 +20,9 @@ public class Transportation extends SubsystemBase {
    */
   private static Transportation transportation;
 
-  private VictorSPX transportationMotor;
+  private TalonSRX transportationMotor;
   private Transportation() {
-      transportationMotor = new VictorSPX(TransportationConstants.transportationMotor);
+      transportationMotor = new TalonSRX(TransportationConstants.transportationMotor);
   }
 
   public void transportationControl(double power) {

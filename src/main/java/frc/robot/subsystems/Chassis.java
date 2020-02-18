@@ -12,7 +12,7 @@ import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
-import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -26,16 +26,15 @@ import frc.robot.commands.Chassis.MAPath;
  * An example subsystem. You can replace me with your own Subsystem.
  */
 public class Chassis extends SubsystemBase {
-  private static final double PIDmultiplayr = 2.6;
   private static final double kLimelight3D = 25.625 * 2.54; // TODO
 
-  private static final double KP_MApath_distance = 2e-3 / PIDmultiplayr;
+  private static final double KP_MApath_distance = 40e-6;
   private static final double KI_MApath_distance = 0;
-  private static final double KD_MApath_distance = 3.6e-4 / PIDmultiplayr;
+  private static final double KD_MApath_distance = 20e-7;
 
-  private static final double KP_MApath_angle = 7.2e-2 / PIDmultiplayr;
+  private static final double KP_MApath_angle = 3e-3;
   private static final double KI_MApath_angle = 0;
-  private static final double KD_MApath_angle = 2.1e-2 / PIDmultiplayr;
+  private static final double KD_MApath_angle = 1e-3;
 
   private static final double KP_Vision_angle = 3e-3 * 1.6875;
   private static final double KI_Vision_angle = 0.5e-6 * 1.6875;
@@ -100,7 +99,8 @@ public class Chassis extends SubsystemBase {
 
     canEncoderLeftCIMcoder = leftMotor.getAlternateEncoder(AlternateEncoderType.kQuadrature, 1);
     canEncoderRightCIMcoder = rightMotor.getAlternateEncoder(AlternateEncoderType.kQuadrature, 1);
-    canEncoderRightCIMcoder.setInverted(true);
+    canEncoderRightCIMcoder.setInverted(false);
+    canEncoderLeftCIMcoder.setInverted(true);
 
     canEncoderRight = rightFrontMotor.getEncoder();
     canEncoderleft = leftFrontMotor.getEncoder();
@@ -114,12 +114,12 @@ public class Chassis extends SubsystemBase {
     leftMotor.follow(leftFrontMotor);
     rightMotor.follow(rightFrontMotor);
 
-    leftMotor.setInverted(true);
-    leftFrontMotor.setInverted(true);
-    rightMotor.setInverted(false);
-    rightFrontMotor.setInverted(false);
+    leftMotor.setInverted(false);
+    leftFrontMotor.setInverted(false);
+    rightMotor.setInverted(true);
+    rightFrontMotor.setInverted(true);
 
-    navx = new AHRS(Port.kMXP);
+    navx = new AHRS(SPI.Port.kMXP);
 
     // the distance PID Pathfinder
     distancePidMApath = new PIDController(KP_MApath_distance, KI_MApath_distance, KD_MApath_distance);
@@ -153,7 +153,7 @@ public class Chassis extends SubsystemBase {
   public void value() {
 
     SmartDashboard.putNumber("angle", navx.getFusedHeading());
-    SmartDashboard.putNumber("fixedAngle", fixedAngle());
+    SmartDashboard.putNumber("fixedAngle", fixedAngle() );
 
     SmartDashboard.putNumber("pathnum", MAPath.pathnum);
     SmartDashboard.putNumber("stage", MAPath.stage);
@@ -215,7 +215,7 @@ public class Chassis extends SubsystemBase {
 
   public double fixedAngle() {
     try {
-      angle = navx.getAngle();
+      angle = Balance.getinstance().getnavxangle();
       sign = angle / Math.abs(angle);
       modle = sign * (Math.abs(angle) % 360);
       return -((180 - modle) % 360) + 180;
@@ -246,7 +246,7 @@ public class Chassis extends SubsystemBase {
 
   // resat the value of the encoder and the navx
   public void resetValue() {
-    navx.reset();
+    Balance.getinstance().resetNavx();
     canEncoderLeftCIMcoder.setPosition(0);
     canEncoderRightCIMcoder.setPosition(0);
   }
@@ -333,6 +333,7 @@ public class Chassis extends SubsystemBase {
 
   @Override
   public void periodic() {
+   
     value();
 
   }
