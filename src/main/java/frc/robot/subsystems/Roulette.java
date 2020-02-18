@@ -68,10 +68,10 @@ public class Roulette extends SubsystemBase {
     lastColor = detectedColor;
     colorMatcher = new ColorMatch();
 
-    blue = ColorMatch.makeColor(0, 255, 255);
-    green = ColorMatch.makeColor(0, 255, 0);
-    red = ColorMatch.makeColor(255, 0, 0);
-    yellow = ColorMatch.makeColor(255, 0, 0);
+    blue = ColorMatch.makeColor(0.143, 0.427, 0.429);
+    green = ColorMatch.makeColor(0.197, 0.561, 0.240);
+    red = ColorMatch.makeColor(0.561, 0.232, 0.114);
+    yellow = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
     colorMatcher.addColorMatch(blue);
     colorMatcher.addColorMatch(green);
@@ -91,14 +91,15 @@ public class Roulette extends SubsystemBase {
     match = colorMatcher.matchClosestColor(colorSensor.getColor());
     if (match.color == blue) {
       return 0;
-    } else if (match.color == green) {
-      return 1;
     } else if (match.color == red) {
+      return 1;
+    } else if (match.color == green) {
       return 2;
     } else if (match.color == yellow) {
       return 3;
-    }
+    } 
     return 0;
+    
   }
 
   public void countTicks() {

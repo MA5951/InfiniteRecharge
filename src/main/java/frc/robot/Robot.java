@@ -112,6 +112,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     Chassis.getinstance().setidilmodeBrake();
     CommandScheduler.getInstance().cancelAll();
+    Roulette.getinstance().resetTicks();
   }
 
   @Override
