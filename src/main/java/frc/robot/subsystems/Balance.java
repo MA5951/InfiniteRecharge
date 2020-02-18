@@ -109,6 +109,7 @@ public class Balance extends SubsystemBase {
 
   @Override
   public void periodic() {
+    System.out.println(navx.getAngle() + " " + navx.getPitch() + " " + navx.getRoll());
     Value();
   }
 }

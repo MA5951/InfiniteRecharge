@@ -79,7 +79,9 @@ public class Elevator extends SubsystemBase {
   public double getElevatorPIDOutput(double setpoint) {
     return MathUtil.clamp(elevatorPID.calculate(canEncoder.getPosition(), setpoint), -1, 1);
   }
-
+public double getelevatorencoder(){
+  return canEncoder.getPosition();
+}
   public void setElvatorMotorSpeed(double speed) {
     elevatorMotor.set(speed);
   }

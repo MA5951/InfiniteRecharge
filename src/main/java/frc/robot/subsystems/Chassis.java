@@ -13,6 +13,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -119,7 +120,7 @@ public class Chassis extends SubsystemBase {
     rightMotor.setInverted(true);
     rightFrontMotor.setInverted(true);
 
-    navx = new AHRS(SPI.Port.kMXP);
+    navx = new AHRS(edu.wpi.first.wpilibj.SerialPort.Port.kMXP);
 
     // the distance PID Pathfinder
     distancePidMApath = new PIDController(KP_MApath_distance, KI_MApath_distance, KD_MApath_distance);
@@ -333,7 +334,6 @@ public class Chassis extends SubsystemBase {
 
   @Override
   public void periodic() {
-   
     value();
 
   }
