@@ -14,14 +14,16 @@ public class Path {
     public static double[][] mainPath; // the array we us as the main Path in the MApath
 
     public static double[][] roulettePath1 = { 
-      new double[]{0.87, 4.5, 0.3, 15, 1 , 1},
-      new double[]{1.390, -32.28, 0.3, 15, 1 , 1},
-      new double[]{1.900, -67.46, 0.3, 15, 1 , 1},
-      new double[]{2.400, -77.49, 0.3, 15, 1 , 1},
-      new double[]{2.820, -62.85, 0.3, 15, 1 , 1},
-      new double[]{3.270, -11, 0.3, 15, 1 , 1},
-      new double[]{3.6, 0, 0.3, 2, 1 , 1},
-      new double[]{7, 0, 0.05, 3, 1, 1}
+      new double[]{0, 90, 0.1, 60, 1, 1},
+      new double[]{0, 180, 0.05, 6, 1, 1},
+      new double[]{0.87, -175.5, 0.3, 15, 1 , 1},
+      new double[]{1.390, 148, 0.3, 15, 1 , 1},
+      new double[]{1.900, 112.54, 0.3, 15, 1 , 1},
+      new double[]{2.700, 102.51, 0.3, 15, 1 , 1},
+      new double[]{3.320, 117.15, 0.3, 15, 1 , 1},
+      new double[]{3.770, 169, 0.3, 10, 1 , 1},
+      new double[]{4.1, 180, 0.3, 3, 0.6 , 1},
+      new double[]{7.5, 180, 0.05, 3, 0.6 , 1}
       };
 
       public static double[][] toRondevousAndBack = { 
@@ -46,10 +48,12 @@ public class Path {
         new double[]{-4.8, 180, 0.1, 5, 0.6,0.6},
         //new double[]{-4.25, -180.0, 0.05, 10, 1,1}
       };
+
 //distance,angale,distange frishhold,angle frishhold,distance speed, angle speed
       public static double[][] strightLine = {
-        new double[]{0, 90, 0.05, 5, 0, 1}
+        new double[]{0, 180, 0.05, 2, 1, 0.87}
       };
+
           public static double[][] try_path = {
             new double[]{0.8 , -5, 0.3, 10, 0.2, 1},
             new double[]{1.35, -32.54,0.3, 10, 0.25 , 0.65 },

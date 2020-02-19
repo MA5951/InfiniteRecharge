@@ -29,7 +29,7 @@ public class Balance extends SubsystemBase {
   private CANDigitalInput IRLeft;
   private CANDigitalInput IRRight;
 
-  private AHRS navx;
+  //private AHRS navx;
 
   private static final double KP_BALANCE = 0;
   private static final double KI_BALANCE = 0;
@@ -46,7 +46,7 @@ public class Balance extends SubsystemBase {
 
     IRLeft = balanceMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
     IRRight = balanceMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-    navx = new AHRS(I2C.Port.kOnboard);
+   // navx = new AHRS(I2C.Port.kOnboard);
 
     balancePidController = new PIDController(KP_BALANCE, KI_BALANCE, KD_BALANCE);
     balancePidController.setTolerance(angleTolorance);
@@ -54,13 +54,14 @@ public class Balance extends SubsystemBase {
   }
 
   public void Value() {
-    SmartDashboard.putNumber("BalanceNavxPich", navx.getPitch());
+    //SmartDashboard.putNumber("BalanceNavxPich", navx.getPitch());
     SmartDashboard.putBoolean("rightIR", IRRight.get());
     SmartDashboard.putBoolean("leftIR", IRLeft.get());
   }
 
   public double balancePidControllerSetPoint(double balanceSetPoint) {
-    return MathUtil.clamp(balancePidController.calculate(navx.getPitch(), balanceSetPoint), -1, 1);
+    // return MathUtil.clamp(balancePidController.calculate(navx.getPitch(), balanceSetPoint), -1, 1);
+    return 0;
   }
 
   public boolean isBalancePIDOnTarget() {
@@ -73,11 +74,12 @@ public class Balance extends SubsystemBase {
   }
 
   public void resetNavx() {
-    navx.reset();
+   // navx.reset();
   }
 
   public double getnavxPich() {
-    return navx.getPitch();
+    // return navx.getPitch();
+    return 0;
   }
 
   public void changeModeSparkMaxBrake() {
@@ -85,7 +87,8 @@ public class Balance extends SubsystemBase {
   }
 
  public double getnavxangle() {
-    return navx.getAngle();
+    // return navx.getAngle();
+    return 0;
   }
 
   public void changeModeSparkMaxCoast() {
@@ -109,7 +112,7 @@ public class Balance extends SubsystemBase {
 
   @Override
   public void periodic() {
-    System.out.println(navx.getAngle() + " " + navx.getPitch() + " " + navx.getRoll());
+    //System.out.println(navx.getAngle() + " " + navx.getPitch() + " " + navx.getRoll());
     Value();
   }
 }

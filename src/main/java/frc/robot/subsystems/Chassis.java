@@ -12,8 +12,8 @@ import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.I2C.Port;
+
+import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -33,13 +33,13 @@ public class Chassis extends SubsystemBase {
   private static final double KI_MApath_distance = 0;
   private static final double KD_MApath_distance = 20e-7;
 
-  private static final double KP_MApath_angle = 3e-3;
+  private static final double KP_MApath_angle = 1e-2;
   private static final double KI_MApath_angle = 0;
   private static final double KD_MApath_angle = 1e-3;
 
-  private static final double KP_Vision_angle = 3e-3 * 1.6875;
-  private static final double KI_Vision_angle = 0.5e-6 * 1.6875;
-  private static final double KD_Vision_angle = 1e-5 * 1.6875;
+  private static final double KP_Vision_angle = 1e-2;
+  private static final double KI_Vision_angle =  0;
+  private static final double KD_Vision_angle = 9e-3;
 
   private static final double KP_VELOCITY_LEFT = 0.000058 * 6;
   private static final double KI_VELOCITY_LEFT = 0;
@@ -100,8 +100,8 @@ public class Chassis extends SubsystemBase {
 
     canEncoderLeftCIMcoder = leftMotor.getAlternateEncoder(AlternateEncoderType.kQuadrature, 1);
     canEncoderRightCIMcoder = rightMotor.getAlternateEncoder(AlternateEncoderType.kQuadrature, 1);
-    canEncoderRightCIMcoder.setInverted(false);
-    canEncoderLeftCIMcoder.setInverted(true);
+    canEncoderRightCIMcoder.setInverted(true);
+    canEncoderLeftCIMcoder.setInverted(false);
 
     canEncoderRight = rightFrontMotor.getEncoder();
     canEncoderleft = leftFrontMotor.getEncoder();
@@ -115,12 +115,12 @@ public class Chassis extends SubsystemBase {
     leftMotor.follow(leftFrontMotor);
     rightMotor.follow(rightFrontMotor);
 
-    leftMotor.setInverted(false);
-    leftFrontMotor.setInverted(false);
-    rightMotor.setInverted(true);
-    rightFrontMotor.setInverted(true);
+    leftMotor.setInverted(true);
+    leftFrontMotor.setInverted(true);
+    rightMotor.setInverted(false);
+    rightFrontMotor.setInverted(false);
 
-    navx = new AHRS(edu.wpi.first.wpilibj.SerialPort.Port.kMXP);
+    navx = new AHRS(Port.kMXP);
 
     // the distance PID Pathfinder
     distancePidMApath = new PIDController(KP_MApath_distance, KI_MApath_distance, KD_MApath_distance);
@@ -216,7 +216,7 @@ public class Chassis extends SubsystemBase {
 
   public double fixedAngle() {
     try {
-      angle = Balance.getinstance().getnavxangle();
+      angle = navx.getYaw();
       sign = angle / Math.abs(angle);
       modle = sign * (Math.abs(angle) % 360);
       return -((180 - modle) % 360) + 180;
@@ -247,7 +247,7 @@ public class Chassis extends SubsystemBase {
 
   // resat the value of the encoder and the navx
   public void resetValue() {
-    Balance.getinstance().resetNavx();
+    navx.reset();
     canEncoderLeftCIMcoder.setPosition(0);
     canEncoderRightCIMcoder.setPosition(0);
   }
@@ -264,12 +264,15 @@ public class Chassis extends SubsystemBase {
   }
 
   public double anglePIDVisionOutput(double setpoint) {
-    return MathUtil.clamp(anglePIDVision.calculate(navx.getFusedHeading(), setpoint), -1, 1);
+    return MathUtil.clamp(anglePIDVision.calculate(Robot.x * -1, setpoint), -1, 1);
   }
 
   public void ArcadeDrive(double angel, double distacne) {
     double w = (100 - Math.abs(angel * 100)) * (distacne) + distacne * 100;
     double v = (100 - Math.abs(distacne * 100)) * (angel) + angel * 100;
+
+    System.out.println((-(v + w) / 200)+ " " +  ((v - w) / 200));
+
     tankDrive((-(v + w) / 200), ((v - w) / 200));
   }
 

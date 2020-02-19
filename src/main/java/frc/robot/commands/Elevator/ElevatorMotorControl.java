@@ -30,19 +30,11 @@ public class ElevatorMotorControl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (elevator.getinstance().isPistonOpen()) {
-      elevator.setElvatorMotorSpeed(0);
-    } else if (elevator.getinstance().getelevatorencoder() > 1000) {
-      double power = Math.min(0, RobotContainer.OperatingJoystick.getRawAxis(5));
-      elevator.setElvatorMotorSpeed(power);
-    } else if (elevator.getinstance().islimitswichdown()) {
-      double power = Math.max(0, RobotContainer.OperatingJoystick.getRawAxis(5));
-      elevator.setElvatorMotorSpeed(power);
-    } else {
-      elevator.setElvatorMotorSpeed(RobotContainer.OperatingJoystick.getRawAxis(5) * 0.5);
+   
+      elevator.setElvatorMotorSpeed(RobotContainer.OperatingJoystick.getRawAxis(5) * 0);
     }
 
-  }
+  
 
   // Called once the command ends or is interrupted.
   @Override

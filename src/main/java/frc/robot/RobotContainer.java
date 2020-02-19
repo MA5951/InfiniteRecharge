@@ -14,9 +14,13 @@ import frc.robot.Robot;
 import frc.robot.commands.Automation.IntakeAutomation;
 import frc.robot.commands.Automation.RouletteAutomation;
 import frc.robot.commands.Automation.Shooting;
+import frc.robot.commands.Autonomous.RoulletePath;
+import frc.robot.commands.Autonomous.roulletpath;
 import frc.robot.commands.Chassis.MAPath;
+import frc.robot.commands.Chassis.PIDVision;
 import frc.robot.commands.Elevator.OpenAndClosePiston;
 import frc.robot.subsystems.Automation;
+import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Balance;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Elevator;
@@ -66,7 +70,7 @@ public class RobotContainer {
   private JoystickButton OpenIntake = new JoystickButton(OperatingJoystick, 6);
   private JoystickButton CloseIntake = new JoystickButton(OperatingJoystick, 5);
   private static ShootingTriggger Shoot = new ShootingTriggger();
-  private JoystickButton intkaeAutomation = new JoystickButton(OperatingJoystick, 8);
+  private JoystickButton intkaeAutomation = new JoystickButton(rightJoystick, 1);
   private static JoystickButton RouletteControl = new JoystickButton(OperatingJoystick, 3);
   private static JoystickButton BalanceControl = new JoystickButton(OperatingJoystick, 4);
 
@@ -91,11 +95,11 @@ public class RobotContainer {
 
     OpenIntake.whenPressed(new OpenIntake(intake));
     CloseIntake.whenPressed(new IntakClose(intake));
-    intkaeAutomation.whileHeld(new OpenAndClosePiston(elevator , false));
+    intkaeAutomation.whenPressed(new OpenAndClosePiston(elevator , false));
     Shoot.whileActiveContinuous(new PIDSquishMotor(shooterTransportation));
     RouletteControl.whileHeld(new IntakePullPush(-0.7 ,intake));
     BalanceControl.whileHeld(new PIDFlyWheel(shooter));
-    MApath.whenPressed(new MAPath(0.1, chassis));
+    MApath.whenPressed(new PIDVision(0, 0.1, chassis));
     PIDVision.whenPressed(new OpenAndClosePiston(elevator , true));
   }
 

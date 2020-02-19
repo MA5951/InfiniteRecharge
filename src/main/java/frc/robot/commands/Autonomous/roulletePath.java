@@ -7,6 +7,7 @@
 
 package frc.robot.commands.Autonomous;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.Automation.IntakeAutomation;
 import frc.robot.commands.Automation.Shooting;
@@ -14,63 +15,95 @@ import frc.robot.commands.Chassis.MAPath;
 import frc.robot.subsystems.Automation;
 import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Chassis;
-import frc.robot.subsystems.Shooter;
 
-public class roulletePath extends CommandBase {
+public class RoulletePath extends CommandBase {
   /**
-   * Creates a new roulletePath.
+   * Creates a new RoulletePath.
    */
-  private CommandBase intakeCommand, Shooting, maPath;
+  Autonomous autonomous;
+  int stage = 0;
+  CommandBase MApath, Intake, shooting;
 
-  private Autonomous auto;
-  private int stage;
-  private int shootCounter;
+  public RoulletePath(Autonomous autonomous) {
 
-  public roulletePath(Autonomous autonomous, int stage, int shootCounter) {
-    this.shootCounter = shootCounter;
-    Shooting = new Shooting(Automation.getinstance());
-    intakeCommand = new IntakeAutomation(Automation.getinstance());
-    maPath = new MAPath(0.1, Chassis.getinstance());
-    this.stage = stage;
-    auto = autonomous;
-    addRequirements(auto);
+    this.autonomous = autonomous;
+    MApath = new MAPath(0.1, Chassis.getinstance());
+    Intake = new IntakeAutomation(Automation.getinstance());
+    shooting = new Shooting(Automation.getinstance());
+
+    addRequirements(autonomous);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Shooter.getinstance().shootCounter = 0;
-    intakeCommand.schedule();
-    Shooting.schedule();
-    
-    Shooting.initialize();
+    stage = 0;
+    MApath.schedule();
+    Intake.schedule();
+    shooting.schedule();
+
+    shooting.initialize();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Shooter.getinstance().shootCounter < shootCounter) {
-      Shooting.execute();
-    } else {
-      Shooting.cancel();
-      if (MAPath.stage > stage) {
-        intakeCommand.schedule();
+    switch (stage) {
+    case 0:
+      if (Timer.getFPGATimestamp() < 1) {
+        shooting.execute();
+
+      } else {
+        stage++;
+        shooting.cancel();
+        MApath.initialize();
       }
+      break;
+
+    case 1:
+      MApath.execute();
+      if (MAPath.stage == 2) {
+        Intake.initialize();
+      } else if (MAPath.stage > 3) {
+        Intake.execute();
+      }
+
+      if (MApath.isFinished()) {
+        stage++;
+      }
+      break;
+
+    case 2:
+      MApath.cancel();
+      Intake.cancel();
+      stage++;
+      break;
+    case 3:
+      shooting.schedule();
+      shooting.initialize();
+      stage++;
+      break;
+    case 4:
+      shooting.execute();
     }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Shooting.schedule();
-    intakeCommand.cancel();
-    Shooting.cancel();
-    maPath.cancel();
+    shooting.schedule();
+    Intake.schedule();
+    MApath.schedule();
+    shooting.cancel();
+    Intake.cancel();
+    MApath.cancel();
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return maPath.isFinished();
+    return false;
   }
 }
