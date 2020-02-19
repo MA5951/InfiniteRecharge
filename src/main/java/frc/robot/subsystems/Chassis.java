@@ -37,9 +37,9 @@ public class Chassis extends SubsystemBase {
   private static final double KI_MApath_angle = 0;
   private static final double KD_MApath_angle = 1e-3;
 
-  private static final double KP_Vision_angle = 1e-2;
-  private static final double KI_Vision_angle =  0;
-  private static final double KD_Vision_angle = 9e-3;
+  private static final double KP_Vision_angle = 2.5e-2;
+  private static final double KI_Vision_angle =  8e-4;
+  private static final double KD_Vision_angle = 1e-3;
 
   private static final double KP_VELOCITY_LEFT = 0.000058 * 6;
   private static final double KI_VELOCITY_LEFT = 0;

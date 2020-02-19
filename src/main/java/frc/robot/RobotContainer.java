@@ -99,7 +99,7 @@ public class RobotContainer {
     Shoot.whileActiveContinuous(new PIDSquishMotor(shooterTransportation));
     RouletteControl.whileHeld(new IntakePullPush(-0.7 ,intake));
     BalanceControl.whileHeld(new PIDFlyWheel(shooter));
-    MApath.whenPressed(new PIDVision(0, 0.1, chassis));
+    MApath.whileHeld(new PIDVision(0, 0.1, chassis));
     PIDVision.whenPressed(new OpenAndClosePiston(elevator , true));
   }
 
