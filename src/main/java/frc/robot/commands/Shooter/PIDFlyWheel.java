@@ -25,13 +25,13 @@ public class PIDFlyWheel extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flyWheelSpeed = 495; // this.shooter.calculateSpeedToFlyWheel(Chassis.getinstance().distance()); //
+    flyWheelSpeed = 190; // this.shooter.calculateSpeedToFlyWheel(Chassis.getinstance().distance()); //
                          // TODO
   }
 
   @Override
   public void execute() {
-    double power = shooter.flyWheelSpeedOutPut(flyWheelSpeed) + ((1 / 1200) * flyWheelSpeed);
+    double power = shooter.flyWheelSpeedOutPut(flyWheelSpeed) + ((1 / 350) * flyWheelSpeed);
     this.shooter.controlFlyWheelMotor(power);
   }
 

@@ -98,7 +98,7 @@ public class RobotContainer {
     intkaeAutomation.whenPressed(new OpenAndClosePiston(elevator , false));
     Shoot.whileActiveContinuous(new PIDSquishMotor(shooterTransportation));
     RouletteControl.whileHeld(new IntakePullPush(-0.7 ,intake));
-    BalanceControl.whileHeld(new PIDFlyWheel(shooter));
+    BalanceControl.whileHeld(new Shooting(auto));
     MApath.whileHeld(new PIDVision(0, 0.1, chassis));
     PIDVision.whenPressed(new OpenAndClosePiston(elevator , true));
   }

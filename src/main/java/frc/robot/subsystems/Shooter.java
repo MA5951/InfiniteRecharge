@@ -20,8 +20,8 @@ import frc.robot.Constants.*;
 public class Shooter extends SubsystemBase {
   private static Shooter shooter;
 
-  private double KP_FLY_WHEEL_SPEED = 0.007;
-  private double KI_FLY_WHEEL_SPEED = 0.0003;
+  private double KP_FLY_WHEEL_SPEED = 0.015;
+  private double KI_FLY_WHEEL_SPEED = 0.007;
   private double KD_FLY_WHEEL_SPEED = 0;
 
   public static double shooterAngle = 68.5; // TODO
@@ -48,7 +48,7 @@ public class Shooter extends SubsystemBase {
 
     flyWheelSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_FLY_WHEEL_SPEED, KI_FLY_WHEEL_SPEED,
         KD_FLY_WHEEL_SPEED);
-    flyWheelSpeed.setTolerance(17); // TODO
+    flyWheelSpeed.setTolerance(8); // TODO
     flyWheelA.configClosedloopRamp(0.05);
     flyWheelB.configClosedloopRamp(0.05);
 
@@ -91,7 +91,7 @@ public class Shooter extends SubsystemBase {
    * @return The result of the calculation
    */
   public double flyWheelSpeedOutPut(double setPoint) {
-    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), -1, 1);
+    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), -0.9, 0.9);
   }
 
   /**
