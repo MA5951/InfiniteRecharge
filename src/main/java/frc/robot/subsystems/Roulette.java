@@ -58,7 +58,7 @@ public class Roulette extends SubsystemBase {
   private Roulette() {
     rouletteMotor = new VictorSPX(RouletteConstants.ROULETTE_MOTOR);
     rouletteMotor.setNeutralMode(NeutralMode.Brake);
-    colorSensor = new ColorSensorV3(I2C.Port.kMXP);
+    colorSensor = new ColorSensorV3(I2C.Port.kOnboard);
     roulettSolenoid = new Solenoid(RouletteConstants.ROULETTE_SOLENOID);
 
     rouletteSpinControl = new PIDController(KP_ROULETTE, KI_ROULETTE, KD_ROULETTE);
@@ -68,9 +68,13 @@ public class Roulette extends SubsystemBase {
     lastColor = detectedColor;
     colorMatcher = new ColorMatch();
 
-    blue = ColorMatch.makeColor(0.143, 0.427, 0.429);
-    green = ColorMatch.makeColor(0.197, 0.561, 0.240);
-    red = ColorMatch.makeColor(0.561, 0.232, 0.114);
+    //red = ColorMatch.makeColor(0.18408203125, 0, 0);
+    //green = ColorMatch.makeColor(0,0.618408203125, 0);
+    //blue = ColorMatch.makeColor(0.16162109375, 0, 1);
+    //yellow = ColorMatch.makeColor(0.361, 0.524, 0.113);
+    red = ColorMatch.makeColor(255, 0, 0);
+    green = ColorMatch.makeColor(0,255, 0);
+    blue = ColorMatch.makeColor(0, 0, 255);
     yellow = ColorMatch.makeColor(0.361, 0.524, 0.113);
 
     colorMatcher.addColorMatch(blue);
@@ -85,10 +89,16 @@ public class Roulette extends SubsystemBase {
      */
     SmartDashboard.putString("Color", Robot.colorString);
     SmartDashboard.putNumber("Ticks", ticks);
+    SmartDashboard.putNumber("CurrentColor", getCurrentColor());
+    SmartDashboard.putNumber("Red", detectedColor.red);
+    SmartDashboard.putNumber("Green", detectedColor.green);
+    SmartDashboard.putNumber("Blue", detectedColor.blue);
+    SmartDashboard.putNumber("Confidence", match.confidence);
+    SmartDashboard.putString("Colllooor", getCurrentStringColor());
   }
 
   public int getCurrentColor() {
-    match = colorMatcher.matchClosestColor(colorSensor.getColor());
+    match = colorMatcher.matchClosestColor(detectedColor);
     if (match.color == blue) {
       return 0;
     } else if (match.color == red) {
@@ -98,9 +108,25 @@ public class Roulette extends SubsystemBase {
     } else if (match.color == yellow) {
       return 3;
     } 
-    return 0;
-    
+    return 0;  
   }
+  public String getCurrentStringColor()
+  {
+    String colorString;
+    ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
+
+    if (match.color == blue) {
+      return  "Blue";
+    } else if (match.color == red) {
+      return  "Red";
+    } else if (match.color == green) {
+      return  "Green";
+    } else if (match.color == yellow) {
+      return  "Yellow";
+    }
+      return  "Unknown";
+  }
+  
 
   public void countTicks() {
     /**
@@ -168,6 +194,9 @@ public class Roulette extends SubsystemBase {
 
   @Override
   public void periodic() {
+    detectedColor = colorSensor.getColor();
+    System.out.println(colorSensor.getColor().blue + " " + colorSensor.getColor().red + " " + colorSensor.getColor().green);
+    lastColor = detectedColor;
     displayValues();
     countTicks();
     match = colorMatcher.matchClosestColor(detectedColor);

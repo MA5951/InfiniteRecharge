@@ -101,6 +101,7 @@ public class Robot extends TimedRobot {
     distanceFromTargetLimelightX = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[0];
     distanceFromTargetLimelightY = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[2];
 
+    
      getColorFromFMS();
 
   }

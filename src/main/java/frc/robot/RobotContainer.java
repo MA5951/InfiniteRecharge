@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Robot;
 import frc.robot.commands.Automation.IntakeAutomation;
-import frc.robot.commands.Automation.RouletteAutomation;
 import frc.robot.commands.Automation.Shooting;
 import frc.robot.commands.Autonomous.RoulletePath;
 import frc.robot.commands.Autonomous.roulletpath;
