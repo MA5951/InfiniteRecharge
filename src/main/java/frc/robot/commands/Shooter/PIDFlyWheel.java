@@ -8,6 +8,7 @@
 package frc.robot.commands.Shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Shooter;
 
 public class PIDFlyWheel extends CommandBase {
@@ -25,7 +26,7 @@ public class PIDFlyWheel extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flyWheelSpeed = 190; // this.shooter.calculateSpeedToFlyWheel(Chassis.getinstance().distance()); //
+    flyWheelSpeed = shooter.calculateSpeedToFlyWheel(Chassis.getinstance().distance()); //
                          // TODO
   }
 

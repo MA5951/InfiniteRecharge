@@ -33,7 +33,7 @@ public class TransportationContorl extends CommandBase {
   public void execute() {
     if(ShooterTransportation.getinstance().getMotorCurrnet() < -30 || transportation.getMotorCurrnet() < -35) {
       transportation.transportationControl(0.4);
-      Timer.delay(0.1);
+      Timer.delay(0.2);
 
     } else {
       transportation.transportationControl(-0.4);

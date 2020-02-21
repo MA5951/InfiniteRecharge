@@ -41,16 +41,16 @@ public class RoulletePath extends CommandBase {
     MApath.schedule();
     Intake.schedule();
     shooting.schedule();
-
     shooting.initialize();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println(stage);
     switch (stage) {
     case 0:
-      if (Timer.getFPGATimestamp() < 1) {
+      if (Timer.getFPGATimestamp() < 10) {
         shooting.execute();
 
       } else {
@@ -62,9 +62,9 @@ public class RoulletePath extends CommandBase {
 
     case 1:
       MApath.execute();
-      if (MAPath.stage == 2) {
+      if (MAPath.stage == 4) {
         Intake.initialize();
-      } else if (MAPath.stage > 3) {
+      } else if (MAPath.stage > 4) {
         Intake.execute();
       }
 
