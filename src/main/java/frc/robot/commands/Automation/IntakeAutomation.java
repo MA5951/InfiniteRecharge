@@ -27,14 +27,12 @@ public class IntakeAutomation extends CommandBase {
   private CommandBase piston;
   private CommandBase roller;
   private CommandBase transportation;
-  private CommandBase PIDSquish;
 
   public IntakeAutomation(Automation automation) {
     // Use addRequirements() here to declare subsystem dependencies.
     piston = new OpenIntake(Intake.getinstance());
-    roller = new IntakePullPush(-0.8, Intake.getinstance()); // TODO Enter real speed value
+    roller = new IntakePullPush(-0.4, Intake.getinstance()); // TODO Enter real speed value
     transportation = new TransportationContorl(Transportation.getinstance());
-    PIDSquish = new PIDSquishMotor(ShooterTransportation.getinstance());
     auto = automation;
     addRequirements(auto);
   }
@@ -44,19 +42,13 @@ public class IntakeAutomation extends CommandBase {
   public void initialize() {
     piston.schedule();
     roller.schedule();
-    transportation.schedule();
-    PIDSquish.schedule();
+    //transportation.schedule();
     piston.initialize();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    if (ShooterTransportation.getinstance().isBallInShooter()) {
-      PIDSquish.execute();
-    } else {
-      PIDSquish.cancel();
-    }
+  public void execute() { 
     roller.execute();
     transportation.execute();
 
@@ -65,10 +57,8 @@ public class IntakeAutomation extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    PIDSquish.schedule();
     roller.cancel();
-    transportation.cancel();
-    PIDSquish.cancel();
+    //transportation.cancel();
   }
 
   // Returns true when the command should end.

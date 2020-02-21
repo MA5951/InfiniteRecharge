@@ -15,15 +15,13 @@ public class Path {
 
     public static double[][] roulettePath1 = { 
       new double[]{0, 90, 0.1, 60, 1, 1},
-      new double[]{0, 180, 0.05, 6, 1, 1},
-      new double[]{0.87, -175.5, 0.3, 15, 1 , 1},
-      new double[]{1.390, 148, 0.3, 15, 1 , 1},
-      new double[]{1.900, 112.54, 0.3, 15, 1 , 1},
-      new double[]{2.700, 102.51, 0.3, 15, 1 , 1},
-      new double[]{3.320, 117.15, 0.3, 15, 1 , 1},
-      new double[]{3.770, 169, 0.3, 10, 1 , 1},
-      new double[]{4.1, 180, 0.3, 3, 0.6 , 1},
-      new double[]{7.5, 180, 0.05, 3, 0.6 , 1}
+      new double[]{0, 110, 0.05, 5, 1, 1},
+      new double[]{1.8, 110, 0.3, 5, 1 , 1},
+      new double[]{1.8, 180, 0.3, 4 , 1 , 1},
+      new double[]{6.3, 180, 0.3, 5, 0.6 , 1},
+      new double[]{6.3, -20, 0.3, 4, 0.6 , 1},
+      new double[]{11, -20 , 0.3, 5, 0.6 , 1},
+      
       };
 
       public static double[][] toRondevousAndBack = { 

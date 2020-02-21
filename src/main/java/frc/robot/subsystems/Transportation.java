@@ -28,6 +28,11 @@ public class Transportation extends SubsystemBase {
   public void transportationControl(double power) {
     transportationMotor.set(ControlMode.PercentOutput, power);
   }
+
+  public double getMotorCurrnet() {
+    return transportationMotor.getStatorCurrent();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

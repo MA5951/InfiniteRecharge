@@ -14,7 +14,6 @@ import frc.robot.Robot;
 import frc.robot.commands.Automation.IntakeAutomation;
 import frc.robot.commands.Automation.Shooting;
 import frc.robot.commands.Autonomous.RoulletePath;
-import frc.robot.commands.Autonomous.roulletpath;
 import frc.robot.commands.Chassis.MAPath;
 import frc.robot.commands.Chassis.PIDVision;
 import frc.robot.commands.Elevator.OpenAndClosePiston;
@@ -68,10 +67,11 @@ public class RobotContainer {
 
   private JoystickButton OpenIntake = new JoystickButton(OperatingJoystick, 6);
   private JoystickButton CloseIntake = new JoystickButton(OperatingJoystick, 5);
-  private static ShootingTriggger Shoot = new ShootingTriggger();
+  private  ShootingTriggger Shoot = new ShootingTriggger();
   private JoystickButton intkaeAutomation = new JoystickButton(rightJoystick, 1);
-  private static JoystickButton RouletteControl = new JoystickButton(OperatingJoystick, 3);
-  private static JoystickButton BalanceControl = new JoystickButton(OperatingJoystick, 4);
+  private  JoystickButton RouletteControl = new JoystickButton(OperatingJoystick, 3);
+  private  JoystickButton BalanceControl = new JoystickButton(OperatingJoystick, 4);
+  //private  JoystickButton vision = new JoystickButton(rightJoystick, 1);
 
   private JoystickButton PIDVision = new JoystickButton(rightJoystick, 2);
   private JoystickButton MApath = new JoystickButton(OperatingJoystick, 1);
@@ -94,12 +94,13 @@ public class RobotContainer {
 
     OpenIntake.whenPressed(new OpenIntake(intake));
     CloseIntake.whenPressed(new IntakClose(intake));
-    intkaeAutomation.whenPressed(new OpenAndClosePiston(elevator , false));
+    //intkaeAutomation.whenPressed(new OpenAndClosePiston(elevator , false));
     Shoot.whileActiveContinuous(new PIDSquishMotor(shooterTransportation));
-    RouletteControl.whileHeld(new IntakePullPush(-0.7 ,intake));
-    BalanceControl.whileHeld(new PIDFlyWheel(shooter));
-    MApath.whileHeld(new PIDVision(0, 0.1, chassis));
-    PIDVision.whenPressed(new OpenAndClosePiston(elevator , true));
+    RouletteControl.whileHeld(new IntakePullPush(-0.5 ,intake));
+    BalanceControl.whileHeld(new Shooting(auto));
+    MApath.whenPressed(new RoulletePath(Autonomous.getInstance()));
+    //PIDVision.whenPressed(new OpenAndClosePiston(elevator , true));
+    //vision.whileHeld(new PIDVision(0, 0.1, chassis));
   }
 
   /**

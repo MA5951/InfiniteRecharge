@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
+import frc.robot.Robot;
 import frc.robot.Constants.*;
 
 /**
@@ -20,8 +21,8 @@ import frc.robot.Constants.*;
 public class Shooter extends SubsystemBase {
   private static Shooter shooter;
 
-  private double KP_FLY_WHEEL_SPEED = 0.007;
-  private double KI_FLY_WHEEL_SPEED = 0.0003;
+  private double KP_FLY_WHEEL_SPEED = 0.015;
+  private double KI_FLY_WHEEL_SPEED = 0.007;
   private double KD_FLY_WHEEL_SPEED = 0;
 
   public static double shooterAngle = 68.5; // TODO
@@ -48,8 +49,7 @@ public class Shooter extends SubsystemBase {
 
     flyWheelSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_FLY_WHEEL_SPEED, KI_FLY_WHEEL_SPEED,
         KD_FLY_WHEEL_SPEED);
-    flyWheelSpeed.setTolerance(17); // TODO
-    flyWheelA.configClosedloopRamp(0.05);
+    flyWheelSpeed.setTolerance(5); // TODO
     flyWheelB.configClosedloopRamp(0.05);
 
   }
@@ -63,6 +63,7 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("getPositionError", flyWheelSpeed.getPositionError());
     SmartDashboard.putNumber("motorOutput", flyWheelA.getMotorOutputPercent());
     SmartDashboard.putBoolean("iseadytoshoot", flyWheelSpeed.atSetpoint());
+    SmartDashboard.putNumber("calculateSpeedToFlyWheel", calculateSpeedToFlyWheel(Robot.distanceFromTargetLimelightY));
 
   }
 
@@ -91,7 +92,7 @@ public class Shooter extends SubsystemBase {
    * @return The result of the calculation
    */
   public double flyWheelSpeedOutPut(double setPoint) {
-    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), -1, 1);
+    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), -0.95, 0.95);
   }
 
   /**
@@ -99,9 +100,13 @@ public class Shooter extends SubsystemBase {
    * @return The result of the calculation
    */
   public double calculateSpeedToFlyWheel(double deltaDistance) {
-    double radShooterAngle = Math.toRadians(shooterAngle);
-    return (2 * (Math.sqrt(((Gravity / 2) * deltaDistance) / 2 * Math.pow(Math.cos(radShooterAngle), 2)
-        * (deltaY - (deltaDistance * Math.tan(radShooterAngle)))))) / radiusFlyWheel;
+
+    return (0.000222855* Math.pow(Chassis.getinstance().distance() , 2)) + (-0.145308 * Chassis.getinstance().distance()) + 213.536;
+    /*
+     * Math.toRadians(shooterAngle); return (2 * (Math.sqrt(((Gravity / 2) *
+     * deltaDistance) / 2 * Math.pow(Math.cos(radShooterAngle), 2) (deltaY -
+     * (deltaDistance * Math.tan(radShooterAngle)))))) / radiusFlyWheel;
+     */
   }
 
   /**
@@ -131,5 +136,6 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     ShooterValue();
+    //System.out.println(5.73781+29.436797* Math.abs(Math.log(Math.abs(Robot.distanceFromTargetLimelightY * 2.54 ))));
   }
 }

@@ -130,7 +130,7 @@ public class Chassis extends SubsystemBase {
 
     // the angel PID vison
     anglePIDVision = new PIDController(KP_Vision_angle, KI_Vision_angle, KD_Vision_angle);
-    anglePIDVision.setTolerance(0.5);
+    anglePIDVision.setTolerance(3);
 
     leftVelocityControl = new PIDController(KP_VELOCITY_LEFT, KI_VELOCITY_LEFT, KD_VELOCITY_LEFT);
 
@@ -152,7 +152,7 @@ public class Chassis extends SubsystemBase {
 
   // updat the value in the smart dash bord
   public void value() {
-
+    SmartDashboard.putNumber("distanceFormula", distance());
     SmartDashboard.putNumber("angle", navx.getFusedHeading());
     SmartDashboard.putNumber("fixedAngle", fixedAngle() );
 
@@ -161,7 +161,7 @@ public class Chassis extends SubsystemBase {
 
     SmartDashboard.putNumber("distacne", average() / ticksPerMeter);
     SmartDashboard.putNumber("angelSetPoint", anglePidMApath.getSetpoint());
-
+    SmartDashboard.putBoolean("PIDvisonOnTarget", anglePIDVision.atSetpoint());
     SmartDashboard.putNumber("angleEror", angleEror());
     SmartDashboard.putNumber("distanceEror", distanceEror());
     SmartDashboard.putNumber("DistanceSetPoint", distancePidMApath.getSetpoint() / ticksPerMeter);
@@ -180,9 +180,9 @@ public class Chassis extends SubsystemBase {
 
   public void rampRate(double rampRate) {
     rightFrontMotor.setOpenLoopRampRate(rampRate);
-    rightMotor.setOpenLoopRampRate(rampRate);
+    rightMotor.setOpenLoopRampRate(0);
     leftFrontMotor.setOpenLoopRampRate(rampRate);
-    leftMotor.setOpenLoopRampRate(rampRate);
+    leftMotor.setOpenLoopRampRate(0);
   }
 
   public double limelightAngleFinal() {
@@ -254,7 +254,7 @@ public class Chassis extends SubsystemBase {
 
   // pid vison distance
   public double distance() {
-    return (1833.48 / (0.00222335 * Math.pow(Robot.y, 2) + 0.228073 * Robot.y + 2.50245)) + 55.9811; // TODO
+    return (-1.3276 * Math.pow(10, 6) / (-2.43018 * Math.pow(Robot.y, 2) + -101.265 * Robot.y + -1854.19)); // TODO
 
   }
 
