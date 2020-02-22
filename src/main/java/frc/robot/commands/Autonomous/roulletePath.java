@@ -39,9 +39,6 @@ public class RoulletePath extends CommandBase {
   @Override
   public void initialize() {
     stage = 0;
-    //MApath.schedule();
-    Intake.schedule();
-    shooting.schedule();
     shooting.initialize();
      lastTimeOnTarget = Timer.getFPGATimestamp();
   }
@@ -56,10 +53,7 @@ public class RoulletePath extends CommandBase {
       if (Timer.getFPGATimestamp() - lastTimeOnTarget < 5) {
         shooting.execute();
       } else {
-        shooting.schedule();
-        shooting.cancel();
-
-        MApath.schedule(false);
+        shooting.end(true);
         MApath.initialize();
         stage++;
       }
@@ -79,8 +73,8 @@ public class RoulletePath extends CommandBase {
       break;
 
     case 2:
-      MApath.cancel();
-      Intake.cancel();
+      MApath.end(true);
+      Intake.end(true);
       stage++;
       break;
     case 3:
@@ -97,12 +91,10 @@ public class RoulletePath extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooting.schedule();
-    Intake.schedule();
-    MApath.schedule();
-    shooting.cancel();
-    Intake.cancel();
-    MApath.cancel();
+ 
+    shooting.end(true);
+    Intake.end(true);
+    MApath.end(true);
 
   }
 
