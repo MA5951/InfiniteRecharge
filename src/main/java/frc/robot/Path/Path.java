@@ -24,6 +24,12 @@ public class Path {
       
       };
 
+      public static double[][] enemyRoultte = {
+        new double[]{3, 0, 0.3, 5, 1 , 1},
+        new double[]{0, 20, 0.3, 4, 0.6 , 1},
+        new double[]{0, 180, 0.3, 4, 0.6 , 1},
+      };
+
       public static double[][] toRondevousAndBack = { 
         new double[]{-4, 0, 0.2, 10, 1, 1},
         new double[]{-4, -21, 0.3, 8, 1, 1},
@@ -36,40 +42,4 @@ public class Path {
 
       };
 
-      public static double[][] enemyRoultte = {
-        new double[]{2.5, 0, 0.1, 5, 1,1},
-        new double[]{1.789, 25, 0.3, 5,0.6,0.8},
-        new double[]{0.899, 32, 0.3, 10,0.6,0.8},
-        new double[]{0.099, 75, 0.3, 10,0.6,0.8},
-        new double[]{-4, 50, 0.1, 10,0.6,0.8},
-        new double[]{-4, 180, 0.05, 5,0.6,1},
-        new double[]{-4.8, 180, 0.1, 5, 0.6,0.6},
-        //new double[]{-4.25, -180.0, 0.05, 10, 1,1}
-      };
-
-//distance,angale,distange frishhold,angle frishhold,distance speed, angle speed
-      public static double[][] strightLine = {
-        new double[]{0, 180, 0.05, 2, 1, 0.87}
-      };
-
-          public static double[][] try_path = {
-            new double[]{0.8 , -5, 0.3, 10, 0.2, 1},
-            new double[]{1.35, -32.54,0.3, 10, 0.25 , 0.65 },
-            new double[]{1.84, -68.24,0.3, 10,0.25 , 0.65 },
-            new double[]{2.33, -78.06,0.3, 10,0.25 , 0.65 },
-            new double[]{2.72, -62.32,0.3, 10,0.25 , 0.65 },
-            new double[]{3.16, 0,0.1, 2 ,0.2 , 0.4 },
-            new double[]{4.00, 0,0.3, 2 ,0.2 , 0.4 },
-            new double[]{6.9, 0, 0.1, 2, 0.2, 0.45},
-            new double[]{3.18, 0.0, 0.3, 5, 0.2, 0.4},
-            new double[]{2.21, -4.2, 0.3, 5, 0.25 , 0.65},
-            new double[]{1.58, -35.82, 0.3, 5, 0.25 , 0.65},
-            new double[]{1.04, -65.12, 0.3, 5, 0.25 , 0.65},
-            new double[]{0.570, -74.53, 0.3, 5, 0.25 , 0.65},
-            new double[]{0.1, -52.27, 0.3, 2, 0.25 , 0.65},
-            new double[]{-0.1, -25.27, 0.3, 2, 0.25 , 0.65},
-            new double[]{-0.5, 0, 0.3, 2, 0.2, 0.4},
-            new double[]{-3, 0, 0.05, 2, 0.2, 0.4}
- 
-              };
 }
