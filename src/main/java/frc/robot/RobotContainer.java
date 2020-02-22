@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -25,6 +24,8 @@ import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Balance;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Elevator;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Transportation.*;
 import frc.robot.subsystems.Transportation;
@@ -79,7 +80,7 @@ public class RobotContainer {
   //private  JoystickButton vision = new JoystickButton(rightJoystick, 1);
   private JoystickButton RouletteAutomation = new JoystickButton(rightJoystick, 2);
   private JoystickButton IntakeAutomation = new JoystickButton(OperatingJoystick, 1);
-  
+  RoulletePath roulletePath = new RoulletePath(Autonomous.getInstance());
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -100,10 +101,14 @@ public class RobotContainer {
     CloseIntake.whenPressed(new IntakClose(intake));
     Shoot.whileActiveContinuous(new Shooting(auto));
     RouletteControl.whileHeld(new IntakePullPush(-0.5 ,intake));
+
     IntakeAutomation.whileHeld(new IntakeAutomation(auto));
+
     RouletteAutomation.whileHeld(new RouletteAutomation(auto));
+
     CancelAllMotors.whenPressed(new CancelAllMotors(auto));
-    CancelAllMotors.whenPressed(new CancelAllMotors(auto));
+    CancelAllMotorsTwo.whenPressed(new CancelAllMotors(auto));
+
     //vision.whileHeld(new PIDVision(0, 0.1, chassis));
   }
 
@@ -112,8 +117,8 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  // public Command getAutonomousCommand() {
+   public Command getAutonomousCommand() {
+   return roulletePath;
+  }
 
-  // return
-  // }
 }
