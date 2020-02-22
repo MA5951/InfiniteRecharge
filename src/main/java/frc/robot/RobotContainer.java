@@ -29,6 +29,7 @@ import frc.robot.subsystems.Transportation;
 import frc.robot.commands.Intake.IntakClose;
 import frc.robot.commands.Intake.IntakePullPush;
 import frc.robot.commands.Intake.OpenIntake;
+import frc.robot.commands.Roulette.roundTwoRoulettePID;
 import frc.robot.commands.Shooter.PIDFlyWheel;
 import frc.robot.commands.ShooterTransportation.PIDSquishMotor;
 import frc.robot.subsystems.Intake;
@@ -95,12 +96,12 @@ public class RobotContainer {
 
     OpenIntake.whenPressed(new OpenIntake(intake));
     CloseIntake.whenPressed(new IntakClose(intake));
-    //intkaeAutomation.whenPressed(new OpenAndClosePiston(elevator , false));
+    intkaeAutomation.whenPressed(new OpenAndClosePiston(elevator , false));
     Shoot.whileActiveContinuous(new PIDSquishMotor(shooterTransportation));
     RouletteControl.whileHeld(new IntakePullPush(-0.5 ,intake));
-    BalanceControl.whileHeld(new Shooting(auto));
-    MApath.whenPressed(new RoulletePath(Autonomous.getInstance()));
-    //PIDVision.whenPressed(new OpenAndClosePiston(elevator , true));
+    BalanceControl.whileHeld(new TransportationContorl(transportation));
+    MApath.whenPressed(new RouletteAutomation(auto));
+    PIDVision.whenPressed(new OpenAndClosePiston(elevator , true));
     //vision.whileHeld(new PIDVision(0, 0.1, chassis));
   }
 

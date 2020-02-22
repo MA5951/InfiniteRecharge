@@ -14,6 +14,7 @@ import frc.robot.commands.ShooterTransportation.PIDSquishMotor;
 import frc.robot.commands.Transportation.TransportationContorl;
 import frc.robot.subsystems.Automation;
 import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Limlight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.ShooterTransportation;
 import frc.robot.subsystems.Transportation;
@@ -30,7 +31,7 @@ public class Shooting extends CommandBase {
     squishSpeed = new PIDSquishMotor(ShooterTransportation.getinstance());
     transportation = new TransportationContorl(Transportation.getinstance());
     flyWheel = new PIDFlyWheel(Shooter.getinstance());
-    PIDVision = new PIDVision(0, 0.1, Chassis.getinstance());
+    PIDVision = new PIDVision(0, 0.1, Limlight.getInstance());
 
     auto = automation;
     addRequirements(auto);
