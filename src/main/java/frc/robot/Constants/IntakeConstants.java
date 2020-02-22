@@ -19,6 +19,6 @@ public final class IntakeConstants {
     //Motors
     public static final int IntakeMotor = 12;
     //Pnuematics
-    public static final int IntakeSolenoidA = 4;
+    public static final int IntakeSolenoidA = 7;
     public static final int IntakeSolenoidB = 5;
 }

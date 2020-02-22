@@ -10,19 +10,21 @@ package frc.robot.commands.Chassis;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Limlight;
 
 public class PIDVision extends CommandBase {
+  private Limlight limlight;
   private Chassis chassis;
   private double angle;
   private double lastTimeOnTarget;
   private double waitTime;
 
   
-  public PIDVision( double angle, double waitTime , Chassis ch) {
- 
+  public PIDVision( double angle, double waitTime , Limlight lm) {
+    limlight = lm;
     this.angle = angle;
     this.waitTime = waitTime;
-    chassis = ch;
+    chassis = Chassis.getinstance();
     addRequirements(chassis);
   }
 
@@ -36,7 +38,7 @@ public class PIDVision extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    chassis.PIDvision(angle) ;
+    chassis.PIDvision(angle);
   }
 
   // Called once the command ends or is interrupted.

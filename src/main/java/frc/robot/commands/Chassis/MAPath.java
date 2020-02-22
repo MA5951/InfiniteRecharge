@@ -36,19 +36,21 @@ public class MAPath extends CommandBase {
     chassis.rampRate(0.35);
     chassis.setidilmodeCoset();
     stage = 0;
+    pathnum = 0;
     if (pathnum == 0) {
       Path.mainPath = Path.roulettePath1; 
     }
 
     chassis.setpoint(Path.mainPath[0][0], Path.mainPath[0][1], Path.mainPath[0][4],
     Path.mainPath[0][5]);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     chassis.pathfinder();
-
+  
     try {
       if (Math.abs(chassis.distanceEror()) < Path.mainPath[stage][2] * chassis.ticksPerMeter
           && Math.abs(chassis.angleEror()) < Path.mainPath[stage][3]) {
@@ -63,10 +65,12 @@ public class MAPath extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    System.out.println(interrupted);
     if (interrupted) {
       chassis.tankDrive(0, 0);
       chassis.setidilmodeBrake();
     } else {
+
       pathnum++;
       chassis.tankDrive(0, 0);
       chassis.setidilmodeBrake();
@@ -76,6 +80,7 @@ public class MAPath extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+
     if (!(Math.abs(chassis.distanceEror()) < Path.mainPath[Path.mainPath.length - 1][2] * chassis.ticksPerMeter
         && Math.abs(chassis.angleEror()) < Path.mainPath[Path.mainPath.length - 1][3]
         && stage == Path.mainPath.length)) {

@@ -270,9 +270,6 @@ public class Chassis extends SubsystemBase {
   public void ArcadeDrive(double angel, double distacne) {
     double w = (100 - Math.abs(angel * 100)) * (distacne) + distacne * 100;
     double v = (100 - Math.abs(distacne * 100)) * (angel) + angel * 100;
-
-    System.out.println((-(v + w) / 200)+ " " +  ((v - w) / 200));
-
     tankDrive((-(v + w) / 200), ((v - w) / 200));
   }
 

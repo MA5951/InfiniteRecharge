@@ -22,6 +22,7 @@ public class RoulletePath extends CommandBase {
    */
   Autonomous autonomous;
   int stage = 0;
+  double lastTimeOnTarget;
   CommandBase MApath, Intake, shooting;
 
   public RoulletePath(Autonomous autonomous) {
@@ -38,25 +39,23 @@ public class RoulletePath extends CommandBase {
   @Override
   public void initialize() {
     stage = 0;
-    MApath.schedule();
-    Intake.schedule();
-    shooting.schedule();
     shooting.initialize();
+     lastTimeOnTarget = Timer.getFPGATimestamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println(stage);
+    //System.out.println(stage);
     switch (stage) {
     case 0:
-      if (Timer.getFPGATimestamp() < 10) {
+    
+      if (Timer.getFPGATimestamp() - lastTimeOnTarget < 5) {
         shooting.execute();
-
       } else {
-        stage++;
-        shooting.cancel();
+        shooting.end(true);
         MApath.initialize();
+        stage++;
       }
       break;
 
@@ -74,8 +73,8 @@ public class RoulletePath extends CommandBase {
       break;
 
     case 2:
-      MApath.cancel();
-      Intake.cancel();
+      MApath.end(true);
+      Intake.end(true);
       stage++;
       break;
     case 3:
@@ -92,12 +91,10 @@ public class RoulletePath extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooting.schedule();
-    Intake.schedule();
-    MApath.schedule();
-    shooting.cancel();
-    Intake.cancel();
-    MApath.cancel();
+ 
+    shooting.end(true);
+    Intake.end(true);
+    MApath.end(true);
 
   }
 

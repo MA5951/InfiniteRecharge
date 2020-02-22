@@ -30,13 +30,13 @@ public class ElevatorMotorControl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(RobotContainer.OperatingJoystick.getRawButton(9)){
+      if (RobotContainer.OperatingJoystick.getYButton()) {
       elevator.setElvatorMotorSpeed(RobotContainer.OperatingJoystick.getRawAxis(5));
-    }else{
-      elevator.setElvatorMotorSpeed(0);
+      }
+  
     }
      
-    }
+    
 
   
 

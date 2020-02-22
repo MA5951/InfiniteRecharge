@@ -136,6 +136,6 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     ShooterValue();
-    //System.out.println(5.73781+29.436797* Math.abs(Math.log(Math.abs(Robot.distanceFromTargetLimelightY * 2.54 ))));
+   
   }
 }
