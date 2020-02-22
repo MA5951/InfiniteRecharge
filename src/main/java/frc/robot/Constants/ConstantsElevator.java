@@ -24,6 +24,6 @@ public final class ConstantsElevator {
 
     public static final int ELEVATOR_SOLENOID_A = 4;
  
-
+    public static final int ELEVATOR_AUTHORIZE_BUTTON = 4;
 
 }

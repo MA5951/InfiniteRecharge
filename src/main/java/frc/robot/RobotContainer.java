@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -17,6 +18,7 @@ import frc.robot.commands.Automation.Shooting;
 import frc.robot.commands.Autonomous.RoulletePath;
 import frc.robot.commands.Chassis.MAPath;
 import frc.robot.commands.Chassis.PIDVision;
+import frc.robot.commands.Elevator.ElevatorMotorControl;
 import frc.robot.commands.Elevator.OpenAndClosePiston;
 import frc.robot.subsystems.Automation;
 import frc.robot.subsystems.Autonomous;
@@ -35,6 +37,7 @@ import frc.robot.commands.ShooterTransportation.PIDSquishMotor;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Roulette;
 import frc.robot.subsystems.Shooter;
+import frc.robot.commands.Automation.CancelAllMotors;
 /*
 import frc.robot.commands.Roulette.roundTwoRoulettePID;
 import frc.robot.commands.Roulette.roundThreeRoulettePID;
@@ -70,13 +73,12 @@ public class RobotContainer {
   private JoystickButton OpenIntake = new JoystickButton(OperatingJoystick, 6);
   private JoystickButton CloseIntake = new JoystickButton(OperatingJoystick, 5);
   private  ShootingTriggger Shoot = new ShootingTriggger();
-  private JoystickButton intkaeAutomation = new JoystickButton(rightJoystick, 1);
   private  JoystickButton RouletteControl = new JoystickButton(OperatingJoystick, 3);
-  private  JoystickButton BalanceControl = new JoystickButton(OperatingJoystick, 4);
+  private JoystickButton CancelAllMotors = new JoystickButton(OperatingJoystick, 10);
+  private JoystickButton CancelAllMotorsTwo = new JoystickButton(OperatingJoystick, 11);
   //private  JoystickButton vision = new JoystickButton(rightJoystick, 1);
-
-  private JoystickButton PIDVision = new JoystickButton(rightJoystick, 2);
-  private JoystickButton MApath = new JoystickButton(OperatingJoystick, 1);
+  private JoystickButton RouletteAutomation = new JoystickButton(rightJoystick, 2);
+  private JoystickButton IntakeAutomation = new JoystickButton(OperatingJoystick, 1);
   
 
   /**
@@ -96,12 +98,12 @@ public class RobotContainer {
 
     OpenIntake.whenPressed(new OpenIntake(intake));
     CloseIntake.whenPressed(new IntakClose(intake));
-    intkaeAutomation.whenPressed(new OpenAndClosePiston(elevator , false));
-    Shoot.whileActiveContinuous(new PIDSquishMotor(shooterTransportation));
+    Shoot.whileActiveContinuous(new Shooting(auto));
     RouletteControl.whileHeld(new IntakePullPush(-0.5 ,intake));
-    BalanceControl.whileHeld(new TransportationContorl(transportation));
-    MApath.whenPressed(new RouletteAutomation(auto));
-    PIDVision.whenPressed(new OpenAndClosePiston(elevator , true));
+    IntakeAutomation.whileHeld(new IntakeAutomation(auto));
+    RouletteAutomation.whileHeld(new RouletteAutomation(auto));
+    CancelAllMotors.whenPressed(new CancelAllMotors(auto));
+    CancelAllMotors.whenPressed(new CancelAllMotors(auto));
     //vision.whileHeld(new PIDVision(0, 0.1, chassis));
   }
 
