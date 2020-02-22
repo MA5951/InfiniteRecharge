@@ -30,7 +30,7 @@ public class RoulletePath extends CommandBase {
     this.autonomous = autonomous;
     MApath = new MAPath(0.1, Chassis.getinstance());
     Intake = new IntakeAutomation(Automation.getinstance());
-    shooting = new Shooting(Automation.getinstance());
+    shooting = new Shooting(Automation.getinstance(), false);
 
     addRequirements(autonomous);
   }
@@ -40,17 +40,17 @@ public class RoulletePath extends CommandBase {
   public void initialize() {
     stage = 0;
     shooting.initialize();
-     lastTimeOnTarget = Timer.getFPGATimestamp();
+    lastTimeOnTarget = Timer.getFPGATimestamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //System.out.println(stage);
+    // System.out.println(stage);
     switch (stage) {
     case 0:
-    
-      if (Timer.getFPGATimestamp() - lastTimeOnTarget < 5) {
+
+      if (Timer.getFPGATimestamp() - lastTimeOnTarget < 10) {
         shooting.execute();
       } else {
         shooting.end(true);
@@ -61,20 +61,22 @@ public class RoulletePath extends CommandBase {
 
     case 1:
       MApath.execute();
-      if (MAPath.stage == 4) {
+      if (MAPath.stage == 3) {
         Intake.initialize();
-      } else if (MAPath.stage > 4) {
+      } else if (MAPath.stage == 4){
         Intake.execute();
+      }else if(MAPath.stage == 5){
+        Intake.end(true);
       }
-
-      if (MApath.isFinished()) {
-        stage++;
-      }
+   
+        if (MApath.isFinished()) {
+          stage++;
+        }
       break;
 
     case 2:
       MApath.end(true);
-      Intake.end(true);
+     
       stage++;
       break;
     case 3:
@@ -83,6 +85,7 @@ public class RoulletePath extends CommandBase {
       stage++;
       break;
     case 4:
+
       shooting.execute();
     }
 
@@ -91,7 +94,7 @@ public class RoulletePath extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
- 
+
     shooting.end(true);
     Intake.end(true);
     MApath.end(true);

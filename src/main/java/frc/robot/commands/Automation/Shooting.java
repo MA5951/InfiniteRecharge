@@ -26,8 +26,10 @@ public class Shooting extends CommandBase {
 
   private Automation auto;
   private CommandBase squishSpeed, transportation, flyWheel , PIDVision;
+  private boolean drive;
 
-  public Shooting(Automation automation) {
+  public Shooting(Automation automation, boolean drive) {
+    this.drive = drive;
     squishSpeed = new PIDSquishMotor(ShooterTransportation.getinstance());
     transportation = new TransportationContorl(Transportation.getinstance());
     flyWheel = new PIDFlyWheel(Shooter.getinstance());
@@ -41,11 +43,13 @@ public class Shooting extends CommandBase {
   @Override
   public void initialize() {
     flyWheel.schedule();
-    PIDVision.schedule();
+    if (drive) {
+      PIDVision.schedule();
+      PIDVision.initialize();
+    }
     squishSpeed.schedule();
     transportation.schedule();
     flyWheel.initialize();
-    PIDVision.initialize();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -54,7 +58,9 @@ public class Shooting extends CommandBase {
     {
       
       flyWheel.execute();
+      if (drive) {
       PIDVision.execute();
+      }
       
       if (Shooter.getinstance().isFlyWheelOnTraget() && PIDVision.isFinished()) {
         squishSpeed.execute();
@@ -75,11 +81,13 @@ public class Shooting extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    if (drive) {
+      PIDVision.schedule();
+      PIDVision.cancel();
+    }
     transportation.schedule();
     squishSpeed.schedule();
-    PIDVision.schedule();
     squishSpeed.cancel();
-    PIDVision.cancel();
     transportation.cancel();
     flyWheel.cancel();
 

@@ -78,9 +78,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
 
     m_robotContainer = new RobotContainer();
-    CommandScheduler.getInstance().setDefaultCommand(Chassis.getinstance(), tankDrive);
-    CommandScheduler.getInstance().setDefaultCommand(Balance.getinstance(), ControllBalance);
-    CommandScheduler.getInstance().setDefaultCommand(Elevator.getinstance(), elevatorControl);
+  
 
   }
 
@@ -127,6 +125,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     MAPath.pathnum = 0;
+    Chassis.getinstance().resetValue();
      m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -144,6 +143,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    CommandScheduler.getInstance().setDefaultCommand(Chassis.getinstance(), tankDrive);
+    CommandScheduler.getInstance().setDefaultCommand(Balance.getinstance(), ControllBalance);
+    CommandScheduler.getInstance().setDefaultCommand(Elevator.getinstance(), elevatorControl);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

@@ -99,7 +99,7 @@ public class RobotContainer {
 
     OpenIntake.whenPressed(new OpenIntake(intake));
     CloseIntake.whenPressed(new IntakClose(intake));
-    Shoot.whileActiveContinuous(new Shooting(auto));
+    Shoot.whileActiveContinuous(new Shooting(auto , false));
     RouletteControl.whileHeld(new IntakePullPush(-0.5 ,intake));
 
     IntakeAutomation.whileHeld(new IntakeAutomation(auto));

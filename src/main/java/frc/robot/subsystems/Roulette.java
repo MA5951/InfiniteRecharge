@@ -195,7 +195,7 @@ public class Roulette extends SubsystemBase {
   @Override
   public void periodic() {
     detectedColor = colorSensor.getColor();
-    System.out.println(colorSensor.getColor().blue + " " + colorSensor.getColor().red + " " + colorSensor.getColor().green);
+    //System.out.println(colorSensor.getColor().blue + " " + colorSensor.getColor().red + " " + colorSensor.getColor().green);
     lastColor = detectedColor;
     displayValues();
     countTicks();

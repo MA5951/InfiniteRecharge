@@ -7,6 +7,7 @@
 
 package frc.robot.commands.Automation;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.Intake.IntakePullPush;
 import frc.robot.commands.Intake.OpenIntake;
@@ -31,7 +32,7 @@ public class IntakeAutomation extends CommandBase {
   public IntakeAutomation(Automation automation) {
     // Use addRequirements() here to declare subsystem dependencies.
     piston = new OpenIntake(Intake.getinstance());
-    roller = new IntakePullPush(-0.4, Intake.getinstance()); // TODO Enter real speed value
+    roller = new IntakePullPush(-0.6, Intake.getinstance()); // TODO Enter real speed value
     transportation = new TransportationContorl(Transportation.getinstance());
     auto = automation;
     addRequirements(auto);
@@ -40,7 +41,7 @@ public class IntakeAutomation extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    piston.schedule();
+    //piston.schedule();
     roller.schedule();
     //transportation.schedule();
     piston.initialize();
@@ -50,7 +51,7 @@ public class IntakeAutomation extends CommandBase {
   @Override
   public void execute() { 
     roller.execute();
-    transportation.execute();
+    //transportation.execute();
 
   }
 
@@ -58,6 +59,7 @@ public class IntakeAutomation extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     roller.cancel();
+    Intake.getinstance().intakeSolenoidControl(Value.kReverse);
     //transportation.cancel();
   }
 

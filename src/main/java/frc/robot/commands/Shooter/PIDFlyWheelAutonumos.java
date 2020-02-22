@@ -11,14 +11,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Shooter;
 
-public class PIDFlyWheel extends CommandBase {
+public class PIDFlyWheelAutonumos extends CommandBase {
   /**
    * Creates a new PIDFlyWheel.
    */
   private double flyWheelSpeed;
   private Shooter shooter;
 
-  public PIDFlyWheel(Shooter shooter) {
+  public PIDFlyWheelAutonumos(Shooter shooter) {
     this.shooter = shooter;
     addRequirements(this.shooter);
   }
@@ -26,10 +26,8 @@ public class PIDFlyWheel extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flyWheelSpeed = shooter.calculateSpeedToFlyWheel(Chassis.getinstance().distance()); //
-                         // TODO
+    flyWheelSpeed = 190;
   }
-
   @Override
   public void execute() {
     double power = shooter.flyWheelSpeedOutPut(flyWheelSpeed) + ((1 / 250) * flyWheelSpeed);

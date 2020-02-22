@@ -22,8 +22,8 @@ public class Shooter extends SubsystemBase {
   private static Shooter shooter;
 
   private double KP_FLY_WHEEL_SPEED = 0.015;
-  private double KI_FLY_WHEEL_SPEED = 0.007;
-  private double KD_FLY_WHEEL_SPEED = 0;
+  private double KI_FLY_WHEEL_SPEED = 0.025;
+  private double KD_FLY_WHEEL_SPEED = 0.015;
 
   public static double shooterAngle = 68.5; // TODO
   private double Gravity = 9.807;

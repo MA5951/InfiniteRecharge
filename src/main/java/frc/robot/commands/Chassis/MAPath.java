@@ -8,9 +8,11 @@
 package frc.robot.commands.Chassis;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Path.Path;
 import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Intake;
 
 public class MAPath extends CommandBase {
   /**
@@ -50,6 +52,7 @@ public class MAPath extends CommandBase {
   @Override
   public void execute() {
     chassis.pathfinder();
+    
   
     try {
       if (Math.abs(chassis.distanceEror()) < Path.mainPath[stage][2] * chassis.ticksPerMeter

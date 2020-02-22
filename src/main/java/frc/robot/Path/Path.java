@@ -15,13 +15,13 @@ public class Path {
 
     public static double[][] roulettePath1 = { 
       new double[]{0, 90, 0.1, 60, 1, 1},
-      new double[]{0, 110, 0.05, 5, 1, 1},
+      new double[]{0, 110, 0.05, 6, 1, 1},
       new double[]{1.8, 110, 0.3, 5, 1 , 1},
-      new double[]{1.8, 180, 0.3, 4 , 1 , 1},
+      new double[]{1.8, 180, 0.3, 6 , 1 , 1},
       new double[]{6.3, 180, 0.3, 5, 0.6 , 1},
-      new double[]{6.3, -20, 0.3, 4, 0.6 , 1},
-      new double[]{11, -20 , 0.3, 5, 0.6 , 1},
-      
+      new double[]{6.3, -20, 0.3, 6, 1 , 1},
+      new double[]{11.5, -20 , 0.3, 6, 1 , 1},
+      new double[]{11.5, 0 , 0.3, 5, 1 , 1},
       };
 
       public static double[][] enemyRoultte = {
