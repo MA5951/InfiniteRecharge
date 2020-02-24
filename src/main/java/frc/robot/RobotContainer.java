@@ -18,6 +18,7 @@ import frc.robot.commands.Automation.IntakeAutomation;
 import frc.robot.commands.Automation.Shooting;
 import frc.robot.commands.Autonomous.EnemyRoullete;
 import frc.robot.commands.Autonomous.RoulletePath;
+import frc.robot.commands.Autonomous.shootanddrive;
 import frc.robot.commands.Chassis.MAPath;
 import frc.robot.commands.Chassis.PIDVision;
 import frc.robot.commands.Elevator.ElevatorMotorControl;
@@ -96,6 +97,7 @@ public class RobotContainer {
 
   EnemyRoullete EnemyroulletePath = new EnemyRoullete(Autonomous.getInstance());
   RoulletePath roulletePath = new RoulletePath(Autonomous.getInstance());
+  shootanddrive shootandDrive = new shootanddrive();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -140,13 +142,12 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    if( SmartDashboard.getNumber("auto", 0) == 1){
-    return roulletePath;
-  }else if( SmartDashboard.getNumber("auto", 0) == 2)
-  return EnemyroulletePath;
-}else
-
-  {
-
+    if (SmartDashboard.getNumber("auto", 0) == 1) {
+      return roulletePath;
+    } else if (SmartDashboard.getNumber("auto", 0) == 2)
+      return EnemyroulletePath;
+    else {
+      return shootandDrive;
+    }
   }
 }
