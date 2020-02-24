@@ -9,6 +9,7 @@ package frc.robot.commands.Chassis;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Path.Path;
 import frc.robot.subsystems.Chassis;
@@ -38,9 +39,12 @@ public class MAPath extends CommandBase {
     chassis.rampRate(0.35);
     chassis.setidilmodeCoset();
     stage = 0;
-    pathnum = 0;
-    if (pathnum == 0) {
+    if (SmartDashboard.getNumber("auto", 1) == 1) {
+      Path.mainPath = Path.roulettePath1; 
+    }else if (SmartDashboard.getNumber("auto", 1) == 2){
       Path.mainPath = Path.enemyRoultte; 
+    }else{
+      Path.mainPath = Path.standart; 
     }
 
     chassis.setpoint(Path.mainPath[0][0], Path.mainPath[0][1], Path.mainPath[0][4],

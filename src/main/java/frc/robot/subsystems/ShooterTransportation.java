@@ -38,7 +38,6 @@ public class ShooterTransportation extends SubsystemBase {
    */
   public void ShooterValue() {
     SmartDashboard.putBoolean("IRball", !IRBall.get());
-    SmartDashboard.putNumber("kSetPointPIDSquish", squishMotorSpeed.getSetpoint());
     SmartDashboard.putNumber("squishMotorCurrent", squishMotor.getStatorCurrent());
   }
 
@@ -83,6 +82,5 @@ public class ShooterTransportation extends SubsystemBase {
   @Override
   public void periodic() {
     ShooterValue();
-
   }
 }

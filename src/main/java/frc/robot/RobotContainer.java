@@ -81,8 +81,8 @@ public class RobotContainer {
   private ShootingTriggger Shoot = new ShootingTriggger();
   private JoystickButton RouletteControl = new JoystickButton(OperatingJoystick, 3);
 
-  private JoystickButton CancelAllMotors = new JoystickButton(OperatingJoystick, 10);
-  private JoystickButton CancelAllMotorsTwo = new JoystickButton(OperatingJoystick, 11);
+  private JoystickButton CancelAllMotors = new JoystickButton(OperatingJoystick, 8);
+  private JoystickButton CancelAllMotorsTwo = new JoystickButton(OperatingJoystick, 9);
 
   private JoystickButton RouletteAutomation = new JoystickButton(OperatingJoystick, 2);
   private JoystickButton IntakeAutomation = new JoystickButton(OperatingJoystick, 1);
@@ -142,10 +142,11 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    if (SmartDashboard.getNumber("auto", 0) == 1) {
+    if (SmartDashboard.getNumber("auto", 1) == 1) {
       return roulletePath;
-    } else if (SmartDashboard.getNumber("auto", 0) == 2)
+    } else if (SmartDashboard.getNumber("auto", 1) == 2) {
       return EnemyroulletePath;
+    }
     else {
       return shootandDrive;
     }

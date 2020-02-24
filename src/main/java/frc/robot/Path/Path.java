@@ -35,17 +35,6 @@ public class Path {
         new double[]{-1.4, 60, 0.3, 4, 1 , 1},
         new double[]{-1.4, -145, 0.3, 4, 1 , 1},
       };
-/*
-      public static double[][] toRondevousAndBack = { 
-        new double[]{0, -20, 0.3, 5, 1 , 1},
-        new double[]{0, -90, 0.1, 60, 1, 1},
-        new double[]{0, -180, 0.05, 5, 1, 1},
-        new double[]{4.6, -180, 0.3, 5, 0.9 , 1},
-        new double[]{4.3, -90, 0.3, 60, 1 , 1},
-        new double[]{4.3, -10, 0.3, 5 , 1 , 1},
-        new double[]{6.4, -10, 0.3, 5, 0.6 , 1},
 
-      };
-*/
 
 }

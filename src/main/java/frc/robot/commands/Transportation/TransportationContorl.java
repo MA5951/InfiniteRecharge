@@ -31,7 +31,7 @@ public class TransportationContorl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(ShooterTransportation.getinstance().getMotorCurrnet() < -30 || transportation.getMotorCurrnet() < -35) {
+    if(ShooterTransportation.getinstance().getMotorCurrnet() < -30 || transportation.getMotorCurrnet() < -27) {
       transportation.transportationControl(0.4);
       Timer.delay(0.2);
 
