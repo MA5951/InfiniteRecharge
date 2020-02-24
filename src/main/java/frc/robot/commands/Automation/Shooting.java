@@ -42,13 +42,12 @@ public class Shooting extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flyWheel.schedule();
+    
     if (drive) {
-      PIDVision.schedule();
+      
       PIDVision.initialize();
     }
-    squishSpeed.schedule();
-    transportation.schedule();
+    
     flyWheel.initialize();
   }
 
@@ -62,17 +61,17 @@ public class Shooting extends CommandBase {
       PIDVision.execute();
       }
       
-      if (Shooter.getinstance().isFlyWheelOnTraget() && PIDVision.isFinished()) {
+      if (Shooter.getinstance().isFlyWheelOnTraget() && Chassis.getinstance().isPIDVisionOnTarget()) {
         squishSpeed.execute();
         transportation.execute();
+        PIDVision.end(true);
 
       } else {
 
-        transportation.schedule();
-        squishSpeed.schedule();
+       
 
-        transportation.cancel();
-        squishSpeed.cancel();
+        transportation.end(true);
+        squishSpeed.end(true);
       }
 
     }
@@ -82,14 +81,12 @@ public class Shooting extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     if (drive) {
-      PIDVision.schedule();
-      PIDVision.cancel();
+      PIDVision.end(true);
     }
-    transportation.schedule();
-    squishSpeed.schedule();
-    squishSpeed.cancel();
-    transportation.cancel();
-    flyWheel.cancel();
+ 
+    squishSpeed.end(true);
+    transportation.end(true);
+    flyWheel.end(true);
 
   }
 

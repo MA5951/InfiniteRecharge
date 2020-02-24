@@ -60,7 +60,7 @@ public class RouletteAutomation extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //Roulette.getinstance().controlroulettSolenoid(false);
+    Roulette.getinstance().controlroulettSolenoid(false);
     roulettestageone.schedule();
     roulettestagetwo.schedule();
     roulettestageone.cancel();

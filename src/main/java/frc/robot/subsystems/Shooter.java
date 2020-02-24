@@ -21,36 +21,35 @@ import frc.robot.Constants.*;
 public class Shooter extends SubsystemBase {
   private static Shooter shooter;
 
-  private double KP_FLY_WHEEL_SPEED = 0.015;
-  private double KI_FLY_WHEEL_SPEED = 0.025;
-  private double KD_FLY_WHEEL_SPEED = 0.015;
-
-  public static double shooterAngle = 68.5; // TODO
-  private double Gravity = 9.807;
-
-  private double deltaY = 0; // TODO
-  private double radiusFlyWheel = 0.0508;
-
+  private double KP_FLY_WHEEL_SPEED = 0.05;
+  private double KI_FLY_WHEEL_SPEED = 0.00055;
+  private double KD_FLY_WHEEL_SPEED = 0;
+  
   private double ticksPerRoundflyWheel = 999.5; // TODO
 
   private TalonSRX flyWheelA;
   private TalonSRX flyWheelB;
-
-  public static double PIDsetpointFlyWheel = 0;
 
   public double shootCounter = 0;
 
   private edu.wpi.first.wpilibj.controller.PIDController flyWheelSpeed;
 
   private Shooter() {
+
     flyWheelA = new TalonSRX(ShooterConstants.FLY_WHEEL_A);
     flyWheelB = new TalonSRX(ShooterConstants.FLY_WHEEL_B);
-    flyWheelA.follow(flyWheelB);
+    
+    flyWheelA.configPeakCurrentLimit(30);
+    flyWheelB.configPeakCurrentLimit(30);
+    
 
     flyWheelSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_FLY_WHEEL_SPEED, KI_FLY_WHEEL_SPEED,
         KD_FLY_WHEEL_SPEED);
-    flyWheelSpeed.setTolerance(5); // TODO
+      
+    flyWheelSpeed.setTolerance(7);
+flyWheelSpeed.setIntegratorRange(-1000, 1000);
     flyWheelB.configClosedloopRamp(0.05);
+    flyWheelA.configClosedloopRamp(0.05);
 
   }
 
@@ -61,7 +60,10 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("kRateFlyWheelSpeed", kRateFlyWheelSpeed());
     SmartDashboard.putNumber("kSetPointPID", flyWheelSpeed.getSetpoint());
     SmartDashboard.putNumber("getPositionError", flyWheelSpeed.getPositionError());
-    SmartDashboard.putNumber("motorOutput", flyWheelA.getMotorOutputPercent());
+
+    SmartDashboard.putNumber("motorOutputA", flyWheelA.getMotorOutputPercent());
+    SmartDashboard.putNumber("motorOutputB", flyWheelB.getMotorOutputPercent());
+
     SmartDashboard.putBoolean("iseadytoshoot", flyWheelSpeed.atSetpoint());
     SmartDashboard.putNumber("calculateSpeedToFlyWheel", calculateSpeedToFlyWheel(Robot.distanceFromTargetLimelightY));
 
@@ -73,7 +75,9 @@ public class Shooter extends SubsystemBase {
    * @param speed The given power
    */
   public void controlFlyWheelMotor(double speed) {
+    System.out.println(speed);
     flyWheelB.set(ControlMode.PercentOutput, speed);
+    flyWheelA.set(ControlMode.PercentOutput, speed);
   }
 
   /**
@@ -91,8 +95,9 @@ public class Shooter extends SubsystemBase {
    * @param setPoint The destanation the robot need to reach
    * @return The result of the calculation
    */
-  public double flyWheelSpeedOutPut(double setPoint) {
-    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), -0.95, 0.95);
+  public double flyWheelSpeedOutPut(double setPoint, double kf) {
+    kf = 0;
+    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint) + kf, 0, 0.85);
   }
 
   /**
@@ -101,12 +106,8 @@ public class Shooter extends SubsystemBase {
    */
   public double calculateSpeedToFlyWheel(double deltaDistance) {
 
-    return (0.000222855* Math.pow(Chassis.getinstance().distance() , 2)) + (-0.145308 * Chassis.getinstance().distance()) + 213.536;
-    /*
-     * Math.toRadians(shooterAngle); return (2 * (Math.sqrt(((Gravity / 2) *
-     * deltaDistance) / 2 * Math.pow(Math.cos(radShooterAngle), 2) (deltaY -
-     * (deltaDistance * Math.tan(radShooterAngle)))))) / radiusFlyWheel;
-     */
+    return (0.000222855* Math.pow(Chassis.getinstance().distance() , 2)) + (-0.145308 * Chassis.getinstance().distance()) + 214.5;
+
   }
 
   /**

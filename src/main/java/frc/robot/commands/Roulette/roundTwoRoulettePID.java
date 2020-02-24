@@ -34,6 +34,7 @@ public class roundTwoRoulettePID extends CommandBase {
   public void initialize() {
     roulette.resetTicks();
     roulette.ticksControl(false);
+    roulette.controlroulettSolenoid(true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -48,6 +49,7 @@ public class roundTwoRoulettePID extends CommandBase {
   @Override
   public void end(boolean interrupted) {
       roulette.controlSpeed(0);
+      roulette.controlroulettSolenoid(false);
   }
 
   // Returns true when the command should end.

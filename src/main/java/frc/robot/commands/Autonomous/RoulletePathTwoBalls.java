@@ -18,23 +18,22 @@ import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Shooter;
 
-public class RoulletePath extends CommandBase {
+public class RoulletePathTwoBalls extends CommandBase {
   /**
    * Creates a new RoulletePath.
    */
   Autonomous autonomous;
   int stage = 0;
   double lastTimeOnTarget;
-  CommandBase MApath, Intake, shooting ,shooting1 , preshooting;
+  CommandBase MApath, Intake, shooting , preshooting;
 
-  public RoulletePath(Autonomous autonomous) {
+  public RoulletePathTwoBalls(Autonomous autonomous) {
 
     this.autonomous = autonomous;
     MApath = new MAPath(0.1, Chassis.getinstance());
     Intake = new IntakeAutomation(Automation.getinstance());
-    shooting = new Shooting(Automation.getinstance(), false);
+    shooting = new Shooting(Automation.getinstance(), true);
     preshooting = new PIDFlyWheelAutonumos(Shooter.getinstance());
-    shooting1 = new Shooting(Automation.getinstance(), true);
 
     addRequirements(autonomous);
   }
@@ -55,46 +54,40 @@ public class RoulletePath extends CommandBase {
     switch (stage) {
     case 0:
 
-      if (Timer.getFPGATimestamp() - lastTimeOnTarget < 5.5) {
-        shooting.execute();
-      } else {
-        shooting.end(true);
         MApath.initialize();
         stage++;
-      }
       break;
-
     case 1:
       MApath.execute();
-      if(MAPath.stage == 2){
-        preshooting.execute();
-      }
-      if (MAPath.stage == 4) {
+      if (MAPath.stage == 3) {
         Intake.initialize();
+      } else if (MAPath.stage == 4){
+       
         Intake.execute();
-      
       }else if(MAPath.stage == 5){
         Intake.end(true);
+        
       }
    
         if (MApath.isFinished()) {
+          preshooting.end(true);
           stage++;
+         
         }
       break;
-
+      
     case 2:
       MApath.end(true);
      
       stage++;
       break;
     case 3:
-     
-      shooting1.initialize();
+    
+      shooting.initialize();
       stage++;
       break;
     case 4:
-    preshooting.end(true);
-      shooting1.execute();
+      shooting.execute();
     }
 
   }
@@ -106,6 +99,7 @@ public class RoulletePath extends CommandBase {
     shooting.end(true);
     Intake.end(true);
     MApath.end(true);
+    preshooting.end(true);
 
   }
 

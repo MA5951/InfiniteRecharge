@@ -9,6 +9,7 @@ package frc.robot.commands.Chassis;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Limlight;
 
@@ -19,9 +20,9 @@ public class PIDVision extends CommandBase {
   private double lastTimeOnTarget;
   private double waitTime;
 
-  
-  public PIDVision( double angle, double waitTime , Limlight lm) {
+  public PIDVision(double angle, double waitTime, Limlight lm) {
     limlight = lm;
+
     this.angle = angle;
     this.waitTime = waitTime;
     chassis = Chassis.getinstance();
@@ -31,6 +32,7 @@ public class PIDVision extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    Robot.isPIDVisoin = true;
     chassis.rampRate(0);
     chassis.setidilmodeBrake();
   }
@@ -44,12 +46,12 @@ public class PIDVision extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Robot.isPIDVisoin = false;
     if (interrupted) {
       chassis.tankDrive(0, 0);
       chassis.reset();
       chassis.setidilmodeBrake();
-    }
-    else {
+    } else {
       chassis.tankDrive(0, 0);
       chassis.reset();
       chassis.setidilmodeBrake();
@@ -59,9 +61,11 @@ public class PIDVision extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (!chassis.isPIDVisionOnTarget()) {
-      lastTimeOnTarget = Timer.getFPGATimestamp();
-    }
-    return chassis.isPIDVisionOnTarget() && Timer.getFPGATimestamp() - lastTimeOnTarget > waitTime;
+    /*
+     * if (!chassis.isPIDVisionOnTarget()) { lastTimeOnTarget =
+     * Timer.getFPGATimestamp(); } return chassis.isPIDVisionOnTarget() &&
+     * Timer.getFPGATimestamp() - lastTimeOnTarget > waitTime; }
+     */
+    return false;
   }
 }

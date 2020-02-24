@@ -8,6 +8,7 @@
 package frc.robot.commands.Chassis;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Chassis;
 
@@ -29,15 +30,15 @@ public class tankDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-            //if(RobotContainer.leftJoystick.getRawButton(1) || RobotContainer.rightJoystick.getRawButton(1) ){
-            //chassis.tankDrive(chassis.leftVelocityControlSetPoint(RobotContainer.leftJoystick.getY() *(chassis.RPM /4)),
-             //    chassis.rightVelocityControlSetPoint(RobotContainer.rightJoystick.getY() *(chassis.RPM / 4)));
-           //}else{
-           //chassis.tankDrive(chassis.leftVelocityControlSetPoint(RobotContainer.leftJoystick.getY() * chassis.RPM),
-         // chassis.rightVelocityControlSetPoint(RobotContainer.rightJoystick.getY() *chassis.RPM) );
-       // }
+          
+      if(RobotContainer.rightJoystick.getRawButton(1) || RobotContainer.leftJoystick.getRawButton(1)){
+        chassis.getinstance().tankDrive(RobotContainer.leftJoystick.getY()*0.3, RobotContainer.rightJoystick.getY()*0.3);
+      }else{
+        chassis.getinstance().tankDrive(RobotContainer.leftJoystick.getY(), RobotContainer.rightJoystick.getY());
+      }
+       
       
-       chassis.getinstance().tankDrive(RobotContainer.leftJoystick.getY(), RobotContainer.rightJoystick.getY());
+      
  
   }
 

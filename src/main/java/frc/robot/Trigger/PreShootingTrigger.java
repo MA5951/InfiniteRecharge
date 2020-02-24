@@ -5,16 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package frc.robot.Trigger;
 
-
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.RobotContainer;
 
 /**
  * Add your docs here.
  */
-public class ShootingTriggger extends edu.wpi.first.wpilibj2.command.button.Trigger {
+public class PreShootingTrigger extends Trigger {
   @Override
   public boolean get() {
-    return RobotContainer.OperatingJoystick.getRawAxis(3) > 0.5;
+    return RobotContainer.OperatingJoystick.getRawAxis(2) > 0.5;
   }
 }

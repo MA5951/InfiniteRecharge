@@ -17,6 +17,7 @@ public class PIDFlyWheel extends CommandBase {
    */
   private double flyWheelSpeed;
   private Shooter shooter;
+  private double kf;
 
   public PIDFlyWheel(Shooter shooter) {
     this.shooter = shooter;
@@ -27,12 +28,15 @@ public class PIDFlyWheel extends CommandBase {
   @Override
   public void initialize() {
     flyWheelSpeed = shooter.calculateSpeedToFlyWheel(Chassis.getinstance().distance()); //
-                         // TODO
+    // TODO
+    kf =(1 / 250.0) * flyWheelSpeed;
+
   }
 
   @Override
   public void execute() {
-    double power = shooter.flyWheelSpeedOutPut(flyWheelSpeed) + ((1 / 250) * flyWheelSpeed);
+    
+    double power = shooter.flyWheelSpeedOutPut(flyWheelSpeed, kf);
     this.shooter.controlFlyWheelMotor(power);
   }
 

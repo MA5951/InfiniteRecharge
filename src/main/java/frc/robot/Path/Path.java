@@ -18,16 +18,24 @@ public class Path {
       new double[]{0, 110, 0.05, 6, 1, 1},
       new double[]{1.8, 110, 0.3, 5, 1 , 1},
       new double[]{1.8, 180, 0.3, 6 , 1 , 1},
-      new double[]{6.3, 180, 0.3, 5, 0.6 , 1},
-      new double[]{6.3, -20, 0.3, 6, 1 , 1},
-      new double[]{11.5, -20 , 0.3, 6, 1 , 1},
-      new double[]{11.5, 0 , 0.3, 5, 1 , 1},
+      new double[]{6.4, 180, 0.3, 5, 0.6 , 1},
+      new double[]{6.4, -90, 0.3, 60, 0.6 , 1},
+      new double[]{6.4, 0, 0.3, 5, 0.6 , 1},
+      new double[]{7.5, 0, 0.3, 5, 1 , 1},
+      
       };
 
-      public static double[][] enemyRoultte = {
+      public static double[][] roulettePathTwoBalls = { 
         new double[]{3, 0, 0.3, 5, 1 , 1},
-        new double[]{0, 20, 0.3, 4, 0.6 , 1},
-        new double[]{0, 180, 0.3, 4, 0.6 , 1},
+        new double[]{3, 90, 0.3, 60, 1 , 1},
+        new double[]{3, 180, 0.3, 5, 1 , 1},
+        new double[]{6.3, -20, 0.3, 6, 1 , 1},
+        };
+        
+      public static double[][] enemyRoultte = {
+        new double[]{2.6, 0, 0.3, 5, 1 , 1},
+        new double[]{-1.4, 60, 0.3, 4, 1 , 1},
+        new double[]{-1.4, -145, 0.3, 4, 1 , 1},
       };
 
       public static double[][] toRondevousAndBack = { 

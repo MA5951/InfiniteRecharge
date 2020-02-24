@@ -25,6 +25,7 @@ import frc.robot.subsystems.Roulette;
 import frc.robot.subsystems.Shooter;
 
 public class Robot extends TimedRobot {
+  public static boolean isPIDVisoin = false;
   private Roulette roulette = Roulette.getinstance();
   private tankDrive tankDrive = new tankDrive(Chassis.getinstance());
   private DriverControllBalance ControllBalance = new DriverControllBalance(Balance.getinstance());
