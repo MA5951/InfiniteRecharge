@@ -25,11 +25,9 @@ public class Path {
       
       };
 
-      public static double[][] roulettePathTwoBalls = { 
-        new double[]{3, 0, 0.3, 5, 1 , 1},
-        new double[]{3, 90, 0.3, 60, 1 , 1},
-        new double[]{3, 180, 0.3, 5, 1 , 1},
-        new double[]{6.3, -20, 0.3, 6, 1 , 1},
+      public static double[][] standart = { 
+        new double[]{-1, 0, 0.05, 5, 1 , 1},
+       
         };
         
       public static double[][] enemyRoultte = {
@@ -37,17 +35,17 @@ public class Path {
         new double[]{-1.4, 60, 0.3, 4, 1 , 1},
         new double[]{-1.4, -145, 0.3, 4, 1 , 1},
       };
-
+/*
       public static double[][] toRondevousAndBack = { 
-        new double[]{-4, 0, 0.2, 10, 1, 1},
-        new double[]{-4, -21, 0.3, 8, 1, 1},
-        new double[]{-2.8, -21, 0.15, 7, 1, 1},
-        new double[]{-2.8, 16, 0.3, 8, 1, 1},
-        new double[]{-4, 16, 0.1, 7, 1, 1},
-        new double[]{-4, -25, 0.3, 5, 1, 1},
-         new double[]{-0.5, -25, 0.05, 7, 1, 1},
-
+        new double[]{0, -20, 0.3, 5, 1 , 1},
+        new double[]{0, -90, 0.1, 60, 1, 1},
+        new double[]{0, -180, 0.05, 5, 1, 1},
+        new double[]{4.6, -180, 0.3, 5, 0.9 , 1},
+        new double[]{4.3, -90, 0.3, 60, 1 , 1},
+        new double[]{4.3, -10, 0.3, 5 , 1 , 1},
+        new double[]{6.4, -10, 0.3, 5, 0.6 , 1},
 
       };
+*/
 
 }

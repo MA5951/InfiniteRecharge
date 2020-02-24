@@ -5,29 +5,24 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Automation;
+package frc.robot.commands.Roulette;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.Automation;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.ShooterTransportation;
-import frc.robot.subsystems.Transportation;
+import frc.robot.subsystems.Roulette;
 
-public class CancelAllMotors extends InstantCommand {
-  Automation auot;
-
-  public CancelAllMotors(Automation auot) {
-    this.auot = auot;
-    addRequirements(auot);
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
+public class RoulletControlPiston extends InstantCommand {
+  boolean isOpen = false;
+  public RoulletControlPiston() {
+    addRequirements(Roulette.getinstance());
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Intake.getinstance().intakeMotorControl(0);
-    Transportation.getinstance().transportationControl(0);
-    Shooter.getinstance().controlFlyWheelMotor(0);
-    ShooterTransportation.getinstance().controlSquishMotor(0);
+    isOpen = !isOpen;
+    Roulette.getinstance().controlroulettSolenoid(isOpen);
   }
 }

@@ -32,7 +32,7 @@ public class PIDVision extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.isPIDVisoin = true;
+  
     chassis.rampRate(0);
     chassis.setidilmodeBrake();
   }
@@ -46,7 +46,7 @@ public class PIDVision extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.isPIDVisoin = false;
+    
     if (interrupted) {
       chassis.tankDrive(0, 0);
       chassis.reset();

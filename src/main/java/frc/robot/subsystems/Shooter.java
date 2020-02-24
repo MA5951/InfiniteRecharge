@@ -46,7 +46,7 @@ public class Shooter extends SubsystemBase {
     flyWheelSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_FLY_WHEEL_SPEED, KI_FLY_WHEEL_SPEED,
         KD_FLY_WHEEL_SPEED);
       
-    flyWheelSpeed.setTolerance(7);
+    flyWheelSpeed.setTolerance(5);
 flyWheelSpeed.setIntegratorRange(-1000, 1000);
     flyWheelB.configClosedloopRamp(0.05);
     flyWheelA.configClosedloopRamp(0.05);

@@ -33,7 +33,7 @@ public class RoulletePathTwoBalls extends CommandBase {
     MApath = new MAPath(0.1, Chassis.getinstance());
     Intake = new IntakeAutomation(Automation.getinstance());
     shooting = new Shooting(Automation.getinstance(), true);
-    preshooting = new PIDFlyWheelAutonumos(Shooter.getinstance());
+    preshooting = new PIDFlyWheelAutonumos(Shooter.getinstance() , 190);
 
     addRequirements(autonomous);
   }

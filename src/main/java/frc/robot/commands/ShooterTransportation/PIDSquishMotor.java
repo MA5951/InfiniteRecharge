@@ -35,8 +35,7 @@ public class PIDSquishMotor extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double power = shooterTransportation.squishMotorSpeedOutput();
-
+  
     if (shooterTransportation.getMotorCurrnet() < -30 ) {
       shooterTransportation.controlSquishMotor(0.4);
       Timer.delay(0.1);

@@ -17,14 +17,13 @@ public class roundTwoRoulettePID extends CommandBase {
    */
 
   private Roulette roulette;
-  private double setpoint = 8 * 3.5;  // The number of color triangles multiply by 3.5 spins
+  private double setpoint = 8 * 3.5; // The number of color triangles multiply by 3.5 spins
   private double speed;
   private double lastTimeOnTarget;
-  private double waitTime;
+  private double power;
 
-
-  public roundTwoRoulettePID(double waitTime, Roulette roulette) {
-    this.waitTime = waitTime;
+  public roundTwoRoulettePID(double power, Roulette roulette) {
+    this.power = power;
     this.roulette = roulette;
     addRequirements(roulette);
   }
@@ -34,30 +33,32 @@ public class roundTwoRoulettePID extends CommandBase {
   public void initialize() {
     roulette.resetTicks();
     roulette.ticksControl(false);
-    roulette.controlroulettSolenoid(true);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    roulette.countTicks();
-    speed = roulette.spinPidOutput(setpoint);
-    roulette.controlSpeed(speed);
+    // roulette.countTicks();
+    // speed = roulette.spinPidOutput(setpoint);
+    roulette.controlSpeed(power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-      roulette.controlSpeed(0);
-      roulette.controlroulettSolenoid(false);
+    roulette.controlSpeed(0);
+    
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (!roulette.isPIDOnTarget()) {
-      lastTimeOnTarget = Timer.getFPGATimestamp();
-    }
-    return roulette.isPIDOnTarget() && Timer.getFPGATimestamp() - lastTimeOnTarget > waitTime;
+    /*
+     * if (!roulette.isPIDOnTarget()) { lastTimeOnTarget = Timer.getFPGATimestamp();
+     * } return roulette.isPIDOnTarget() && Timer.getFPGATimestamp() -
+     * lastTimeOnTarget > waitTime; }
+     */
+    return false;
   }
 }

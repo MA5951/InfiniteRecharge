@@ -17,7 +17,7 @@ public class tankDrive extends CommandBase {
 
   public tankDrive(Chassis ch) {
     chassis = ch;
-   addRequirements(chassis);
+    addRequirements(chassis);
   }
 
   // Called when the command is initially scheduled.
@@ -30,16 +30,27 @@ public class tankDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-          
-      if(RobotContainer.rightJoystick.getRawButton(1) || RobotContainer.leftJoystick.getRawButton(1)){
-        chassis.getinstance().tankDrive(RobotContainer.leftJoystick.getY()*0.3, RobotContainer.rightJoystick.getY()*0.3);
-      }else{
-        chassis.getinstance().tankDrive(RobotContainer.leftJoystick.getY(), RobotContainer.rightJoystick.getY());
+
+    if (RobotContainer.rightJoystick.getY() > 0.07 || RobotContainer.rightJoystick.getY() < -0.07) {
+      if (RobotContainer.rightJoystick.getRawButton(1) || RobotContainer.leftJoystick.getRawButton(1)) {
+        chassis.rightcontrol(RobotContainer.rightJoystick.getY() * 0.3);
+      } else {
+        chassis.rightcontrol(RobotContainer.rightJoystick.getY());
       }
-       
-      
-      
- 
+    } else {
+      chassis.rightcontrol(0);
+    }
+
+    if (RobotContainer.leftJoystick.getY() > 0.07 || RobotContainer.leftJoystick.getY() < -0.07) {
+
+      if (RobotContainer.rightJoystick.getRawButton(1) || RobotContainer.leftJoystick.getRawButton(1)) {
+        chassis.leftcontrol(RobotContainer.leftJoystick.getY() * 0.3);
+      } else {
+        chassis.leftcontrol(RobotContainer.leftJoystick.getY());
+      }
+    }else{
+      chassis.leftcontrol(0);
+    }
   }
 
   // Called once the command ends or is interrupted.

@@ -25,18 +25,19 @@ import frc.robot.subsystems.Roulette;
 import frc.robot.subsystems.Shooter;
 
 public class Robot extends TimedRobot {
-  public static boolean isPIDVisoin = false;
+ 
   private Roulette roulette = Roulette.getinstance();
   private tankDrive tankDrive = new tankDrive(Chassis.getinstance());
   private DriverControllBalance ControllBalance = new DriverControllBalance(Balance.getinstance());
   private ElevatorMotorControl elevatorControl = new ElevatorMotorControl(Elevator.getinstance());
+
   private String gameData = DriverStation.getInstance().getGameSpecificMessage();
+
   public static int setpointColor;
   public static String colorString = "Unknown";
   private Command m_autonomousCommand;
   public static double x;
   public static double y;
-  public static double tlong;
   public static double yaw1;
   public static double distanceFromTargetLimelightX;
   public static double distanceFromTargetLimelightY;
@@ -89,13 +90,12 @@ public class Robot extends TimedRobot {
      NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
      NetworkTableEntry tx = table.getEntry("tx");
      NetworkTableEntry ty = table.getEntry("ty");
-     NetworkTableEntry tlong1 = table.getEntry("tlong");
      NetworkTableEntry yaw = table.getEntry("camtran");
 
     // read values periodically
     x = tx.getDouble(0.0);
     y = ty.getDouble(0.0);
-    tlong = tlong1.getDouble(0.0);
+  
     yaw1 = yaw.getDoubleArray(new double[] {0,0,0,0,0,0,0})[4];
     distanceFromTargetLimelightX = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[0];
     distanceFromTargetLimelightY = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[2];
@@ -125,6 +125,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+
     MAPath.pathnum = 0;
     Chassis.getinstance().resetValue();
      m_autonomousCommand = m_robotContainer.getAutonomousCommand();
@@ -147,15 +148,14 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().setDefaultCommand(Chassis.getinstance(), tankDrive);
     CommandScheduler.getInstance().setDefaultCommand(Balance.getinstance(), ControllBalance);
     CommandScheduler.getInstance().setDefaultCommand(Elevator.getinstance(), elevatorControl);
+    Elevator.getinstance().elevatorEncoderReset();
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    
-    MAPath.pathnum = 0;
     Balance.getinstance().resetNavx();
     Chassis.getinstance().resetValue();
     Chassis.getinstance().rampRate(0);
-    Shooter.getinstance().shootCounter = 0;
 
   }
 

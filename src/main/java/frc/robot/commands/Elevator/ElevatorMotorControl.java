@@ -33,7 +33,7 @@ public class ElevatorMotorControl extends CommandBase {
     
       if (RobotContainer.OperatingJoystick.getRawAxis(1) > 0.5 ) {
       elevator.setElvatorMotorSpeed(0.75);
-      }else if(RobotContainer.OperatingJoystick.getRawAxis(1) < -0.5 && elevator.getinstance().getelevatorencoder() > -168000 && elevator.isPistonOpen()){
+      }else if(RobotContainer.OperatingJoystick.getRawAxis(1) < -0.5 && elevator.getinstance().getelevatorencoder() > -165000 && elevator.isPistonOpen()){
         elevator.setElvatorMotorSpeed(-0.5);
       }else{
         elevator.setElvatorMotorSpeed(0);

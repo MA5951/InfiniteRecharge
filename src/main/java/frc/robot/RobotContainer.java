@@ -36,6 +36,7 @@ import frc.robot.subsystems.Transportation;
 import frc.robot.commands.Intake.IntakClose;
 import frc.robot.commands.Intake.IntakePullPush;
 import frc.robot.commands.Intake.OpenIntake;
+import frc.robot.commands.Roulette.RoulletControlPiston;
 import frc.robot.commands.Roulette.roundTwoRoulettePID;
 import frc.robot.commands.Shooter.PIDFlyWheel;
 import frc.robot.commands.Shooter.PIDFlyWheelAutonumos;
@@ -68,7 +69,6 @@ public class RobotContainer {
   private Shooter shooter = Shooter.getinstance();
   private Automation auto = Automation.getinstance();
   private Elevator elevator = Elevator.getinstance();
-  private Balance balance = Balance.getinstance();
   private Roulette roulette = Roulette.getinstance();
 
   public static XboxController OperatingJoystick = new XboxController(2);
@@ -80,17 +80,24 @@ public class RobotContainer {
   private JoystickButton CloseIntake = new JoystickButton(OperatingJoystick, 5);
   private ShootingTriggger Shoot = new ShootingTriggger();
   private JoystickButton RouletteControl = new JoystickButton(OperatingJoystick, 3);
+
   private JoystickButton CancelAllMotors = new JoystickButton(OperatingJoystick, 10);
   private JoystickButton CancelAllMotorsTwo = new JoystickButton(OperatingJoystick, 11);
-  private JoystickButton RouletteAutomation = new JoystickButton(rightJoystick, 2);
+
+  private JoystickButton RouletteAutomation = new JoystickButton(OperatingJoystick, 2);
   private JoystickButton IntakeAutomation = new JoystickButton(OperatingJoystick, 1);
   private JoystickButton transportations = new JoystickButton(OperatingJoystick, 4);
 private PreShootingTrigger preShootingTrigger = new PreShootingTrigger();
+
   private POVButton PistonElevatorOpen = new POVButton(OperatingJoystick, 0);
   private POVButton PistonElevatorClose = new POVButton(OperatingJoystick, 180);
 
-  EnemyRoullete roulletePath = new EnemyRoullete(Autonomous.getInstance());
+  
+  private POVButton RouletteRight = new POVButton(OperatingJoystick, 90);
+  private POVButton RouletteLeft = new POVButton(OperatingJoystick, 270);
 
+  MAPath roulletePath = new MAPath(0.1 , chassis);
+  
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -113,19 +120,19 @@ private PreShootingTrigger preShootingTrigger = new PreShootingTrigger();
     transportations.whileHeld(new TransportationContorl(transportation));
     transportations.whileHeld(new PIDSquishMotor(shooterTransportation));
     Shoot.whileActiveContinuous(new Shooting(auto, false));
-    preShootingTrigger.whileActiveContinuous(new PIDFlyWheelAutonumos(shooter));
+    preShootingTrigger.whileActiveContinuous(new PIDFlyWheelAutonumos(shooter , 190));
     PIDVision.whileHeld(new PIDVision(0, 0.1 , Limlight.getInstance()));
     RouletteControl.whileHeld(new IntakePullPush(0.5, intake));
 
-    
+    RouletteLeft.whileActiveContinuous(new roundTwoRoulettePID(-0.5, roulette));
+    RouletteRight.whileActiveContinuous(new roundTwoRoulettePID(0.5, roulette));
+
     IntakeAutomation.whileHeld(new IntakeAutomation(auto));
 
-    RouletteAutomation.whileHeld(new roundTwoRoulettePID(0.1 , roulette));
+    RouletteAutomation.whenPressed(new RoulletControlPiston());
 
     CancelAllMotors.whenPressed(new CancelAllMotors(auto));
     CancelAllMotorsTwo.whenPressed(new CancelAllMotors(auto));
-
-    // vision.whileHeld(new PIDVision(0, 0.1, chassis));
   }
 
   /**

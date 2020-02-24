@@ -38,7 +38,7 @@ public class Chassis extends SubsystemBase {
   private static final double KD_MApath_angle = 1e-3;
 
   private static final double KP_Vision_angle = 2.5e-2;
-  private static final double KI_Vision_angle =  8e-4;
+  private static final double KI_Vision_angle = 8e-4;
   private static final double KD_Vision_angle = 1e-3;
 
   private static final double KP_VELOCITY_LEFT = 0.000058 * 6;
@@ -53,7 +53,7 @@ public class Chassis extends SubsystemBase {
   private static final double anglePidMApathSetInputRange = 180;
 
   public static double ticksPerMeter = 22000; // the number of ticks per meter //TODO
-  public static double RPM = 5700; 
+  public static double RPM = 5700;
   private double angle;
   private double sign;
   private double modle = sign;
@@ -154,7 +154,7 @@ public class Chassis extends SubsystemBase {
   public void value() {
     SmartDashboard.putNumber("distanceFormula", distance());
     SmartDashboard.putNumber("angle", navx.getFusedHeading());
-    SmartDashboard.putNumber("fixedAngle", fixedAngle() );
+    SmartDashboard.putNumber("fixedAngle", fixedAngle());
 
     SmartDashboard.putNumber("pathnum", MAPath.pathnum);
     SmartDashboard.putNumber("stage", MAPath.stage);
@@ -323,6 +323,14 @@ public class Chassis extends SubsystemBase {
     } else {
       tankDrive(0, 0);
     }
+  }
+
+  public void leftcontrol(double power) {
+    leftFrontMotor.set(power);
+  }
+
+  public void rightcontrol(double power) {
+    rightFrontMotor.set(power);
   }
 
   public static Chassis getinstance() {

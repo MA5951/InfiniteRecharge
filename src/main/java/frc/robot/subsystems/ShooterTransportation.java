@@ -21,19 +21,9 @@ import frc.robot.Constants.*;
 public class ShooterTransportation extends SubsystemBase {
   private static ShooterTransportation shooterTransportation;
 
-  private double KP_SQUISH_MOTOR_SPEED = 0.0093;
-  private double KI_SQUISH_MOTOR_SPEED = 0.0025;
-  private double KD_SQUISH_MOTOR_SPEED = 0;
-
-  private double ticksPerRoundsquishMotor = 919.25; // TODO;
   private TalonSRX squishMotor;
 
-  private double kRateSquish = -90; // TODO
-
   private DigitalInput IRBall;
-
-  public double shootCounter = 0;
-  private boolean lastState;
 
   private edu.wpi.first.wpilibj.controller.PIDController squishMotorSpeed;
 
@@ -41,12 +31,6 @@ public class ShooterTransportation extends SubsystemBase {
 
     squishMotor = new TalonSRX(ShooterConstants.SQUISH_MOTOR);
     IRBall = new DigitalInput(ShooterConstants.IR_BALL);
-
-    squishMotorSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_SQUISH_MOTOR_SPEED, KI_SQUISH_MOTOR_SPEED,
-        KD_SQUISH_MOTOR_SPEED);
-    squishMotorSpeed.setTolerance(1); // TODO
-
-    lastState = IRBall.get();
   }
 
   /**
@@ -54,11 +38,8 @@ public class ShooterTransportation extends SubsystemBase {
    */
   public void ShooterValue() {
     SmartDashboard.putBoolean("IRball", !IRBall.get());
-    SmartDashboard.putNumber("kRateSquishMotor", kRateSquishMotorSpeed());
-    SmartDashboard.putNumber("ball", shootCounter);
     SmartDashboard.putNumber("kSetPointPIDSquish", squishMotorSpeed.getSetpoint());
     SmartDashboard.putNumber("squishMotorCurrent", squishMotor.getStatorCurrent());
-    SmartDashboard.putNumber("BallCounter", shootCounter);
   }
 
   public double getMotorCurrnet() {
@@ -73,25 +54,6 @@ public class ShooterTransportation extends SubsystemBase {
   public void controlSquishMotor(double speed) {
     squishMotor.set(ControlMode.PercentOutput, speed);
   }
-
-  /**
-   * Set the angle speed for the squish
-   * 
-   * @return The kRate calculation
-   */
-  public double kRateSquishMotorSpeed() {
-    return (squishMotor.getSelectedSensorVelocity() * (2 * Math.PI)) / ticksPerRoundsquishMotor;
-  }
-
-  /**
-   * Calculate the PID for the squish
-   * 
-   * @return The result of the calculation
-   */
-  public double squishMotorSpeedOutput() {
-    return MathUtil.clamp(squishMotorSpeed.calculate(kRateSquishMotorSpeed(), kRateSquish), -0.8, 0);
-  }
-
   /**
    * Check if the ball is in the shooter
    * 
@@ -117,19 +79,9 @@ public class ShooterTransportation extends SubsystemBase {
     return shooterTransportation;
   }
 
-  /**
-   * Count the balls the in and out of the shooter
-   */
-  public void ballCounter() {
-    if (IRBall.get() != lastState) {
-      shootCounter += 0.5;
-      lastState = IRBall.get();
-    }
-  }
-
   @Override
   public void periodic() {
     ShooterValue();
-    ballCounter();
+    
   }
 }

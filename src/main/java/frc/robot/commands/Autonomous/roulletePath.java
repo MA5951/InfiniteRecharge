@@ -33,7 +33,7 @@ public class RoulletePath extends CommandBase {
     MApath = new MAPath(0.1, Chassis.getinstance());
     Intake = new IntakeAutomation(Automation.getinstance());
     shooting = new Shooting(Automation.getinstance(), false);
-    preshooting = new PIDFlyWheelAutonumos(Shooter.getinstance());
+    preshooting = new PIDFlyWheelAutonumos(Shooter.getinstance() , 215);
     shooting1 = new Shooting(Automation.getinstance(), true);
 
     addRequirements(autonomous);
