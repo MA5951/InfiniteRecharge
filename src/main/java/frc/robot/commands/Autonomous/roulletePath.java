@@ -18,7 +18,7 @@ import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Shooter;
 
-public class RoulletePath extends CommandBase {
+public class roulletePath extends CommandBase {
   /**
    * Creates a new RoulletePath.
    */
@@ -27,7 +27,7 @@ public class RoulletePath extends CommandBase {
   double lastTimeOnTarget;
   CommandBase MApath, Intake, shooting ,shooting1 , preshooting;
 
-  public RoulletePath(Autonomous autonomous) {
+  public roulletePath(Autonomous autonomous) {
 
     this.autonomous = autonomous;
     MApath = new MAPath(0.1, Chassis.getinstance());
