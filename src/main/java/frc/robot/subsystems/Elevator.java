@@ -22,15 +22,7 @@ import frc.robot.Constants.ConstantsElevator;
  * An example subsystem. You can replace me with your own Subsystem.
  */
 public class Elevator extends SubsystemBase {
-
-  private static final double KP_ELEVATOR = 0;
-  private static final double KI_ELEVATOR = 0;
-  private static final double KD_ELEVATOR = 0;
-
   private CANSparkMax elevatorMotor;
-
-
-  private PIDController elevatorPID; // PID controler for hight
   private Solenoid elevatorPiston;
 
   private DigitalInput elevatorLimitSwich;
@@ -43,13 +35,6 @@ public class Elevator extends SubsystemBase {
     elevatorMotor = new CANSparkMax(ConstantsElevator.ELEVATOR_MOTOR,
         com.revrobotics.CANSparkMaxLowLevel.MotorType.kBrushless);
 
-    // Encoder
-
-
-    // PID
-    elevatorPID = new PIDController(KP_ELEVATOR, KI_ELEVATOR, KD_ELEVATOR);
-    elevatorPID.setTolerance(10); // TODO
-
     // Piston
     elevatorPiston = new Solenoid(ConstantsElevator.ELEVATOR_SOLENOID_A);
 
@@ -57,7 +42,6 @@ public class Elevator extends SubsystemBase {
     canEncoder = elevatorMotor.getAlternateEncoder(AlternateEncoderType.kQuadrature, 1);
     canEncoder.setPositionConversionFactor(1);
     elevatorLimitSwich = new DigitalInput(10);
-    
 
   }
 
@@ -67,7 +51,6 @@ public class Elevator extends SubsystemBase {
     SmartDashboard.putBoolean("elevatorPistonStatus", isPistonOpen());
     SmartDashboard.putBoolean("limiswichdownelevator", elevatorLimitSwich.get());
 
-
   }
 
   // pid reset
@@ -76,19 +59,12 @@ public class Elevator extends SubsystemBase {
 
   }
 
-  public double getElevatorPIDOutput(double setpoint) {
-    return MathUtil.clamp(elevatorPID.calculate(canEncoder.getPosition(), setpoint), -1, 1);
+  public double getelevatorencoder() {
+    return canEncoder.getPosition();
   }
-public double getelevatorencoder(){
-  return canEncoder.getPosition();
-}
+
   public void setElvatorMotorSpeed(double speed) {
     elevatorMotor.set(speed);
-  }
-
-
-  public boolean isPIDElevetorOnTarget() {
-    return elevatorPID.atSetpoint();
   }
 
   public void ControlElevatorPiston(boolean value) {
@@ -99,9 +75,9 @@ public double getelevatorencoder(){
     return elevatorPiston.get();
   }
 
-public boolean islimitswichdown(){
-  return elevatorLimitSwich.get();
-}
+  public boolean islimitswichdown() {
+    return elevatorLimitSwich.get();
+  }
 
   public static Elevator getinstance() {
     if (elevator == null) {
@@ -112,10 +88,10 @@ public boolean islimitswichdown(){
 
   @Override
   public void periodic() {
-    //if (elevatorLimitSwich.get()) {
-      //elevatorEncoderReset();
-    //}
-  
+    // if (elevatorLimitSwich.get()) {
+    // elevatorEncoderReset();
+    // }
+
     value();
 
   }

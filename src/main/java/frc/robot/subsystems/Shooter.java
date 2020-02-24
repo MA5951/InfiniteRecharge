@@ -24,7 +24,7 @@ public class Shooter extends SubsystemBase {
   private double KP_FLY_WHEEL_SPEED = 0.05;
   private double KI_FLY_WHEEL_SPEED = 0.00055;
   private double KD_FLY_WHEEL_SPEED = 0;
-  
+
   private double ticksPerRoundflyWheel = 999.5; // TODO
 
   private TalonSRX flyWheelA;
@@ -38,16 +38,15 @@ public class Shooter extends SubsystemBase {
 
     flyWheelA = new TalonSRX(ShooterConstants.FLY_WHEEL_A);
     flyWheelB = new TalonSRX(ShooterConstants.FLY_WHEEL_B);
-    
+
     flyWheelA.configPeakCurrentLimit(30);
     flyWheelB.configPeakCurrentLimit(30);
-    
 
     flyWheelSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_FLY_WHEEL_SPEED, KI_FLY_WHEEL_SPEED,
         KD_FLY_WHEEL_SPEED);
-      
+
     flyWheelSpeed.setTolerance(5);
-flyWheelSpeed.setIntegratorRange(-1000, 1000);
+    flyWheelSpeed.setIntegratorRange(-1000, 1000);
     flyWheelB.configClosedloopRamp(0.05);
     flyWheelA.configClosedloopRamp(0.05);
 
@@ -75,7 +74,6 @@ flyWheelSpeed.setIntegratorRange(-1000, 1000);
    * @param speed The given power
    */
   public void controlFlyWheelMotor(double speed) {
-    System.out.println(speed);
     flyWheelB.set(ControlMode.PercentOutput, speed);
     flyWheelA.set(ControlMode.PercentOutput, speed);
   }
@@ -95,9 +93,9 @@ flyWheelSpeed.setIntegratorRange(-1000, 1000);
    * @param setPoint The destanation the robot need to reach
    * @return The result of the calculation
    */
-  public double flyWheelSpeedOutPut(double setPoint, double kf) {
-    kf = 0;
-    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint) + kf, 0, 0.85);
+  public double flyWheelSpeedOutPut(double setPoint) {
+
+    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), 0, 0.85);
   }
 
   /**
@@ -106,7 +104,8 @@ flyWheelSpeed.setIntegratorRange(-1000, 1000);
    */
   public double calculateSpeedToFlyWheel(double deltaDistance) {
 
-    return (0.000222855* Math.pow(Chassis.getinstance().distance() , 2)) + (-0.145308 * Chassis.getinstance().distance()) + 214.5;
+    return (0.000222855 * Math.pow(Chassis.getinstance().distance(), 2))
+        + (-0.145308 * Chassis.getinstance().distance()) + 214.5;
 
   }
 
@@ -137,6 +136,6 @@ flyWheelSpeed.setIntegratorRange(-1000, 1000);
   @Override
   public void periodic() {
     ShooterValue();
-   
+
   }
 }

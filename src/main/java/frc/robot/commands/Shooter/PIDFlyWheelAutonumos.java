@@ -17,11 +17,10 @@ public class PIDFlyWheelAutonumos extends CommandBase {
    */
   private double flyWheelSpeed;
   private Shooter shooter;
-  private double kf;
-  double speed;
+  private double speed;
 
-  public PIDFlyWheelAutonumos(Shooter shooter , double speed) {
-    this.speed  = speed;
+  public PIDFlyWheelAutonumos(Shooter shooter, double speed) {
+    this.speed = speed;
     this.shooter = shooter;
     addRequirements(this.shooter);
   }
@@ -30,11 +29,12 @@ public class PIDFlyWheelAutonumos extends CommandBase {
   @Override
   public void initialize() {
     flyWheelSpeed = speed;
-    kf = (1 / 250) * flyWheelSpeed;
+
   }
+
   @Override
   public void execute() {
-    double power = shooter.flyWheelSpeedOutPut(flyWheelSpeed, kf);
+    double power = shooter.flyWheelSpeedOutPut(flyWheelSpeed);
     this.shooter.controlFlyWheelMotor(power);
   }
 

@@ -12,6 +12,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.Balance.DriverControllBalance;
@@ -86,6 +87,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
+
      CommandScheduler.getInstance().run();
      NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
      NetworkTableEntry tx = table.getEntry("tx");
@@ -100,7 +102,6 @@ public class Robot extends TimedRobot {
     distanceFromTargetLimelightX = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[0];
     distanceFromTargetLimelightY = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[2];
 
-    
      getColorFromFMS();
 
   }
@@ -153,7 +154,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    Balance.getinstance().resetNavx();
     Chassis.getinstance().resetValue();
     Chassis.getinstance().rampRate(0);
 

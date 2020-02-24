@@ -7,100 +7,60 @@
 
 package frc.robot.commands.Autonomous;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.commands.Automation.IntakeAutomation;
 import frc.robot.commands.Automation.Shooting;
 import frc.robot.commands.Chassis.MAPath;
-import frc.robot.commands.Shooter.PIDFlyWheelAutonumos;
 import frc.robot.subsystems.Automation;
 import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Chassis;
-import frc.robot.subsystems.Shooter;
 
-public class RoulletePathTwoBalls extends CommandBase {
+public class shootanddrive extends CommandBase {
   /**
-   * Creates a new RoulletePath.
+   * Creates a new shootanddrive.
    */
-  Autonomous autonomous;
+  CommandBase MApath, shooting;
   int stage = 0;
-  double lastTimeOnTarget;
-  CommandBase MApath, Intake, shooting , preshooting;
 
-  public RoulletePathTwoBalls(Autonomous autonomous) {
-
-    this.autonomous = autonomous;
+  public shootanddrive() {
+    addRequirements(Autonomous.getInstance());
     MApath = new MAPath(0.1, Chassis.getinstance());
-    Intake = new IntakeAutomation(Automation.getinstance());
     shooting = new Shooting(Automation.getinstance(), true);
-    preshooting = new PIDFlyWheelAutonumos(Shooter.getinstance() , 190);
-
-    addRequirements(autonomous);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     stage = 0;
-    shooting.initialize();
-    preshooting.initialize();
-    lastTimeOnTarget = Timer.getFPGATimestamp();
+    MApath.initialize();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // System.out.println(stage);
     switch (stage) {
     case 0:
 
-        MApath.initialize();
-        stage++;
-      break;
-    case 1:
       MApath.execute();
-      if (MAPath.stage == 3) {
-        Intake.initialize();
-      } else if (MAPath.stage == 4){
-       
-        Intake.execute();
-      }else if(MAPath.stage == 5){
-        Intake.end(true);
-        
+      if (MApath.isFinished()) {
+        MApath.end(true);
+        shooting.initialize();
+        stage++;
       }
-   
-        if (MApath.isFinished()) {
-          preshooting.end(true);
-          stage++;
-         
-        }
-      break;
-      
-    case 2:
-      MApath.end(true);
-     
-      stage++;
-      break;
-    case 3:
-    
-      shooting.initialize();
-      stage++;
-      break;
-    case 4:
-      shooting.execute();
-    }
 
+      break;
+
+    case 1:
+
+      shooting.execute();
+      break;
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
     shooting.end(true);
-    Intake.end(true);
     MApath.end(true);
-    preshooting.end(true);
-
   }
 
   // Returns true when the command should end.

@@ -27,13 +27,11 @@ public class IntakeAutomation extends CommandBase {
 
   private CommandBase piston;
   private CommandBase roller;
-  private CommandBase transportation;
 
   public IntakeAutomation(Automation automation) {
     // Use addRequirements() here to declare subsystem dependencies.
     piston = new OpenIntake(Intake.getinstance());
     roller = new IntakePullPush(-0.6, Intake.getinstance()); // TODO Enter real speed value
-    transportation = new TransportationContorl(Transportation.getinstance());
     auto = automation;
     addRequirements(auto);
   }
@@ -41,17 +39,17 @@ public class IntakeAutomation extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //piston.schedule();
+   
     roller.schedule();
-    //transportation.schedule();
+ 
     piston.initialize();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() { 
+  public void execute() {
     roller.execute();
-    //transportation.execute();
+    
 
   }
 
@@ -60,7 +58,6 @@ public class IntakeAutomation extends CommandBase {
   public void end(boolean interrupted) {
     roller.cancel();
     Intake.getinstance().intakeSolenoidControl(Value.kReverse);
-    //transportation.cancel();
   }
 
   // Returns true when the command should end.

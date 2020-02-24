@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Limlight extends SubsystemBase {
   private static Limlight limlight;
+
   /**
    * Creates a new Limlight.
    */
@@ -18,15 +19,12 @@ public class Limlight extends SubsystemBase {
 
   }
 
- 
-
   public static Limlight getInstance() {
     if (limlight == null) {
       limlight = new Limlight();
     }
     return limlight;
   }
-
 
   @Override
   public void periodic() {

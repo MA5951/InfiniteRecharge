@@ -25,7 +25,7 @@ public class Shooting extends CommandBase {
    */
 
   private Automation auto;
-  private CommandBase squishSpeed, transportation, flyWheel , PIDVision;
+  private CommandBase squishSpeed, transportation, flyWheel, PIDVision;
   private boolean drive;
 
   public Shooting(Automation automation, boolean drive) {
@@ -42,12 +42,12 @@ public class Shooting extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+
     if (drive) {
-      
+
       PIDVision.initialize();
     }
-    
+
     flyWheel.initialize();
   }
 
@@ -55,20 +55,18 @@ public class Shooting extends CommandBase {
   @Override
   public void execute() {
     {
-      
+
       flyWheel.execute();
       if (drive) {
-      PIDVision.execute();
+        PIDVision.execute();
       }
-      
+
       if (Shooter.getinstance().isFlyWheelOnTraget() && Chassis.getinstance().isPIDVisionOnTarget()) {
         squishSpeed.execute();
         transportation.execute();
         PIDVision.end(true);
 
       } else {
-
-       
 
         transportation.end(true);
         squishSpeed.end(true);
@@ -83,7 +81,7 @@ public class Shooting extends CommandBase {
     if (drive) {
       PIDVision.end(true);
     }
- 
+
     squishSpeed.end(true);
     transportation.end(true);
     flyWheel.end(true);

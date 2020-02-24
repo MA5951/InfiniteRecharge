@@ -41,14 +41,6 @@ public class Chassis extends SubsystemBase {
   private static final double KI_Vision_angle = 8e-4;
   private static final double KD_Vision_angle = 1e-3;
 
-  private static final double KP_VELOCITY_LEFT = 0.000058 * 6;
-  private static final double KI_VELOCITY_LEFT = 0;
-  private static final double KD_VELOCITY_LEFT = 0.000001 * 6;
-
-  private static final double KP_VELOCITY_RIGHT = 0.000058 * 6;
-  private static final double KI_VELOCITY_RIGHT = 0;
-  private static final double KD_VELOCITY_RIGHT = 0.000001 * 6;
-
   private static final double anglePIDVisionSetInputRange = 44.5;
   private static final double anglePidMApathSetInputRange = 180;
 
@@ -78,9 +70,6 @@ public class Chassis extends SubsystemBase {
   private PIDController anglePidMApath; // PID controler of the angel in the pathfinder
 
   private PIDController anglePIDVision; // the angel PID in the vison PID
-
-  private PIDController leftVelocityControl;
-  private PIDController rightVelocityControl;
 
   private Chassis() {
 
@@ -131,10 +120,6 @@ public class Chassis extends SubsystemBase {
     // the angel PID vison
     anglePIDVision = new PIDController(KP_Vision_angle, KI_Vision_angle, KD_Vision_angle);
     anglePIDVision.setTolerance(3);
-
-    leftVelocityControl = new PIDController(KP_VELOCITY_LEFT, KI_VELOCITY_LEFT, KD_VELOCITY_LEFT);
-
-    rightVelocityControl = new PIDController(KP_VELOCITY_RIGHT, KI_VELOCITY_RIGHT, KD_VELOCITY_RIGHT);
 
     anglePIDVision.enableContinuousInput(-anglePIDVisionSetInputRange, anglePIDVisionSetInputRange);
 
@@ -194,19 +179,6 @@ public class Chassis extends SubsystemBase {
               / (Math.abs(Robot.distanceFromTargetLimelightX * 2.54))));
     }
 
-  }
-
-  public double leftVelocityControlSetPoint(double leftSetpoint) {
-    return MathUtil.clamp(leftVelocityControl.calculate(lefttVelocityControlRPM(), leftSetpoint), -1, 1);
-  }
-
-  public double rightVelocityControlSetPoint(double rightSetpoint) {
-    return MathUtil.clamp(rightVelocityControl.calculate(rightVelocityControlRPM(), rightSetpoint), -1, 1);
-  }
-
-  public void resetVelocityControl() {
-    leftVelocityControl.reset();
-    rightVelocityControl.reset();
   }
 
   // the average of the encoders

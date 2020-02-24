@@ -11,20 +11,20 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Elevator;
 
 public class OpenAndClosePiston extends InstantCommand {
-   private Elevator el; 
+  private Elevator el;
   private boolean value;
-  public OpenAndClosePiston(Elevator elvetor , boolean value) {
+
+  public OpenAndClosePiston(Elevator elvetor, boolean value) {
     this.value = value;
     el = elvetor;
-   addRequirements(el);
+    addRequirements(el);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-  
-      el.ControlElevatorPiston(value);
-    }
 
-
+    el.ControlElevatorPiston(value);
   }
+
+}

@@ -54,6 +54,7 @@ public class ShooterTransportation extends SubsystemBase {
   public void controlSquishMotor(double speed) {
     squishMotor.set(ControlMode.PercentOutput, speed);
   }
+
   /**
    * Check if the ball is in the shooter
    * 
@@ -82,6 +83,6 @@ public class ShooterTransportation extends SubsystemBase {
   @Override
   public void periodic() {
     ShooterValue();
-    
+
   }
 }

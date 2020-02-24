@@ -10,7 +10,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
 
@@ -21,8 +20,9 @@ public class Transportation extends SubsystemBase {
   private static Transportation transportation;
 
   private TalonSRX transportationMotor;
+
   private Transportation() {
-      transportationMotor = new TalonSRX(TransportationConstants.transportationMotor);
+    transportationMotor = new TalonSRX(TransportationConstants.transportationMotor);
   }
 
   public void transportationControl(double power) {
@@ -37,6 +37,7 @@ public class Transportation extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
   public static Transportation getinstance() {
     if (transportation == null) {
       transportation = new Transportation();

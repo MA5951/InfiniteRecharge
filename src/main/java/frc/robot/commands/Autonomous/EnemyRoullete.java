@@ -50,7 +50,7 @@ public class EnemyRoullete extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // System.out.println(stage);
+
     switch (stage) {
     case 0:
         Intake.execute();

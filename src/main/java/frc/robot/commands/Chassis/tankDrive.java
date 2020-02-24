@@ -23,7 +23,6 @@ public class tankDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    chassis.resetVelocityControl();
     chassis.rampRate(0);
   }
 
@@ -48,7 +47,7 @@ public class tankDrive extends CommandBase {
       } else {
         chassis.leftcontrol(RobotContainer.leftJoystick.getY());
       }
-    }else{
+    } else {
       chassis.leftcontrol(0);
     }
   }

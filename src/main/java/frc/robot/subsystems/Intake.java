@@ -39,18 +39,9 @@ public class Intake extends SubsystemBase {
     intakeVictorSPX.set(ControlMode.PercentOutput, power);
   }
 
-  public boolean isPistonOpen() {
-    return intakeSolenoid.get() == Value.kForward;
-  }
-
-  public void value() {
-    SmartDashboard.putBoolean("IsIntakeOpen", isPistonOpen());
-  }
-
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    value();
+
   }
 
   public static Intake getinstance() {

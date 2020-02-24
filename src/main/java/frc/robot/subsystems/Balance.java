@@ -29,15 +29,6 @@ public class Balance extends SubsystemBase {
   private CANDigitalInput IRLeft;
   private CANDigitalInput IRRight;
 
-  //private AHRS navx;
-
-  private static final double KP_BALANCE = 0;
-  private static final double KI_BALANCE = 0;
-  private static final double KD_BALANCE = 0;
-  private static final double angleTolorance = 0.5;
-
-  private PIDController balancePidController;
-
   private static Balance balance;
 
   private Balance() {
@@ -46,53 +37,17 @@ public class Balance extends SubsystemBase {
 
     IRLeft = balanceMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
     IRRight = balanceMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-   // navx = new AHRS(I2C.Port.kOnboard);
-
-    balancePidController = new PIDController(KP_BALANCE, KI_BALANCE, KD_BALANCE);
-    balancePidController.setTolerance(angleTolorance);
 
   }
 
   public void Value() {
-    //SmartDashboard.putNumber("BalanceNavxPich", navx.getPitch());
     SmartDashboard.putBoolean("rightIR", IRRight.get());
     SmartDashboard.putBoolean("leftIR", IRLeft.get());
-  }
-
-  public double balancePidControllerSetPoint(double balanceSetPoint) {
-    // return MathUtil.clamp(balancePidController.calculate(navx.getPitch(), balanceSetPoint), -1, 1);
-    return 0;
-  }
-
-  public boolean isBalancePIDOnTarget() {
-    return balancePidController.atSetpoint();
   }
 
   // sets speed by driver conrtoll (joystick)
   public void controlBalanceMotor(double speed) {
     balanceMotor.set(speed);
-  }
-
-  public void resetNavx() {
-   // navx.reset();
-  }
-
-  public double getnavxPich() {
-    // return navx.getPitch();
-    return 0;
-  }
-
-  public void changeModeSparkMaxBrake() {
-    balanceMotor.setIdleMode(IdleMode.kBrake);
-  }
-
- public double getnavxangle() {
-    // return navx.getAngle();
-    return 0;
-  }
-
-  public void changeModeSparkMaxCoast() {
-    balanceMotor.setIdleMode(IdleMode.kCoast);
   }
 
   public boolean isCloseTotargetfromRight() {
@@ -112,7 +67,7 @@ public class Balance extends SubsystemBase {
 
   @Override
   public void periodic() {
-    //System.out.println(navx.getAngle() + " " + navx.getPitch() + " " + navx.getRoll());
+
     Value();
   }
 }
