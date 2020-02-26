@@ -26,7 +26,7 @@ public class Path {
       };
 
       public static double[][] standart = { 
-        new double[]{-1, 0, 0.05, 5, 1 , 1},
+        new double[]{1, 0, 0.05, 5, 1 , 1},
        
         };
         

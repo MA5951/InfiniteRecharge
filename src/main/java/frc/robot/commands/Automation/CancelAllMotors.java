@@ -26,10 +26,9 @@ public class CancelAllMotors extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Intake.getinstance().intakeMotorControl(0);
-    Transportation.getinstance().transportationControl(0);
-    Roulette.getinstance().controlroulettSolenoid(false);
-    Shooter.getinstance().controlFlyWheelMotor(0);
-    ShooterTransportation.getinstance().controlSquishMotor(0);
+    Intake.getinstance();
+    Transportation.getinstance();
+    Shooter.getinstance();
+    ShooterTransportation.getinstance();
   }
 }

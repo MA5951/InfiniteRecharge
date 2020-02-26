@@ -150,7 +150,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().setDefaultCommand(Balance.getinstance(), ControllBalance);
     CommandScheduler.getInstance().setDefaultCommand(Elevator.getinstance(), elevatorControl);
     Elevator.getinstance().elevatorEncoderReset();
-    Elevator.getinstance().ControlElevatorPiston(false);
+    Elevator.getinstance().ControlElevatorPiston(true);
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
