@@ -43,6 +43,8 @@ public class MAPath extends CommandBase {
       Path.mainPath = Path.roulettePath1; 
     }else if (SmartDashboard.getNumber("auto", 1) == 2){
       Path.mainPath = Path.enemyRoultte; 
+    }else if(SmartDashboard.getNumber("auto", 1) == 3){
+      Path.mainPath = Path.standart1; 
     }else{
       Path.mainPath = Path.standart; 
     }

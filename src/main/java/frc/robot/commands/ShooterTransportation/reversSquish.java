@@ -5,22 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.Transportation;
+package frc.robot.commands.ShooterTransportation;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ShooterTransportation;
-import frc.robot.subsystems.Transportation;
 
-public class TransportationContorl extends CommandBase {
+public class reversSquish extends CommandBase {
   /**
-   * Creates a new TransportationContorl.
+   * Creates a new reversSquish.
    */
-  private Transportation transportation;
-  public TransportationContorl(Transportation tr) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    transportation = tr;
-    addRequirements(transportation);
+  public reversSquish() {
+    addRequirements(ShooterTransportation.getinstance());
   }
 
   // Called when the command is initially scheduled.
@@ -31,20 +26,13 @@ public class TransportationContorl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(ShooterTransportation.getinstance().getMotorCurrnet() < -30 || transportation.getMotorCurrnet() < -13) {
-      transportation.transportationControl(0.6);
-      Timer.delay(0.2);
-
-    } else {
-      transportation.transportationControl(-0.4);
-    }
+    ShooterTransportation.getinstance().controlSquishMotor(0.4);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.transportation.transportationControl(0);
- 
+    ShooterTransportation.getinstance().controlSquishMotor(0);
   }
 
   // Returns true when the command should end.

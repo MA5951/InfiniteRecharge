@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -39,16 +40,21 @@ public class Shooter extends SubsystemBase {
     flyWheelA = new TalonSRX(ShooterConstants.FLY_WHEEL_A);
     flyWheelB = new TalonSRX(ShooterConstants.FLY_WHEEL_B);
 
-    flyWheelA.configPeakCurrentLimit(30);
-    flyWheelB.configPeakCurrentLimit(30);
+   
+   
 
     flyWheelSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_FLY_WHEEL_SPEED, KI_FLY_WHEEL_SPEED,
         KD_FLY_WHEEL_SPEED);
 
-    flyWheelSpeed.setTolerance(5);
+    flyWheelSpeed.setTolerance(7);
+
     flyWheelSpeed.setIntegratorRange(-1000, 1000);
     flyWheelB.configClosedloopRamp(0.05);
     flyWheelA.configClosedloopRamp(0.05);
+
+    flyWheelB.setNeutralMode(NeutralMode.Coast);
+    flyWheelA.setNeutralMode(NeutralMode.Coast);
+
 
   }
 
@@ -136,6 +142,6 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     ShooterValue();
-
+   
   }
 }

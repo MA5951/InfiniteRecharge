@@ -7,6 +7,7 @@
 
 package frc.robot.commands.Autonomous;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.Automation.Shooting;
 import frc.robot.commands.Chassis.MAPath;
@@ -18,6 +19,7 @@ public class shootanddrive extends CommandBase {
   /**
    * Creates a new shootanddrive.
    */
+  double lastTimeOnTarget;
   CommandBase MApath, shooting;
   int stage = 0;
 
@@ -32,6 +34,7 @@ public class shootanddrive extends CommandBase {
   public void initialize() {
     stage = 0;
     MApath.initialize();
+    lastTimeOnTarget = Timer.getFPGATimestamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -51,8 +54,14 @@ public class shootanddrive extends CommandBase {
 
     case 1:
 
+    
+    if (Timer.getFPGATimestamp() - lastTimeOnTarget < 8) {
       shooting.execute();
-      break;
+    } else {
+      shooting.end(true);
+
+        break;
+      }
     }
   }
 

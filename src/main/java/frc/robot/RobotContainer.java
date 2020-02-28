@@ -19,6 +19,7 @@ import frc.robot.commands.Automation.Shooting;
 import frc.robot.commands.Autonomous.EnemyRoullete;
 import frc.robot.commands.Autonomous.RoulletePath;
 import frc.robot.commands.Autonomous.shootanddrive;
+import frc.robot.commands.Autonomous.standert1;
 import frc.robot.commands.Chassis.MAPath;
 import frc.robot.commands.Chassis.PIDVision;
 import frc.robot.commands.Elevator.ElevatorMotorControl;
@@ -42,6 +43,7 @@ import frc.robot.commands.Roulette.roundTwoRoulettePID;
 import frc.robot.commands.Shooter.PIDFlyWheel;
 import frc.robot.commands.Shooter.PIDFlyWheelAutonumos;
 import frc.robot.commands.ShooterTransportation.PIDSquishMotor;
+import frc.robot.commands.ShooterTransportation.reversSquish;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limlight;
 import frc.robot.subsystems.Roulette;
@@ -76,12 +78,16 @@ public class RobotContainer {
   public static Joystick rightJoystick = new Joystick(1);
 
   private JoystickButton OpenIntake = new JoystickButton(OperatingJoystick, 6);
+
   private JoystickButton PIDVision = new JoystickButton(leftJoystick, 8);
+  private JoystickButton PIDVision1 = new JoystickButton(rightJoystick, 2);
+  private JoystickButton PIDVision2 = new JoystickButton(leftJoystick, 2);
+
   private JoystickButton CloseIntake = new JoystickButton(OperatingJoystick, 5);
   private ShootingTriggger Shoot = new ShootingTriggger();
   private JoystickButton RouletteControl = new JoystickButton(OperatingJoystick, 3);
 
-  private JoystickButton CancelAllMotors = new JoystickButton(OperatingJoystick, 8);
+  private JoystickButton CancelAllMotors = new JoystickButton(OperatingJoystick, 10);
   private JoystickButton CancelAllMotorsTwo = new JoystickButton(OperatingJoystick, 9);
 
   private JoystickButton RouletteAutomation = new JoystickButton(OperatingJoystick, 2);
@@ -95,9 +101,12 @@ public class RobotContainer {
   private POVButton RouletteRight = new POVButton(OperatingJoystick, 90);
   private POVButton RouletteLeft = new POVButton(OperatingJoystick, 270);
 
+  private JoystickButton reversall = new JoystickButton(OperatingJoystick, 8);
+
   EnemyRoullete EnemyroulletePath = new EnemyRoullete(Autonomous.getInstance());
   RoulletePath roulletePath = new RoulletePath(Autonomous.getInstance());
   shootanddrive shootandDrive = new shootanddrive();
+  standert1 standert = new standert1();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -121,9 +130,16 @@ public class RobotContainer {
     transportations.whileHeld(new TransportationContorl(transportation));
     transportations.whileHeld(new PIDSquishMotor(shooterTransportation));
     Shoot.whileActiveContinuous(new Shooting(auto, false));
-    preShootingTrigger.whileActiveContinuous(new PIDFlyWheelAutonumos(shooter, 190));
+    preShootingTrigger.whileActiveContinuous(new PIDFlyWheelAutonumos(shooter, 200));
+
     PIDVision.whileHeld(new PIDVision(0, 0.1, Limlight.getInstance()));
+    PIDVision1.whileHeld(new PIDVision(0, 0.1, Limlight.getInstance()));
+    PIDVision2.whileHeld(new PIDVision(0, 0.1, Limlight.getInstance()));
+
     RouletteControl.whileHeld(new IntakePullPush(0.5, intake));
+
+    reversall.whileHeld(new reversTransportationContorl());
+    reversall.whileHeld(new reversSquish());
 
     RouletteLeft.whileActiveContinuous(new roundTwoRoulettePID(-0.5, roulette));
     RouletteRight.whileActiveContinuous(new roundTwoRoulettePID(0.5, roulette));
@@ -147,8 +163,10 @@ public class RobotContainer {
     } else if (SmartDashboard.getNumber("auto", 1) == 2) {
       return EnemyroulletePath;
     }
-    else {
+    else if(SmartDashboard.getNumber("auto", 1) == 3) {
       return shootandDrive;
+    }else{
+      return standert;
     }
   }
 }
