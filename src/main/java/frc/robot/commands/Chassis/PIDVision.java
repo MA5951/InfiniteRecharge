@@ -7,6 +7,7 @@
 
 package frc.robot.commands.Chassis;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
@@ -22,7 +23,6 @@ public class PIDVision extends CommandBase {
 
   public PIDVision(double angle, double waitTime, Limlight lm) {
     limlight = lm;
-
     this.angle = angle;
     this.waitTime = waitTime;
     chassis = Chassis.getinstance();
@@ -32,7 +32,7 @@ public class PIDVision extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-  
+    
     chassis.rampRate(0);
     chassis.setidilmodeBrake();
   }
@@ -46,7 +46,7 @@ public class PIDVision extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
+  
     if (interrupted) {
       chassis.tankDrive(0, 0);
       chassis.reset();

@@ -7,6 +7,7 @@
 
 package frc.robot.commands.Automation;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.Chassis.PIDVision;
 import frc.robot.commands.Shooter.PIDFlyWheel;
@@ -78,6 +79,7 @@ public class Shooting extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+
     if (drive) {
       PIDVision.end(true);
     }

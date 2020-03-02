@@ -29,13 +29,14 @@ public class PIDFlyWheelAutonumos extends CommandBase {
   @Override
   public void initialize() {
     flyWheelSpeed = speed;
+    Shooter.getinstance().resetPID();
 
   }
 
   @Override
   public void execute() {
     double power = shooter.flyWheelSpeedOutPut(flyWheelSpeed);
-    this.shooter.controlFlyWheelMotor(power);
+    this.shooter.controlFlyWheelMotor(power * -1);
   }
 
   // Called once the command ends or is interrupted.

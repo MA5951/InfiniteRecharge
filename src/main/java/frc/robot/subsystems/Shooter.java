@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
@@ -23,39 +25,35 @@ public class Shooter extends SubsystemBase {
   private static Shooter shooter;
 
   private double KP_FLY_WHEEL_SPEED = 0.05;
-  private double KI_FLY_WHEEL_SPEED = 0.00055;
+  private double KI_FLY_WHEEL_SPEED = 0.0025;
   private double KD_FLY_WHEEL_SPEED = 0;
 
   private double ticksPerRoundflyWheel = 999.5; // TODO
 
-  private TalonSRX flyWheelA;
-  private TalonSRX flyWheelB;
+  //private TalonSRX flyWheelA;
+  //private TalonSRX flyWheelB;
 
   public double shootCounter = 0;
-
+  private 
   private edu.wpi.first.wpilibj.controller.PIDController flyWheelSpeed;
 
   private Shooter() {
 
-    flyWheelA = new TalonSRX(ShooterConstants.FLY_WHEEL_A);
-    flyWheelB = new TalonSRX(ShooterConstants.FLY_WHEEL_B);
-
-   
-   
+    //flyWheelA = new TalonSRX(ShooterConstants.FLY_WHEEL_A);
+    //flyWheelB = new TalonSRX(ShooterConstants.FLY_WHEEL_B);
 
     flyWheelSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_FLY_WHEEL_SPEED, KI_FLY_WHEEL_SPEED,
         KD_FLY_WHEEL_SPEED);
 
-    flyWheelSpeed.setTolerance(7);
+    flyWheelSpeed.setTolerance(5);
 
     flyWheelSpeed.setIntegratorRange(-1000, 1000);
-    flyWheelB.configClosedloopRamp(0.05);
-    flyWheelA.configClosedloopRamp(0.05);
+    //flyWheelB.configClosedloopRamp(0.05);
+    //flyWheelA.configClosedloopRamp(0.05);
 
-    flyWheelB.setNeutralMode(NeutralMode.Coast);
-    flyWheelA.setNeutralMode(NeutralMode.Coast);
-
-
+    //flyWheelB.setNeutralMode(NeutralMode.Coast);
+    //flyWheelA.setNeutralMode(NeutralMode.Coast);
+    //flyWheelB.follow(flyWheelA);
   }
 
   /**
@@ -66,8 +64,8 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("kSetPointPID", flyWheelSpeed.getSetpoint());
     SmartDashboard.putNumber("getPositionError", flyWheelSpeed.getPositionError());
 
-    SmartDashboard.putNumber("motorOutputA", flyWheelA.getMotorOutputPercent());
-    SmartDashboard.putNumber("motorOutputB", flyWheelB.getMotorOutputPercent());
+    //SmartDashboard.putNumber("motorOutputA", flyWheelA.getMotorOutputPercent());
+    //SmartDashboard.putNumber("motorOutputB", flyWheelB.getMotorOutputPercent());
 
     SmartDashboard.putBoolean("iseadytoshoot", flyWheelSpeed.atSetpoint());
     SmartDashboard.putNumber("calculateSpeedToFlyWheel", calculateSpeedToFlyWheel(Robot.distanceFromTargetLimelightY));
@@ -80,8 +78,8 @@ public class Shooter extends SubsystemBase {
    * @param speed The given power
    */
   public void controlFlyWheelMotor(double speed) {
-    flyWheelB.set(ControlMode.PercentOutput, speed);
-    flyWheelA.set(ControlMode.PercentOutput, speed);
+    // flyWheelB.set(ControlMode.PercentOutput, speed);
+    //flyWheelA.set(ControlMode.PercentOutput, speed);
   }
 
   /**
@@ -128,6 +126,10 @@ public class Shooter extends SubsystemBase {
     return flyWheelA.getSelectedSensorVelocity();
   }
 
+  public void resetPID() {
+    flyWheelSpeed.reset();
+  }
+
   public static Shooter getinstance() {
     if (shooter == null) {
       shooter = new Shooter();
@@ -142,6 +144,7 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     ShooterValue();
-   
+    System.out.println((flyWheelA.getSelectedSensorVelocity() * 10) / 4096);
+
   }
 }

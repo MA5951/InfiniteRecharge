@@ -26,7 +26,7 @@ import frc.robot.subsystems.Roulette;
 import frc.robot.subsystems.Shooter;
 
 public class Robot extends TimedRobot {
- 
+
   private Roulette roulette = Roulette.getinstance();
   private tankDrive tankDrive = new tankDrive(Chassis.getinstance());
   private DriverControllBalance ControllBalance = new DriverControllBalance(Balance.getinstance());
@@ -46,33 +46,31 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   public void getColorFromFMS() {
-    if(gameData.length() > 0)
-    {
-      switch (gameData.charAt(0))
-      {
-        case 'B' :
-          // Blue case code
-          setpointColor = roulette.color("blue");
-          colorString = "blue";
-          break;
-        case 'G' :
-          // Green case code
-          setpointColor = roulette.color("green");
-          colorString = "green";
-          break;
-        case 'R' :
-          //red case code
-          setpointColor = roulette.color("red");
-          colorString = "red";
-          break;
-        case 'Y' :
-          //Yellow case code
-          setpointColor = roulette.color("yellow");
-          colorString = "yellow";
-          break;
-        default :
-          //This is corrupt data
-          break;
+    if (gameData.length() > 0) {
+      switch (gameData.charAt(0)) {
+      case 'B':
+        // Blue case code
+        setpointColor = roulette.color("blue");
+        colorString = "blue";
+        break;
+      case 'G':
+        // Green case code
+        setpointColor = roulette.color("green");
+        colorString = "green";
+        break;
+      case 'R':
+        // red case code
+        setpointColor = roulette.color("red");
+        colorString = "red";
+        break;
+      case 'Y':
+        // Yellow case code
+        setpointColor = roulette.color("yellow");
+        colorString = "yellow";
+        break;
+      default:
+        // This is corrupt data
+        break;
       }
     }
   }
@@ -80,30 +78,28 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    
     m_robotContainer = new RobotContainer();
-  
 
   }
 
   @Override
   public void robotPeriodic() {
 
-     CommandScheduler.getInstance().run();
-     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-     NetworkTableEntry tx = table.getEntry("tx");
-     NetworkTableEntry ty = table.getEntry("ty");
-     NetworkTableEntry yaw = table.getEntry("camtran");
+    CommandScheduler.getInstance().run();
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry tx = table.getEntry("tx");
+    NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableEntry yaw = table.getEntry("camtran");
 
     // read values periodically
     x = tx.getDouble(0.0);
     y = ty.getDouble(0.0);
-  
-    yaw1 = yaw.getDoubleArray(new double[] {0,0,0,0,0,0,0})[4];
-    distanceFromTargetLimelightX = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[0];
-    distanceFromTargetLimelightY = yaw.getDoubleArray(new double[] {0,0,0,0,0,0})[2];
 
-     getColorFromFMS();
+    yaw1 = yaw.getDoubleArray(new double[] { 0, 0, 0, 0, 0, 0, 0 })[4];
+    distanceFromTargetLimelightX = yaw.getDoubleArray(new double[] { 0, 0, 0, 0, 0, 0 })[0];
+    distanceFromTargetLimelightY = yaw.getDoubleArray(new double[] { 0, 0, 0, 0, 0, 0 })[2];
+
+    getColorFromFMS();
 
   }
 
@@ -127,10 +123,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-   
+
     MAPath.pathnum = 0;
     Chassis.getinstance().resetValue();
-     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
@@ -147,11 +143,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0);
     CommandScheduler.getInstance().setDefaultCommand(Chassis.getinstance(), tankDrive);
     CommandScheduler.getInstance().setDefaultCommand(Balance.getinstance(), ControllBalance);
     CommandScheduler.getInstance().setDefaultCommand(Elevator.getinstance(), elevatorControl);
     Elevator.getinstance().elevatorEncoderReset();
     Elevator.getinstance().ControlElevatorPiston(true);
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
