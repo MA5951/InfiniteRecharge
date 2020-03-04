@@ -17,7 +17,7 @@ import frc.robot.Trigger.ShootingTriggger;
 import frc.robot.commands.Automation.IntakeAutomation;
 import frc.robot.commands.Automation.Shooting;
 import frc.robot.commands.Autonomous.EnemyRoullete;
-import frc.robot.commands.Autonomous.RoulletePath;
+import frc.robot.commands.Autonomous.roulletePath;
 import frc.robot.commands.Autonomous.shootanddrive;
 import frc.robot.commands.Autonomous.standert1;
 import frc.robot.commands.Chassis.MAPath;
@@ -104,7 +104,7 @@ public class RobotContainer {
   private JoystickButton reversall = new JoystickButton(OperatingJoystick, 8);
 
   EnemyRoullete EnemyroulletePath = new EnemyRoullete(Autonomous.getInstance());
-  RoulletePath roulletePath = new RoulletePath(Autonomous.getInstance());
+  roulletePath roulletePath = new roulletePath(Autonomous.getInstance());
   shootanddrive shootandDrive = new shootanddrive();
   standert1 standert = new standert1();
 
@@ -130,7 +130,7 @@ public class RobotContainer {
     transportations.whileHeld(new TransportationContorl(transportation));
     transportations.whileHeld(new PIDSquishMotor(shooterTransportation));
     Shoot.whileActiveContinuous(new Shooting(auto, false));
-    preShootingTrigger.whileActiveContinuous(new PIDFlyWheelAutonumos(shooter, 200));
+    preShootingTrigger.whileActiveContinuous(new PIDFlyWheelAutonumos(shooter, 2350));
 
     PIDVision.whileHeld(new PIDVision(0, 0.1, Limlight.getInstance()));
     PIDVision1.whileHeld(new PIDVision(0, 0.1, Limlight.getInstance()));

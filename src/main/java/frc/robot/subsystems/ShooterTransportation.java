@@ -33,14 +33,6 @@ public class ShooterTransportation extends SubsystemBase {
     IRBall = new DigitalInput(ShooterConstants.IR_BALL);
   }
 
-  /**
-   * Display The given values to the shuffleboard
-   */
-  public void ShooterValue() {
-    SmartDashboard.putBoolean("IRball", !IRBall.get());
-    SmartDashboard.putNumber("squishMotorCurrent", squishMotor.getStatorCurrent());
-  }
-
   public double getMotorCurrnet() {
     return squishMotor.getStatorCurrent();
   }
@@ -81,6 +73,6 @@ public class ShooterTransportation extends SubsystemBase {
 
   @Override
   public void periodic() {
-    ShooterValue();
+   
   }
 }

@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Automation extends SubsystemBase {
 
   private static Automation auto;
-
   private Automation() {
 
   }

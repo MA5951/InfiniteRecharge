@@ -36,7 +36,7 @@ public class PIDFlyWheelAutonumos extends CommandBase {
   @Override
   public void execute() {
     double power = shooter.flyWheelSpeedOutPut(flyWheelSpeed);
-    this.shooter.controlFlyWheelMotor(power * -1);
+    this.shooter.controlFlyWheelMotor(power);
   }
 
   // Called once the command ends or is interrupted.

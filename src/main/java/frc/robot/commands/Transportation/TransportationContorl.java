@@ -31,12 +31,12 @@ public class TransportationContorl extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(ShooterTransportation.getinstance().getMotorCurrnet() < -30 || transportation.getMotorCurrnet() < -16) {
+    if(ShooterTransportation.getinstance().getMotorCurrnet() < -30 || transportation.getMotorCurrnet() < -13) {
       transportation.transportationControl(0.6);
       Timer.delay(0.1);
 
     } else {
-      transportation.transportationControl(-0.4);
+      transportation.transportationControl(-0.5);
     }
   }
 

@@ -26,36 +26,17 @@ public class Balance extends SubsystemBase {
    */
   private CANSparkMax balanceMotor;
 
-  private CANDigitalInput IRLeft;
-  private CANDigitalInput IRRight;
-
   private static Balance balance;
 
   private Balance() {
 
     balanceMotor = new CANSparkMax(BalanceConstants.SPARK_MAX_BALANCE_PORT, MotorType.kBrushless);
 
-    IRLeft = balanceMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-    IRRight = balanceMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-
-  }
-
-  public void Value() {
-    SmartDashboard.putBoolean("rightIR", IRRight.get());
-    SmartDashboard.putBoolean("leftIR", IRLeft.get());
   }
 
   // sets speed by driver conrtoll (joystick)
   public void controlBalanceMotor(double speed) {
     balanceMotor.set(speed);
-  }
-
-  public boolean isCloseTotargetfromRight() {
-    return IRRight.get();
-  }
-
-  public boolean isCloseTotargetfromLeft() {
-    return IRLeft.get();
   }
 
   public static Balance getinstance() {
@@ -68,6 +49,5 @@ public class Balance extends SubsystemBase {
   @Override
   public void periodic() {
 
-    Value();
   }
 }

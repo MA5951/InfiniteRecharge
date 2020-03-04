@@ -137,30 +137,13 @@ public class Chassis extends SubsystemBase {
 
   // updat the value in the smart dash bord
   public void value() {
-    SmartDashboard.putNumber("distanceFormula", distance());
-    SmartDashboard.putNumber("angle", navx.getFusedHeading());
     SmartDashboard.putNumber("fixedAngle", fixedAngle());
-
-    SmartDashboard.putNumber("pathnum", MAPath.pathnum);
     SmartDashboard.putNumber("stage", MAPath.stage);
-
     SmartDashboard.putNumber("distacne", average() / ticksPerMeter);
     SmartDashboard.putNumber("angelSetPoint", anglePidMApath.getSetpoint());
     SmartDashboard.putBoolean("PIDvisonOnTarget", anglePIDVision.atSetpoint());
-    SmartDashboard.putNumber("angleEror", angleEror());
-    SmartDashboard.putNumber("distanceEror", distanceEror());
     SmartDashboard.putNumber("DistanceSetPoint", distancePidMApath.getSetpoint() / ticksPerMeter);
-
-    SmartDashboard.putNumber("angelSetPointvison", anglePIDVision.getSetpoint());
     SmartDashboard.putNumber("Distancevison", distance());
-
-    SmartDashboard.putNumber("canEncoderLeftCIMcoder", canEncoderLeftCIMcoder.getPosition());
-    SmartDashboard.putNumber("canEncoderRightCIMcoder", canEncoderRightCIMcoder.getPosition());
-
-    SmartDashboard.putNumber("CANEncoderLeftRate", canEncoderRight.getVelocity());
-    SmartDashboard.putNumber("CANEncoderRightRate", canEncoderRight.getVelocity());
-
-    SmartDashboard.putNumber("angelVison", limelightAngleFinal());
   }
 
   public void rampRate(double rampRate) {
