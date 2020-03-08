@@ -48,6 +48,7 @@ public class Elevator extends SubsystemBase {
   // updat the value in the smart dash bord
   public void value() {
     SmartDashboard.putBoolean("elevatorPistonStatus", isPistonOpen());
+    SmartDashboard.putNumber("encoder", canEncoder.getPosition());
   }
 
   // pid reset

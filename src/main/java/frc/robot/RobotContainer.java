@@ -18,6 +18,7 @@ import frc.robot.commands.Automation.IntakeAutomation;
 import frc.robot.commands.Automation.Shooting;
 import frc.robot.commands.Autonomous.EnemyRoullete;
 import frc.robot.commands.Autonomous.roulletePath;
+import frc.robot.commands.Autonomous.roulletePath1;
 import frc.robot.commands.Autonomous.shootanddrive;
 import frc.robot.commands.Autonomous.standert1;
 import frc.robot.commands.Chassis.MAPath;
@@ -79,8 +80,8 @@ public class RobotContainer {
 
   private JoystickButton OpenIntake = new JoystickButton(OperatingJoystick, 6);
 
-  private JoystickButton PIDVision = new JoystickButton(leftJoystick, 8);
-  private JoystickButton PIDVision1 = new JoystickButton(rightJoystick, 2);
+  private JoystickButton PIDVision = new JoystickButton(leftJoystick, 5);
+  private JoystickButton PIDVision1 = new JoystickButton(rightJoystick, 5);
   private JoystickButton PIDVision2 = new JoystickButton(leftJoystick, 2);
 
   private JoystickButton CloseIntake = new JoystickButton(OperatingJoystick, 5);
@@ -107,6 +108,7 @@ public class RobotContainer {
   roulletePath roulletePath = new roulletePath(Autonomous.getInstance());
   shootanddrive shootandDrive = new shootanddrive();
   standert1 standert = new standert1();
+  roulletePath1 roulletepath1 = new roulletePath1(Autonomous.getInstance());
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -129,12 +131,12 @@ public class RobotContainer {
     CloseIntake.whenPressed(new IntakClose(intake));
     transportations.whileHeld(new TransportationContorl(transportation));
     transportations.whileHeld(new PIDSquishMotor(shooterTransportation));
-    Shoot.whileActiveContinuous(new Shooting(auto, false));
-    preShootingTrigger.whileActiveContinuous(new PIDFlyWheelAutonumos(shooter, 2350));
+    Shoot.whileActiveContinuous(new Shooting(auto,false));
+    preShootingTrigger.whileActiveContinuous(new PIDFlyWheelAutonumos(shooter, 3500));
 
     PIDVision.whileHeld(new PIDVision(0, 0.1, Limlight.getInstance()));
     PIDVision1.whileHeld(new PIDVision(0, 0.1, Limlight.getInstance()));
-    PIDVision2.whileHeld(new PIDVision(0, 0.1, Limlight.getInstance()));
+    //PIDVision2.whileHeld(new PIDVision(0, 0.1, Limlight.getInstance()));
 
     RouletteControl.whileHeld(new IntakePullPush(0.5, intake));
 
@@ -165,8 +167,10 @@ public class RobotContainer {
     }
     else if(SmartDashboard.getNumber("auto", 1) == 3) {
       return shootandDrive;
-    }else{
+    }else if(SmartDashboard.getNumber("auto", 1) == 4){
       return standert;
+    }else{
+     return roulletepath1;
     }
   }
 }

@@ -36,9 +36,9 @@ public class PIDSquishMotor extends CommandBase {
   @Override
   public void execute() {
   
-    if (shooterTransportation.getMotorCurrnet() < -30 ) {
+    if (shooterTransportation.getMotorCurrnet() < -37 ) {
       shooterTransportation.controlSquishMotor(0.8);
-      Timer.delay(0.1);
+      Timer.delay(0.15);
     } else {
       shooterTransportation.controlSquishMotor(-0.95);
 

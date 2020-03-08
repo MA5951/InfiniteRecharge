@@ -8,6 +8,7 @@
 package frc.robot.commands.Autonomous;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.commands.Automation.IntakeAutomation;
 import frc.robot.commands.Automation.Shooting;
@@ -16,6 +17,7 @@ import frc.robot.commands.Shooter.PIDFlyWheelAutonumos;
 import frc.robot.subsystems.Automation;
 import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Chassis;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 public class roulletePath extends CommandBase {
@@ -25,16 +27,16 @@ public class roulletePath extends CommandBase {
   Autonomous autonomous;
   int stage = 0;
   double lastTimeOnTarget;
-  CommandBase MApath, Intake, shooting, shooting1, preshooting;
+  CommandBase MApath, intake, shooting, shooting1 , preshooting;
 
   public roulletePath(Autonomous autonomous) {
 
     this.autonomous = autonomous;
     MApath = new MAPath(0.1, Chassis.getinstance());
-    Intake = new IntakeAutomation(Automation.getinstance());
+    intake = new IntakeAutomation(Automation.getinstance());
     shooting = new Shooting(Automation.getinstance(), false);
-    preshooting = new PIDFlyWheelAutonumos(Shooter.getinstance(), 215);
     shooting1 = new Shooting(Automation.getinstance(), true);
+    //preshooting = new PIDFlyWheelAutonumos(Shooter.getinstance() , 3200);
 
     addRequirements(autonomous);
   }
@@ -44,7 +46,7 @@ public class roulletePath extends CommandBase {
   public void initialize() {
     stage = 0;
     shooting.initialize();
-    preshooting.initialize();
+    //preshooting.initialize();
     lastTimeOnTarget = Timer.getFPGATimestamp();
   }
 
@@ -55,7 +57,7 @@ public class roulletePath extends CommandBase {
     switch (stage) {
     case 0:
 
-      if (Timer.getFPGATimestamp() - lastTimeOnTarget < 6) {
+      if (Timer.getFPGATimestamp() - lastTimeOnTarget < 3.8) {
         shooting.execute();
       } else {
         shooting.end(true);
@@ -66,15 +68,14 @@ public class roulletePath extends CommandBase {
 
     case 1:
       MApath.execute();
-      if(MAPath.stage == 2){
-        preshooting.execute();
-      }
-      if (MAPath.stage == 3) {
-        Intake.initialize();
-        Intake.execute();
+      if (MAPath.stage == 1) {
+        intake.initialize();
+        intake.execute();
       
       }else if(MAPath.stage == 5){
-        Intake.end(true);
+        intake.end(true);
+        Intake.getinstance().intakeSolenoidControl(Value.kReverse);
+        
       }
    
         if (MApath.isFinished()) {
@@ -84,16 +85,16 @@ public class roulletePath extends CommandBase {
 
     case 2:
       MApath.end(true);
-     
+     // preshooting.end(true);
       stage++;
       break;
     case 3:
-     
+    
       shooting1.initialize();
       stage++;
       break;
     case 4:
-    preshooting.end(true);
+    Intake.getinstance().intakeMotorControl(-0.2);
       shooting1.execute();
     }
 
@@ -102,9 +103,9 @@ public class roulletePath extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
+    Intake.getinstance().intakeMotorControl(0);
     shooting.end(true);
-    Intake.end(true);
+    intake.end(true);
     MApath.end(true);
 
   }

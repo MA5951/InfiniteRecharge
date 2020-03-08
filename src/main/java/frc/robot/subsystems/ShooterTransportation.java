@@ -73,6 +73,6 @@ public class ShooterTransportation extends SubsystemBase {
 
   @Override
   public void periodic() {
-   
+    SmartDashboard.putBoolean("IRBall", !IRBall.get());
   }
 }

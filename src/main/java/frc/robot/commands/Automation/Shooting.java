@@ -43,7 +43,7 @@ public class Shooting extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0);
     if (drive) {
 
       PIDVision.initialize();
@@ -58,6 +58,7 @@ public class Shooting extends CommandBase {
     {
 
       flyWheel.execute();
+      
       if (drive) {
         PIDVision.execute();
       }
@@ -79,7 +80,7 @@ public class Shooting extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(1);
     if (drive) {
       PIDVision.end(true);
     }

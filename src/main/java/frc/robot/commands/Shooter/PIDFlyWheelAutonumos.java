@@ -15,7 +15,7 @@ public class PIDFlyWheelAutonumos extends CommandBase {
   /**
    * Creates a new PIDFlyWheel.
    */
-  private double flyWheelSpeed;
+
   private Shooter shooter;
   private double speed;
 
@@ -28,14 +28,20 @@ public class PIDFlyWheelAutonumos extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    flyWheelSpeed = speed;
+    shooter.setsetPoint(speed);
     Shooter.getinstance().resetPID();
 
   }
 
   @Override
   public void execute() {
-    double power = shooter.flyWheelSpeedOutPut(flyWheelSpeed);
+    
+    if (shooter.isFlyWheelOnTraget()) {
+      shooter.setP(0);
+    } else {
+      shooter.setP(3.8e-4);
+    }
+    double power = shooter.flyWheelSpeedOutPut();
     this.shooter.controlFlyWheelMotor(power);
   }
 

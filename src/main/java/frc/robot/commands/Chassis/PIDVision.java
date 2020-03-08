@@ -32,7 +32,7 @@ public class PIDVision extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0);
     chassis.rampRate(0);
     chassis.setidilmodeBrake();
   }
@@ -46,7 +46,7 @@ public class PIDVision extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-  
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(1);
     if (interrupted) {
       chassis.tankDrive(0, 0);
       chassis.reset();

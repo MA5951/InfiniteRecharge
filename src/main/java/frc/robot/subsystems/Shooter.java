@@ -24,8 +24,8 @@ import frc.robot.Constants.*;
 public class Shooter extends SubsystemBase {
   private static Shooter shooter;
 
-  private double KP_FLY_WHEEL_SPEED = 1e-3;
-  private double KI_FLY_WHEEL_SPEED = 3e-4;
+  private double KP_FLY_WHEEL_SPEED = 3.8e-4;
+  private double KI_FLY_WHEEL_SPEED = 4.2e-4;
   private double KD_FLY_WHEEL_SPEED = 0;
 
   private CANSparkMax flyWheelA;
@@ -55,11 +55,12 @@ public class Shooter extends SubsystemBase {
     flyWheelEncoderB.setPositionConversionFactor(1);
     flyWheelA.setInverted(true);
     flyWheelB.follow(flyWheelA);
+    flyWheelA.setOpenLoopRampRate(0);
 
     flyWheelSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_FLY_WHEEL_SPEED, KI_FLY_WHEEL_SPEED,
         KD_FLY_WHEEL_SPEED);
 
-    flyWheelSpeed.setTolerance(100);
+    flyWheelSpeed.setTolerance(80);
 
   }
 
@@ -78,6 +79,9 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("calculateSpeedToFlyWheel", calculateSpeedToFlyWheel(Robot.distanceFromTargetLimelightY));
 
   }
+  public double getPositionError(){
+    return flyWheelSpeed.getPositionError();
+  }
 
   /**
    * Set the power to the fly wheel motors
@@ -88,13 +92,21 @@ public class Shooter extends SubsystemBase {
     flyWheelA.set(speed);
   }
 
+  public void setP(double kp) {
+    flyWheelSpeed.setP(kp);
+  }
+
   /**
    * Set the angle velocity for the fly wheel
    * 
    * @return The kRate calculation
    */
   public double kRateFlyWheelSpeed() {
-    return ((flyWheelEncoderA.getVelocity() + flyWheelEncoderB.getVelocity()) / 2);
+    return flyWheelEncoderA.getVelocity();
+  }
+
+  public void setsetPoint(double setpoint) {
+    flyWheelSpeed.setSetpoint(setpoint);
   }
 
   /**
@@ -103,9 +115,9 @@ public class Shooter extends SubsystemBase {
    * @param setPoint The destanation the robot need to reach
    * @return The result of the calculation
    */
-  public double flyWheelSpeedOutPut(double setPoint) {
-    double kf = 0.5;
-    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed(), setPoint), 0, 0.95);
+  public double flyWheelSpeedOutPut() {
+
+    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed()), 0, 0.95);
   }
 
   /**
@@ -114,8 +126,7 @@ public class Shooter extends SubsystemBase {
    */
   public double calculateSpeedToFlyWheel(double deltaDistance) {
 
-    return (0.000222855 * Math.pow(Chassis.getinstance().distance(), 2))
-        + (-0.145308 * Chassis.getinstance().distance()) + 214.5;
+    return (-0.00212638 * Math.pow(deltaDistance, 2)) + (3.14689 * deltaDistance) + 2061.23;
 
   }
 
@@ -149,6 +160,7 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
+
     ShooterValue();
   }
 }

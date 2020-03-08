@@ -30,7 +30,7 @@ public class tankDrive extends CommandBase {
   @Override
   public void execute() {
 
-    if (RobotContainer.rightJoystick.getY() > 0.07 || RobotContainer.rightJoystick.getY() < -0.07) {
+    if (RobotContainer.rightJoystick.getY() > 0.1 || RobotContainer.rightJoystick.getY() < -0.1) {
       if (RobotContainer.rightJoystick.getRawButton(1) || RobotContainer.leftJoystick.getRawButton(1)) {
         chassis.rightcontrol(RobotContainer.rightJoystick.getY() * 0.3);
       } else {
@@ -40,7 +40,7 @@ public class tankDrive extends CommandBase {
       chassis.rightcontrol(0);
     }
 
-    if (RobotContainer.leftJoystick.getY() > 0.07 || RobotContainer.leftJoystick.getY() < -0.07) {
+    if (RobotContainer.leftJoystick.getY() > 0.1|| RobotContainer.leftJoystick.getY() < -0.1) {
 
       if (RobotContainer.rightJoystick.getRawButton(1) || RobotContainer.leftJoystick.getRawButton(1)) {
         chassis.leftcontrol(RobotContainer.leftJoystick.getY() * 0.3);

@@ -14,6 +14,7 @@ import frc.robot.commands.Intake.OpenIntake;
 import frc.robot.commands.ShooterTransportation.PIDSquishMotor;
 import frc.robot.commands.Transportation.TransportationContorl;
 import frc.robot.subsystems.Automation;
+import frc.robot.subsystems.Autonomous;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.ShooterTransportation;
 import frc.robot.subsystems.Transportation;
@@ -33,7 +34,7 @@ public class IntakeAutomation extends CommandBase {
     piston = new OpenIntake(Intake.getinstance());
     roller = new IntakePullPush(-0.5, Intake.getinstance()); // TODO Enter real speed value
     auto = automation;
-    addRequirements(auto);
+    addRequirements(Autonomous.getInstance());
   }
 
   // Called when the command is initially scheduled.

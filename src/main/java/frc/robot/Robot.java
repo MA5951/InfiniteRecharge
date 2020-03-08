@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-
+    MAPath.pathnum = 0;
     m_robotContainer = new RobotContainer();
 
   }
@@ -108,7 +108,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    Chassis.getinstance().setidilmodeBrake();
+    Chassis.getinstance().setidilmodeCoset();
     CommandScheduler.getInstance().cancelAll();
     Roulette.getinstance().resetTicks();
   }
@@ -143,13 +143,15 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+
     NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0);
     CommandScheduler.getInstance().setDefaultCommand(Chassis.getinstance(), tankDrive);
     CommandScheduler.getInstance().setDefaultCommand(Balance.getinstance(), ControllBalance);
     CommandScheduler.getInstance().setDefaultCommand(Elevator.getinstance(), elevatorControl);
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("camMode").setNumber(0);
     Elevator.getinstance().elevatorEncoderReset();
     Elevator.getinstance().ControlElevatorPiston(true);
-
+Chassis.getinstance().setidilmodeBrake();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

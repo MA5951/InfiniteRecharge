@@ -20,22 +20,23 @@ import frc.robot.subsystems.Chassis;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public class EnemyRoullete extends CommandBase {
+public class roulletePath1 extends CommandBase {
   /**
    * Creates a new RoulletePath.
    */
   Autonomous autonomous;
   int stage = 0;
   double lastTimeOnTarget;
-  CommandBase MApath, intake, shooting;
+  CommandBase MApath, intake, shooting, shooting1, MApath1;
 
-  public EnemyRoullete(Autonomous autonomous) {
+  public roulletePath1(Autonomous autonomous) {
 
     this.autonomous = autonomous;
     MApath = new MAPath(0.1, Chassis.getinstance());
     intake = new IntakeAutomation(Automation.getinstance());
-    shooting = new Shooting(Automation.getinstance(), true);
-   
+    shooting = new Shooting(Automation.getinstance(), false);
+    shooting1 = new Shooting(Automation.getinstance(), true);
+    MApath1 = new MAPath(0.1, Chassis.getinstance());
 
     addRequirements(autonomous);
   }
@@ -44,9 +45,9 @@ public class EnemyRoullete extends CommandBase {
   @Override
   public void initialize() {
     stage = 0;
-  
-    intake.initialize();
+    shooting.initialize();
     MApath.initialize();
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -55,26 +56,55 @@ public class EnemyRoullete extends CommandBase {
 
     switch (stage) {
     case 0:
-        intake.execute();
-        MApath.execute();
-        if(MAPath.stage  == 3){
-          intake.end(true);
-          Intake.getinstance().intakeSolenoidControl(Value.kReverse);
-          
-        }
-
-        if(MApath.isFinished()){
-          MApath.end(true);
-          shooting.initialize();
-          stage++;
-        }
-        
+      MApath.execute();
+      if (MApath.isFinished()) {
+        stage++;
+        MApath.end(true);
+        MAPath.pathnum = 1;
+        lastTimeOnTarget = Timer.getFPGATimestamp();
+      }
       break;
-      
     case 1:
 
-      shooting.execute();
+      if (Timer.getFPGATimestamp() - lastTimeOnTarget < 3.8) {
+        shooting.execute();
+      } else {
+        shooting.end(true);
+        MApath1.initialize();
+        stage++;
+      }
       break;
+
+    case 2:
+      MApath1.execute();
+      if (MAPath.stage > 2) {
+        intake.initialize();
+        intake.execute();
+
+      } else if (MAPath.stage == 4) {
+        intake.end(true);
+        Intake.getinstance().intakeSolenoidControl(Value.kReverse);
+
+      }
+
+      if (MApath.isFinished()) {
+        stage++;
+      }
+      break;
+
+    case 3:
+      MApath.end(true);
+      // preshooting.end(true);
+      stage++;
+      break;
+    case 4:
+
+      shooting1.initialize();
+      stage++;
+      break;
+    case 5:
+      Intake.getinstance().intakeMotorControl(-0.2);
+      shooting1.execute();
     }
 
   }
@@ -82,10 +112,11 @@ public class EnemyRoullete extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
+    Intake.getinstance().intakeMotorControl(0);
     shooting.end(true);
     intake.end(true);
     MApath.end(true);
+
   }
 
   // Returns true when the command should end.

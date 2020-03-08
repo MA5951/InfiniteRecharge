@@ -32,7 +32,7 @@ public class DriverControllBalance extends CommandBase {
   @Override
   public void execute() {
     
-      balance.controlBalanceMotor(RobotContainer.OperatingJoystick.getRawAxis(4) * 0);
+      balance.controlBalanceMotor(RobotContainer.OperatingJoystick.getRawAxis(4) );
     
   }
 

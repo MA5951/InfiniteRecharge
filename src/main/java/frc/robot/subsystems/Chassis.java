@@ -119,7 +119,7 @@ public class Chassis extends SubsystemBase {
 
     // the angel PID vison
     anglePIDVision = new PIDController(KP_Vision_angle, KI_Vision_angle, KD_Vision_angle);
-    anglePIDVision.setTolerance(3);
+    anglePIDVision.setTolerance(2);
 
     anglePIDVision.enableContinuousInput(-anglePIDVisionSetInputRange, anglePIDVisionSetInputRange);
 
