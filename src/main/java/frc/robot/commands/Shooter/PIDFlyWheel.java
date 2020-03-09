@@ -34,17 +34,11 @@ public class PIDFlyWheel extends CommandBase {
   @Override
   public void execute() {
 
-    if (shooter.isFlyWheelOnTraget()) {
-      shooter.setP(0);
-    } else {
-      shooter.setP(3.8e-4);
-    }
     double power = shooter.flyWheelSpeedOutPut();
-    if (shooter.getPositionError() > 700) {
-      power = 0.95;
+    shooter.controlFlyWheelMotor(power);
     }
-    this.shooter.controlFlyWheelMotor(power);
-  }
+   
+  
 
   // Called once the command ends or is interrupted.
   @Override

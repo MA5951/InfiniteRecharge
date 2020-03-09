@@ -41,6 +41,14 @@ public class Chassis extends SubsystemBase {
   private static final double KI_Vision_angle = 8e-4;
   private static final double KD_Vision_angle = 1e-3;
 
+  private static final double KP_right_velocity_control = 1e-4;
+  private static final double KI_right_velocity_control = 0;
+  private static final double KD_right_velocity_control = 0;
+
+  private static final double KP_left_velocity_control = 1e-4;
+  private static final double KI_left_velocity_control = 0;
+  private static final double KD_left_velocity_control = 0;
+
   private static final double anglePIDVisionSetInputRange = 44.5;
   private static final double anglePidMApathSetInputRange = 180;
 
@@ -68,7 +76,8 @@ public class Chassis extends SubsystemBase {
 
   private PIDController distancePidMApath; // PID controler of the distance in the pathfinder
   private PIDController anglePidMApath; // PID controler of the angel in the pathfinder
-
+  private PIDController leftvelocityControl;
+  private PIDController rightvelocityControl;
   private PIDController anglePIDVision; // the angel PID in the vison PID
 
   private Chassis() {
@@ -124,7 +133,20 @@ public class Chassis extends SubsystemBase {
     anglePIDVision.enableContinuousInput(-anglePIDVisionSetInputRange, anglePIDVisionSetInputRange);
 
     anglePidMApath.enableContinuousInput(-anglePidMApathSetInputRange, anglePidMApathSetInputRange);
+    leftvelocityControl = new PIDController(KP_left_velocity_control, KI_left_velocity_control,
+        KD_left_velocity_control);
+    rightvelocityControl = new PIDController(KP_right_velocity_control, KI_right_velocity_control,
+        KD_right_velocity_control);
+  }
 
+  public double leftvelocityControl(double setPoint) {
+    double kf  = setPoint / RPM;
+    return MathUtil.clamp(leftvelocityControl.calculate(lefttVelocityControlRPM() , setPoint)+ kf, -1, 1);
+  }
+
+  public double rightvelocityControl(double setPoint) {
+    double kf  = setPoint / RPM;
+    return MathUtil.clamp(rightvelocityControl.calculate(rightVelocityControlRPM() , setPoint)+ kf, -1, 1);
   }
 
   public double lefttVelocityControlRPM() {
@@ -144,6 +166,15 @@ public class Chassis extends SubsystemBase {
     SmartDashboard.putBoolean("PIDvisonOnTarget", anglePIDVision.atSetpoint());
     SmartDashboard.putNumber("DistanceSetPoint", distancePidMApath.getSetpoint() / ticksPerMeter);
     SmartDashboard.putNumber("Distancevison", distance());
+
+    SmartDashboard.putNumber("leftRPM", lefttVelocityControlRPM());
+    SmartDashboard.putNumber("rightRPM", rightVelocityControlRPM());
+
+    SmartDashboard.putNumber("leftRPMSetPoint", rightvelocityControl.getSetpoint());
+    SmartDashboard.putNumber("rightRPMSetpoint", leftvelocityControl.getSetpoint());
+
+    SmartDashboard.putNumber("leftPowet", leftFrontMotor.get());
+    SmartDashboard.putNumber("rightpower", rightFrontMotor.get());
   }
 
   public void rampRate(double rampRate) {
