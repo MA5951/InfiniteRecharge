@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   public static double x;
   public static double y;
+  public static double tshort;
   public static double yaw1;
   public static double distanceFromTargetLimelightX;
   public static double distanceFromTargetLimelightY;
@@ -90,14 +91,17 @@ public class Robot extends TimedRobot {
     NetworkTableEntry tx = table.getEntry("tx");
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry yaw = table.getEntry("camtran");
+    NetworkTableEntry Tshort = table.getEntry("tshort");
+    
 
     // read values periodically
     x = tx.getDouble(0.0);
     y = ty.getDouble(0.0);
-
+    tshort = Tshort.getDouble(0.0);
     yaw1 = yaw.getDoubleArray(new double[] { 0, 0, 0, 0, 0, 0, 0 })[4];
     distanceFromTargetLimelightX = yaw.getDoubleArray(new double[] { 0, 0, 0, 0, 0, 0 })[0];
     distanceFromTargetLimelightY = yaw.getDoubleArray(new double[] { 0, 0, 0, 0, 0, 0 })[2];
+
 
     getColorFromFMS();
 

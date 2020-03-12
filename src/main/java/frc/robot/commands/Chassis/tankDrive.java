@@ -29,33 +29,30 @@ public class tankDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double leftPower = chassis.leftvelocityControl(RobotContainer.leftJoystick.getY() * chassis.RPM);
-    double rightPower = chassis.rightvelocityControl(RobotContainer.rightJoystick.getY() * chassis.RPM);
 
     if (RobotContainer.rightJoystick.getY() > 0.1 || RobotContainer.rightJoystick.getY() < -0.1) {
       if (RobotContainer.rightJoystick.getRawButton(1) || RobotContainer.leftJoystick.getRawButton(1)) {
-        rightPower = chassis.rightvelocityControl(RobotContainer.rightJoystick.getY() * chassis.RPM * 0.3);
-        chassis.rightcontrol(rightPower * 0.3);
+
+        chassis.rightcontrol(RobotContainer.rightJoystick.getY() * 0.3 * 12);
       } else {
-        chassis.rightcontrol(rightPower);
+        chassis.rightcontrol(RobotContainer.rightJoystick.getY() * 12);
       }
     } else {
-      rightPower = chassis.rightvelocityControl(0);
 
-      chassis.rightcontrol(rightPower);
+      chassis.rightcontrol(0);
     }
 
     if (RobotContainer.leftJoystick.getY() > 0.1 || RobotContainer.leftJoystick.getY() < -0.1) {
 
       if (RobotContainer.rightJoystick.getRawButton(1) || RobotContainer.leftJoystick.getRawButton(1)) {
-        leftPower = chassis.leftvelocityControl(RobotContainer.leftJoystick.getY() * chassis.RPM * 0.3);
-        chassis.leftcontrol(leftPower * 0.3);
+
+        chassis.leftcontrol(RobotContainer.leftJoystick.getY() * 0.3 * 12);
       } else {
-        chassis.leftcontrol(leftPower);
+        chassis.leftcontrol(RobotContainer.leftJoystick.getY() * 12);
       }
     } else {
-      leftPower = chassis.leftvelocityControl(0);
-      chassis.leftcontrol(leftPower);
+
+      chassis.leftcontrol(0);
     }
   }
 

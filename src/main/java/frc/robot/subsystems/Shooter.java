@@ -24,8 +24,8 @@ import frc.robot.Constants.*;
 public class Shooter extends SubsystemBase {
   private static Shooter shooter;
 
-  private double KP_FLY_WHEEL_SPEED = 3.8e-4;
-  private double KI_FLY_WHEEL_SPEED = 4.2e-4;
+  private double KP_FLY_WHEEL_SPEED = 5e-4;
+  private double KI_FLY_WHEEL_SPEED = 5e-5;
   private double KD_FLY_WHEEL_SPEED = 0;
 
   private CANSparkMax flyWheelA;
@@ -60,7 +60,7 @@ public class Shooter extends SubsystemBase {
     flyWheelSpeed = new edu.wpi.first.wpilibj.controller.PIDController(KP_FLY_WHEEL_SPEED, KI_FLY_WHEEL_SPEED,
         KD_FLY_WHEEL_SPEED);
 
-    flyWheelSpeed.setTolerance(80);
+    flyWheelSpeed.setTolerance(70);
 
   }
 
@@ -79,7 +79,8 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("calculateSpeedToFlyWheel", calculateSpeedToFlyWheel(Robot.distanceFromTargetLimelightY));
 
   }
-  public double getPositionError(){
+
+  public double getPositionError() {
     return flyWheelSpeed.getPositionError();
   }
 
@@ -89,7 +90,7 @@ public class Shooter extends SubsystemBase {
    * @param speed The given power
    */
   public void controlFlyWheelMotor(double speed) {
-    flyWheelA.set(speed);
+    flyWheelA.setVoltage(speed);
   }
 
   public void setP(double kp) {
@@ -116,8 +117,8 @@ public class Shooter extends SubsystemBase {
    * @return The result of the calculation
    */
   public double flyWheelSpeedOutPut() {
-
-    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed()), 0, 0.95);
+    double kf = (12 / Chassis.RPM) * flyWheelSpeed.getSetpoint();
+    return MathUtil.clamp(flyWheelSpeed.calculate(kRateFlyWheelSpeed()) + kf, 0, 12);
   }
 
   /**

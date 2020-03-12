@@ -41,11 +41,15 @@ public class Chassis extends SubsystemBase {
   private static final double KI_Vision_angle = 8e-4;
   private static final double KD_Vision_angle = 1e-3;
 
-  private static final double KP_right_velocity_control = 1e-4;
+  private static final double KP_Vision_distance = 1.6e-2;
+  private static final double KI_Vision_distance = 0;
+  private static final double KD_Vision_distance = 0;
+
+  private static final double KP_right_velocity_control = 1.2e-3;
   private static final double KI_right_velocity_control = 0;
   private static final double KD_right_velocity_control = 0;
 
-  private static final double KP_left_velocity_control = 1e-4;
+  private static final double KP_left_velocity_control = 1.2e-3;
   private static final double KI_left_velocity_control = 0;
   private static final double KD_left_velocity_control = 0;
 
@@ -79,6 +83,7 @@ public class Chassis extends SubsystemBase {
   private PIDController leftvelocityControl;
   private PIDController rightvelocityControl;
   private PIDController anglePIDVision; // the angel PID in the vison PID
+  private PIDController distancePIDVision;
 
   private Chassis() {
 
@@ -137,16 +142,17 @@ public class Chassis extends SubsystemBase {
         KD_left_velocity_control);
     rightvelocityControl = new PIDController(KP_right_velocity_control, KI_right_velocity_control,
         KD_right_velocity_control);
+    distancePIDVision = new PIDController(KP_Vision_distance, KI_Vision_distance, KD_Vision_distance);
   }
 
   public double leftvelocityControl(double setPoint) {
-    double kf  = setPoint / RPM;
-    return MathUtil.clamp(leftvelocityControl.calculate(lefttVelocityControlRPM() , setPoint)+ kf, -1, 1);
+    double kf = setPoint / RPM;
+    return MathUtil.clamp(leftvelocityControl.calculate(lefttVelocityControlRPM(), setPoint) + kf, -12, 12);
   }
 
   public double rightvelocityControl(double setPoint) {
-    double kf  = setPoint / RPM;
-    return MathUtil.clamp(rightvelocityControl.calculate(rightVelocityControlRPM() , setPoint)+ kf, -1, 1);
+    double kf = setPoint / RPM;
+    return MathUtil.clamp(rightvelocityControl.calculate(rightVelocityControlRPM(), setPoint) + kf, -12, 12);
   }
 
   public double lefttVelocityControlRPM() {
@@ -253,6 +259,10 @@ public class Chassis extends SubsystemBase {
     return MathUtil.clamp(anglePIDVision.calculate(Robot.x * -1, setpoint), -1, 1);
   }
 
+  public double distancePIDVisionOutput(double setpoint) {
+    return MathUtil.clamp(distancePIDVision.calculate(Robot.tshort, setpoint), -1, 1);
+  }
+
   public void ArcadeDrive(double angel, double distacne) {
     double w = (100 - Math.abs(angel * 100)) * (distacne) + distacne * 100;
     double v = (100 - Math.abs(distacne * 100)) * (angel) + angel * 100;
@@ -312,11 +322,11 @@ public class Chassis extends SubsystemBase {
   }
 
   public void leftcontrol(double power) {
-    leftFrontMotor.set(power);
+    leftFrontMotor.setVoltage(power);
   }
 
   public void rightcontrol(double power) {
-    rightFrontMotor.set(power);
+    rightFrontMotor.setVoltage(power);
   }
 
   public static Chassis getinstance() {

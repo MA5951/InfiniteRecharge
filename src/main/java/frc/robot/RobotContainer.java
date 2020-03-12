@@ -23,6 +23,7 @@ import frc.robot.commands.Autonomous.shootanddrive;
 import frc.robot.commands.Autonomous.standert1;
 import frc.robot.commands.Chassis.MAPath;
 import frc.robot.commands.Chassis.PIDVision;
+import frc.robot.commands.Chassis.PIDVisionFeeder;
 import frc.robot.commands.Elevator.ElevatorMotorControl;
 import frc.robot.commands.Elevator.OpenAndClosePiston;
 import frc.robot.subsystems.Automation;
@@ -82,7 +83,9 @@ public class RobotContainer {
 
   private JoystickButton PIDVision = new JoystickButton(leftJoystick, 5);
   private JoystickButton PIDVision1 = new JoystickButton(rightJoystick, 5);
-  private JoystickButton PIDVision2 = new JoystickButton(leftJoystick, 2);
+
+  private JoystickButton PIDVision2 = new JoystickButton(leftJoystick, 3);
+  private JoystickButton PIDVision3 = new JoystickButton(rightJoystick, 3);
 
   private JoystickButton CloseIntake = new JoystickButton(OperatingJoystick, 5);
   private ShootingTriggger Shoot = new ShootingTriggger();
@@ -131,12 +134,15 @@ public class RobotContainer {
     CloseIntake.whenPressed(new IntakClose(intake));
     transportations.whileHeld(new TransportationContorl(transportation));
     transportations.whileHeld(new PIDSquishMotor(shooterTransportation));
-    Shoot.whileActiveContinuous(new Shooting(auto,false));
+    Shoot.whileActiveContinuous(new Shooting(auto, false));
     preShootingTrigger.whileActiveContinuous(new PIDFlyWheelAutonumos(shooter, 3500));
+
+    PIDVision3.whileHeld(new PIDVisionFeeder(Limlight.getInstance()));
+    PIDVision2.whileHeld(new PIDVisionFeeder(Limlight.getInstance()));
 
     PIDVision.whileHeld(new PIDVision(0, 0.1, Limlight.getInstance()));
     PIDVision1.whileHeld(new PIDVision(0, 0.1, Limlight.getInstance()));
-    //PIDVision2.whileHeld(new PIDVision(0, 0.1, Limlight.getInstance()));
+    // PIDVision2.whileHeld(new PIDVision(0, 0.1, Limlight.getInstance()));
 
     RouletteControl.whileHeld(new IntakePullPush(0.5, intake));
 
@@ -164,13 +170,12 @@ public class RobotContainer {
       return roulletePath;
     } else if (SmartDashboard.getNumber("auto", 1) == 2) {
       return EnemyroulletePath;
-    }
-    else if(SmartDashboard.getNumber("auto", 1) == 3) {
+    } else if (SmartDashboard.getNumber("auto", 1) == 3) {
       return shootandDrive;
-    }else if(SmartDashboard.getNumber("auto", 1) == 4){
+    } else if (SmartDashboard.getNumber("auto", 1) == 4) {
       return standert;
-    }else{
-     return roulletepath1;
+    } else {
+      return roulletepath1;
     }
   }
 }

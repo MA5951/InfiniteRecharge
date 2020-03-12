@@ -32,7 +32,7 @@ public class IntakeAutomation extends CommandBase {
   public IntakeAutomation(Automation automation) {
     // Use addRequirements() here to declare subsystem dependencies.
     piston = new OpenIntake(Intake.getinstance());
-    roller = new IntakePullPush(-0.5, Intake.getinstance()); // TODO Enter real speed value
+    roller = new IntakePullPush(-0.6, Intake.getinstance()); // TODO Enter real speed value
     auto = automation;
     addRequirements(Autonomous.getInstance());
   }
